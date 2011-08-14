@@ -1,0 +1,118 @@
+
+/* scrolling checkbox list */
+.CheckBoxList {
+    height: 600px; overflow: auto; overflow-x: hidden; width: 400px; border: 1px solid #000;
+    list-style-type: none;
+    margin: 0;
+    padding: 20px 0px 0px 0px;
+}
+
+.CheckBoxList ul {
+    padding: 10px 0px 0px 0px;
+}
+
+.CheckBoxList li {
+    padding: 3px 0px 0px 0px;
+}
+
+/* scrolling list */
+.ScrollingList {
+    height: 600px; overflow: auto; overflow-x: hidden; width: 400px; border: 1px solid #000;
+    list-style-type: none;
+    margin: 0;
+    padding: 20px 0px 0px 0px;
+}
+
+.ScrollingList ul {
+    padding: 10px 0px 0px 0px;
+}
+
+.ScrollingList li {
+    padding: 3px 0px 0px 10px;
+}
+
+.ScrollingList li.indent {
+    padding: 3px 0px 0px 30px;
+}
+
+.mainHeading {
+    font-family: times, Times New Roman, times-roman, georgia, serif;
+    color: #444;
+    margin: 0;
+    padding: 0px 0px 6px 20px;
+    font-size: 51px;
+    line-height: 44px;
+    letter-spacing: -2px;
+    font-weight: bold;
+}
+
+
+.minorHeading {
+    font-family: Gill Sans, Verdana;
+    font-size: 11px;
+    line-height: 14px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: bold;
+    padding: 10px 0px 10px 20px;
+}
+
+.minorHeading a {
+    color: #FF4500;
+}
+
+.standardHeading {
+    font-family: times, Times New Roman, times-roman, georgia, serif;
+    color: #444;
+    margin: 0;
+    padding: 10px 0px 6px 0px;
+    font-size: 20px;
+    line-height: 44px;
+    font-weight: bold;
+
+}
+
+#container {
+/* height: 100%; */
+height: 100%;
+width: 700px;    
+padding: 5px 0px 0px 0px;
+/* background: #000; */
+}
+#col_one {
+margin: 0px 0px 0px 0px;
+width: 70%;
+float: left;
+/* background: #cff; */
+/* border: thin solid #000; */
+}
+#col_two {
+margin: 0px 0px 0px 10px;
+width: 25%;
+float: right;
+/* background: #6cf; */ 
+/* border: thin solid #000; */ 
+}
+
+
+#wide_container {
+/* height: 100%; */
+height: 100%;
+width: 800px;
+padding: 5px 0px 0px 0px;
+/* background: #000; */
+}
+#wide_col_one {
+margin: 0px 0px 0px 0px;
+width: 80%;
+float: left;
+/* background: #cff; */
+/* border: thin solid #000; */
+}
+#wide_col_two {
+margin: 0px 0px 0px 10px;
+width: 15%;
+float: right;
+/* background: #6cf; */
+/* border: thin solid #000; */
+}

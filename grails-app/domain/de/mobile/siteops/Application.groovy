@@ -1,0 +1,62 @@
+package de.mobile.siteops
+
+class Application {
+
+    enum LoadBalancerType { NONE, MODJK, NETSCALER }
+
+    enum ApplicationType { TANUKI_TOMCAT, TANUKI_DAEMON, STATIC_CONTENT, TARBALL }
+
+	def dataSource
+
+	String filename
+    String modulename
+	String description
+	ApplicationType type
+    LoadBalancerType balancerType = LoadBalancerType.NONE
+    String startStopScript
+	String releaseInfoJMXBean
+	String releaseInfoJMXAttribute
+	String context
+	String installDir
+	String artifactId
+	String groupId
+	Boolean startOnDeploy = true
+	Boolean assembleProperties = true
+	Boolean instanceProperties = true
+	Boolean safeDeploy = true
+
+	Date dateCreated
+	Date lastUpdated
+
+	Pillar pillar
+
+	static belongsTo = HostClass
+
+	static hasMany =  [hostclasses: HostClass]
+
+	static mapping = { sort filename:"asc" }
+
+	static constraints = {
+		pillar(nullable:false)
+		filename(blank:false,nullable:false)
+        modulename(blank:false,nullable:false)
+        startStopScript(blank:true,nullable: true)
+		installDir(blank:false,nullable: true)
+		artifactId(blank:false,nullable:true)
+		groupId(blank:false,nullable:true)
+		description(blank:false,nullable:true)
+		context(blank:false,nullable:true)
+		releaseInfoJMXBean(blank:false,nullable:true)
+		releaseInfoJMXAttribute(blank:false,nullable:true)
+		type(blank:false,nullable:false )
+	}
+
+	String suffix() {
+		def filename = this.filename
+		return filename.substring(filename.indexOf(".") + 1, filename.length())
+	}
+
+	String toString() {
+		return "$filename - $pillar"
+	}
+}

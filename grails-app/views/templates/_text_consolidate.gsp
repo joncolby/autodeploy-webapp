@@ -1,0 +1,2 @@
+<g:each in="${applications}" var="app">${app.filename} : ${app.pillar} : ${releaseIdentifier} : ${revision} : ${deploymentQueue?.environment} : <g:each in="${app.findHostsByEnvironment(deploymentQueue?.environment)}" var="host">${host} </g:each>
+</g:each>
