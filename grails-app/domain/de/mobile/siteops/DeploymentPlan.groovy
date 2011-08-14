@@ -28,15 +28,6 @@ class DeploymentPlan {
     }
 
 
-    public void generateName()  {
-        def pattern = "yyyy-MM-dd_HHmm";
-        SimpleDateFormat format = new SimpleDateFormat(pattern);
-
-        this.name = format.format(new Date()) + '_' + this.team.toString().replaceAll(' ','_')
-        
-    }
-
-
     String toString() {
         return name
     }

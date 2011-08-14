@@ -53,24 +53,6 @@
                             <td valign="top" class="value"><g:link controller="environment" action="show" id="${hostInstance?.environment?.id}">${hostInstance?.environment?.encodeAsHTML()}</g:link></td>
                         </tr>
 
-
-                        <tr class="prop">
-                        <td valign="top" class="name">Instances</td>
-
-                        <td valign="top" class="value">
-                              <sec:ifAnyGranted roles="ROLE_ADMIN">
-                              <g:link action="create" controller="instance" id="${hostInstance?.id}">new instance</g:link>
-                              </sec:ifAnyGranted>
-                        <ul>
-                        <g:each in="${Instance.findAllByHost(hostInstance)}" var="i">
-                            <li><g:link controller="instance" action="show" id="${i.id}">${i}</g:link></li>                          
-                        </g:each>
-                        </ul>
-                        </td>
-
-                        </tr>
-
-                                        
                         <tr class="prop">
                             <td valign="top" class="name"><g:message code="host.dateCreated.label" default="Date Created" /></td>
                             

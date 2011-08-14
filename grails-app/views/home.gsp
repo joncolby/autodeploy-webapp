@@ -70,7 +70,6 @@
                 <ul>
                         <li><g:link controller="host" action="list">Hosts</g:link></li>
                         <li><g:link controller="application" action="list">Applications</g:link></li>
-                        <li><g:link controller="instance" action="list">Instances</g:link></li>
                         <li><g:link controller="hostClass" action="list">Host Classes</g:link></li>
                         <li><g:link controller="pillar" action="list">Pillars</g:link></li>
                         <li><g:link controller="environment" action="list">Environments</g:link></li>

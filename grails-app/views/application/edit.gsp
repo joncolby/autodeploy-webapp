@@ -36,7 +36,7 @@
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                  <label for="pillar"><g:message code="application.pillar.label" default="Pillar" /></label>
+                                  <label for="pillar.id"><g:message code="application.pillar.label" default="Pillar" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: applicationInstance, field: 'pillar', 'errors')}">
                                     <g:select name="pillar.id" from="${de.mobile.siteops.Pillar.list()}" optionKey="id" value="${applicationInstance?.pillar?.id}"  />
@@ -75,7 +75,7 @@
                                   <label for="description"><g:message code="application.description.label" default="Description" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: applicationInstance, field: 'description', 'errors')}">
-                                    <g:textArea name="description" value="${applicationInstance?.description}" />
+                                    <g:textArea rows="3" cols="50" name="description" value="${applicationInstance?.description}" />
                                 </td>
                             </tr>
                         
@@ -152,24 +152,6 @@
                                 </td>
                             </tr>
 
-   <%--
-                            <tr class="prop">
-                                <td valign="top" class="name">
-                                  <label for="instances"><g:message code="application.instances.label" default="Instances" /></label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean: applicationInstance, field: 'instances', 'errors')}">
-                                    
-<ul>
-<g:each in="${applicationInstance?.instances?}" var="i">
-    <li><g:link controller="instance" action="show" id="${i.id}">${i?.encodeAsHTML()}</g:link></li>
-</g:each>
-</ul>
-<g:link controller="instance" action="create" params="['application.id': applicationInstance?.id]">${message(code: 'default.add.label', args: [message(code: 'instance.label', default: 'Instance')])}</g:link>
-
-                                </td>
-                            </tr>
-    ---%>
-                        
                             <tr class="prop">
                                 <td valign="top" class="name">
                                   <label for="assembleProperties"><g:message code="application.assembleProperties.label" default="Assemble Properties" /></label>

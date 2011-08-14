@@ -2,7 +2,7 @@ package de.mobile.siteops
 
 import grails.plugins.springsecurity.Secured
 
-class HostClassController extends ControllerBase {
+class HostClassController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
@@ -26,15 +26,26 @@ class HostClassController extends ControllerBase {
     @Secured(['ROLE_ADMIN','IS_AUTHENTICATED_REMEMBERED'])
     def save = {
 
-        params.applications = getChosenApps()
+        def hostclassInstance = new HostClass(params)
 
-        def hostClassInstance = new HostClass(params)
-        if (hostClassInstance.save(flush: true)) {
-            flash.message = "${message(code: 'default.created.message', args: [message(code: 'hostClass.label', default: 'HostClass'), hostClassInstance.id])}"
-            redirect(action: "show", id: hostClassInstance.id)
+        def selectedAppIds = params.getList('applications').collect { it as Long }
+        if (selectedAppIds) {
+            def selectedApps = Application.findAllByIdInList(selectedAppIds)
+            if (selectedApps && !selectedApps.isEmpty()) {
+                selectedApps.each {
+                    if (hostclassInstance.applications == null || !hostclassInstance.applications.contains(it)) {
+                        hostclassInstance.addToApplications(it)
+                    }
+                }
+            }
+        }
+
+        if (hostclassInstance.save(flush: true)) {
+            flash.message = "${message(code: 'default.created.message', args: [message(code: 'hostClass.label', default: 'HostClass'), hostclassInstance.id])}"
+            redirect(action: "show", id: hostclassInstance.id)
         }
         else {
-            render(view: "create", model: [hostClassInstance: hostClassInstance])
+            render(view: "create", model: [hostClassInstance: hostclassInstance])
         }
     }
 
@@ -63,27 +74,43 @@ class HostClassController extends ControllerBase {
 
     @Secured(['ROLE_ADMIN','IS_AUTHENTICATED_REMEMBERED'])
     def update = {
-        def hostClassInstance = HostClass.get(params.id)
-        if (hostClassInstance) {
+        def hostclassInstance = HostClass.get(params.id)
+        if (hostclassInstance) {
             if (params.version) {
                 def version = params.version.toLong()
-                if (hostClassInstance.version > version) {
+                if (hostclassInstance.version > version) {
                     
-                    hostClassInstance.errors.rejectValue("version", "default.optimistic.locking.failure", [message(code: 'hostClass.label', default: 'HostClass')] as Object[], "Another user has updated this HostClass while you were editing")
-                    render(view: "edit", model: [hostClassInstance: hostClassInstance])
+                    hostclassInstance.errors.rejectValue("version", "default.optimistic.locking.failure", [message(code: 'hostClass.label', default: 'HostClass')] as Object[], "Another user has updated this HostClass while you were editing")
+                    render(view: "edit", model: [hostClassInstance: hostclassInstance])
                     return
                 }
             }
 
-            params.applications = getChosenApps()
+            def removeApplications = []
+            hostclassInstance.applications.each { removeApplications += it }
+            removeApplications.each {
+                hostclassInstance.removeFromApplications(it)
+            }
 
-            hostClassInstance.properties = params
-            if (!hostClassInstance.hasErrors() && hostClassInstance.save(flush: true)) {
-                flash.message = "${message(code: 'default.updated.message', args: [message(code: 'hostClass.label', default: 'HostClass'), hostClassInstance.id])}"
-                redirect(action: "show", id: hostClassInstance.id)
+            hostclassInstance.properties = params
+            def selectedAppIds = params.getList('applications').collect { it as Long }
+            if (selectedAppIds) {
+                def selectedApps = Application.findAllByIdInList(selectedAppIds)
+                if (selectedApps && !selectedApps.isEmpty()) {
+                    selectedApps.each {
+                        if (hostclassInstance.applications == null || !hostclassInstance.applications.contains(it)) {
+                            hostclassInstance.addToApplications(it)
+                        }
+                    }
+                }
+            }
+
+            if (!hostclassInstance.hasErrors() && hostclassInstance.save(flush: true)) {
+                flash.message = "${message(code: 'default.updated.message', args: [message(code: 'hostClass.label', default: 'HostClass'), hostclassInstance.id])}"
+                redirect(action: "show", id: hostclassInstance.id)
             }
             else {
-                render(view: "edit", model: [hostClassInstance: hostClassInstance])
+                render(view: "edit", model: [hostClassInstance: hostclassInstance])
             }
         }
         else {
