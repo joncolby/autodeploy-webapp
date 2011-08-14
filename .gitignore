@@ -18,4 +18,5 @@ activemq-data
 **/.clover
 out
 *.iml
+.idea
 
