@@ -17,7 +17,7 @@ class ApplicationVersionsController {
         DeploymentQueue deploymentQueue = DeploymentQueue.get(queueId)
 
         def allApps = Application.findAll()
-        def modelApps = allApps.collect { [id: it.id, name: it.filename, pillar: it.pillar.name, type: it.type, context: it.context, revision: null, existsInEnv: false, actions: []]}
+        def modelApps = allApps.collect { [id: it.id, name: it.filename, pillar: it.pillar.name, type: it.type.name(), context: it.context, revision: null, existsInEnv: false, actions: []]}
         model['apps'] = modelApps
 
         def env = deploymentQueue.environment

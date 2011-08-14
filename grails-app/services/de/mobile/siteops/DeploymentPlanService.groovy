@@ -33,7 +33,7 @@ class DeploymentPlanService {
 
 				applications.each { ApplicationVersion a ->
 					xml.application(name: a.application.filename, id: a.application.id) {
-						xml.type(a.application.type)
+						xml.type(a.application.type.name())
 						xml.pillar(a.application.pillar)
 						xml.context(a.application.context)
 						xml.artifactId(a.application.artifactId)

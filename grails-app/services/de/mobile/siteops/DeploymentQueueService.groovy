@@ -229,7 +229,7 @@ class DeploymentQueueService {
                 }
                 hostclassAppMap[hostclass.id].apps += [
                         name: appVersion.application.filename,
-                        type: appVersion.application.type,
+                        type: appVersion.application.type.name(),
                         pillar: appVersion.application.pillar.name,
                         revision: appVersion.revision,
                         id: appVersion.application.id,
