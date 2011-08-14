@@ -141,7 +141,6 @@ class DeploymentQueueService {
 
     @Transactional()
     void deploymentDone(DeploymentQueueEntry queueEntry) {
-        println "----------- entered deploymentDone"
         DeployedHost.withTransaction { status ->
             def totalDuration = 0
             def finalState

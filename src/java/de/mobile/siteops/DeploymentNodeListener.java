@@ -91,6 +91,12 @@ public class DeploymentNodeListener extends AbstractNodeHandler {
         deploymentQueueService.deployNextHosts(queueEntry);
     }
 
+    public void onNodeUnregistered(ZookeeperNode node) {
+        if (observer != null) {
+            observer.stop();
+        }
+    }
+
     public String getNodeName() {
         return nodeName;
     }
