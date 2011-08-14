@@ -11,7 +11,8 @@ class DeployProcessEntry {
 	DeploymentQueueService queueService
 	
 	DeploymentQueueEntry queueEntry
-	Host host 
+	Host host
+    def deployedHostId
 	def hostname
 	def hostid
 	def hostclass
@@ -65,6 +66,10 @@ class DeployProcessEntry {
         }
         updateSelf()
 	}
+
+    boolean hasMessages() {
+        return messages.size() > 0
+    }
 	
 	int processTime() {
 		return startTime > 0 && startTime < endTime ? endTime - startTime : 0

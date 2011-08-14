@@ -43,6 +43,37 @@ class DeploymentQueueService {
         }
     }
 
+    def createdRedeployDeployProcessEntries(DeploymentQueueEntry queueEntry) {
+        def queue = queueEntry.queue
+        def env = queue.environment
+        def plan = queueEntry.executionPlan
+
+        def entries = getDeployedHostsForQueueEntry(queueEntry)
+        if (entries) {
+            entries.each { DeployProcessEntry entry ->
+                if (HostStateType.isFailed(entry.state)) {
+                    entry.deploymentPlan = deploymentPlanService.createDeploymentXml(queueEntry, plan, entry.host, env)
+                    entry.state = HostStateType.QUEUED
+                    entry.startTime = new Date().time
+                    entry.messages = []
+                    entry.updateSelf()
+                }
+            }
+        }
+        deployQueueMap[queueEntry] = entries
+
+        queueEntry.state = HostStateType.IN_PROGRESS
+        queueEntry.lastUpdated = new Date()
+        queueEntry.save(flush: true)
+
+        if (!deployQueueMap[queueEntry]) {
+            deployQueueMap.remove(queueEntry)
+            return null
+        } else {
+            return deployQueueMap[queueEntry]
+        }
+    }
+
     def deployNextHosts(DeploymentQueueEntry queueEntry) {
         def processHosts = deployQueueMap[queueEntry]
         handleDeployErrors(processHosts)
@@ -88,15 +119,17 @@ class DeploymentQueueService {
     @Transactional()
     def abortDeployment(DeploymentQueueEntry queueEntry) {
         def entries = deployQueueMap.find { it.key.id == queueEntry.id }?.value
-        entries.findAll { it.state == HostStateType.QUEUED }.each {
-            it.addDeploymentMessage('DEPLOYMENT_INFO', 'Abort deployment as requested')
-            it.changeState(HostStateType.CANCELLED)
+        def deployProcessEntries = entries.findAll { it.state == HostStateType.QUEUED }
+        for (DeployProcessEntry entry : deployProcessEntries) {
+            entry.addDeploymentMessage('DEPLOYMENT_INFO', 'Abort deployment as requested')
+            entry.changeState(HostStateType.CANCELLED)
         }
         def hosts = entries.findAll { it.state == HostStateType.IN_PROGRESS }
         if (hosts) {
-            zookeeperHandlerService.abortDeployment(queueEntry, hosts)
+            def done = zookeeperHandlerService.abortDeployment(queueEntry, hosts)
             sleep(1000)
             hosts.each { it.changeState(HostStateType.CANCELLED) }
+            if (done) deploymentDone(queueEntry)
         } else {
             if (entries) {
                 deploymentDone(queueEntry)
@@ -108,20 +141,29 @@ class DeploymentQueueService {
 
     @Transactional()
     void deploymentDone(DeploymentQueueEntry queueEntry) {
+        println "----------- entered deploymentDone"
         DeployedHost.withTransaction { status ->
             def totalDuration = 0
             def finalState
             deployQueueMap[queueEntry].each { DeployProcessEntry entry ->
                 int duration = entry.processTime()
                 totalDuration += duration
-                def deployedHost = new DeployedHost(
-                        entry: entry.queueEntry,
-                        host: entry.host,
-                        environment: entry.environment,
-                        state: entry.state,
-                        priority: entry.priority,
-                        duration: duration,
-                        message: entry.messagesAsJSON())
+                def deployedHost
+                if (entry.deployedHostId) {
+                    deployedHost = DeployedHost.get(entry.deployedHostId)
+                    deployedHost.state = entry.state
+                    deployedHost.duration = duration
+                    deployedHost.message = entry.messagesAsJSON()
+                } else {
+                    deployedHost = new DeployedHost(
+                            entry: entry.queueEntry,
+                            host: entry.host,
+                            environment: entry.environment,
+                            state: entry.state,
+                            priority: entry.priority,
+                            duration: duration,
+                            message: entry.messagesAsJSON())
+                }
                 deployedHost.save(flush: true)
                 if (!finalState || !entry.state.isHigherPriority(finalState)) finalState = entry.state
             }
@@ -196,6 +238,7 @@ class DeploymentQueueService {
                 def hostclassAppMap = getHostclassApplicationMap(queueEntry)
                 deployedHosts.each {
                     def entry = new DeployProcessEntry(
+                            deployedHostId: it.id,
                             queueEntry: it.entry,
                             host: it.host,
                             hostname: it.host.name,

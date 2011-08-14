@@ -99,12 +99,13 @@ class DeploymentOverviewController {
                     break;
                 case CANCELLED:
                     modelEntry['duration'] = TimeUtils.formatDuration(entry.duration)
+                    modelEntry['actions'] += [title: 'Redeploy failed hosts', type: 'retry', action: g.createLink(action: 'redeployFailed', controller: 'deployAction', id: entry.id)]
                     modelEntry['actions'] += [title: 'Remove from list', type: 'remove', action: g.createLink(action: 'remove', controller: 'deployAction', id: entry.id)]
                     break;
                 case ERROR:
                 case ABORTED:
 					modelEntry['duration'] = TimeUtils.formatDuration(entry.duration)
-					modelEntry['actions'] += [title: 'Redeploy failed applications', type: 'retry', action: g.createLink(action: 'retry', controller: 'deployAction', id: entry.id)]
+                    modelEntry['actions'] += [title: 'Redeploy failed hosts', type: 'retry', action: g.createLink(action: 'redeployFailed', controller: 'deployAction', id: entry.id)]
                     modelEntry['actions'] += [title: 'Remove from list', type: 'remove', action: g.createLink(action: 'remove', controller: 'deployAction', id: entry.id)]
 					break;
             }

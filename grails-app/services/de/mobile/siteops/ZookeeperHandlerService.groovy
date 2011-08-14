@@ -41,11 +41,20 @@ class ZookeeperHandlerService {
 			[entry: entry, nodeName: nodePrefix + "/" + entry.environment + "/" + entry.hostname]
 		}
 
+        def deploymentDone = true
 		nodeData.each { data ->
-			def node = zookeeperService.getNodeByName(data.nodeName)
-			if (node) node.setData("action=abort")
+            def node = zookeeperService.getNodeByName(data.nodeName)
+            if (node) {
+                if (data.entry.hasMessages()) {
+                    node.setData("action=abort")
+                    deploymentDone = false
+                } else {
+                    zookeeperService.unregisterNode(node)
+                }
+            }
 		}
 
+        return deploymentDone
 	}
 
     def destroy() {

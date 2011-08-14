@@ -30,6 +30,12 @@ public class DeploymentNodeListener extends AbstractNodeHandler {
 
     private final DeploymentObserver observer;
 
+    /*
+     * initially set the timeout to 10 seconds, after the first message is received the timeout is set to MAX_INACTIVE_PERIOD.
+     * If the agent is not running the host will be timeout after 10 seconds, since the agent starts with a message the 10 seconds should be enough.
+     */
+    private int inactivityPeriod = 10 * 1000;
+
     public DeploymentNodeListener(String nodeName, String deploymentPlan, DeploymentQueueEntry queueEntry, DeployProcessEntry processEntry, DeploymentQueueService deploymentQueueService, ZookeeperService zookeeperService) {
         this.nodeName = nodeName;
         this.deploymentPlan = deploymentPlan;
@@ -71,6 +77,7 @@ public class DeploymentNodeListener extends AbstractNodeHandler {
         logger.debug("New Message received on node '" + node + "', message: '" + data + "'");
         observer.ping();
         processEntry.addMessage(data.toString());
+        inactivityPeriod = MAX_INACTIVE_PERIOD;
     }
 
     public void onTimeout() {
@@ -79,7 +86,7 @@ public class DeploymentNodeListener extends AbstractNodeHandler {
         if (node != null) {
             zookeeperService.deleteNode(node, true);
         }
-        processEntry.addDeploymentMessage("DEPLOYMENT_ERROR", "Did not receive any data from the node for " + (MAX_INACTIVE_PERIOD / 1000) + " seconds");
+        processEntry.addDeploymentMessage("DEPLOYMENT_ERROR", "Did not receive any data from the node for " + (inactivityPeriod / 1000) + " seconds");
         processEntry.changeState(HostStateType.ERROR);
         deploymentQueueService.deployNextHosts(queueEntry);
     }
@@ -104,7 +111,7 @@ public class DeploymentNodeListener extends AbstractNodeHandler {
                         while (true) {
                             Thread.sleep(CHECK_INTERVAL);
                             long current = new Date().getTime();
-                            if (current - lastPingTime > MAX_INACTIVE_PERIOD) {
+                            if (current - lastPingTime > inactivityPeriod) {
                                 onTimeout();
                                 break;
                             }
