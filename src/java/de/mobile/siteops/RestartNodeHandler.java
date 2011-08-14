@@ -53,7 +53,12 @@ public class RestartNodeHandler extends AbstractNodeHandler {
     public void onNodeDeleted(ZookeeperNode node) {
         // seems agent is restarting
         processEntry.restartInProgress();
+    }
 
+    public void onNodeUnregistered(ZookeeperNode node) {
+        if (observer != null) {
+            observer.stop();
+        }
     }
 
     public void onNodeData(ZookeeperNode node, Object data) {
