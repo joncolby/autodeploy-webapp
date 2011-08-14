@@ -1,5 +1,5 @@
 
-<%@ page import="de.mobile.siteops.Instance; de.mobile.siteops.Host" %>
+<%@ page import="de.mobile.siteops.Host" %>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
