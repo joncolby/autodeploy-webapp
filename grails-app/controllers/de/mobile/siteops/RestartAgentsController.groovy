@@ -7,6 +7,19 @@ class RestartAgentsController {
     def restartAgentsService
 
     def index = {
+        def deploymentQueues = DeploymentQueue.findAll()
+        def queues = deploymentQueues.collect { [name: it.environment.name, id: it.id ] }.sort { it.name }
+        def model = [queues: queues]
+
+        [model: model]
+    }
+
+    def restart = {
+        def queueId = params.id as long
+        render MessageResult.successMessage("It worked ($queueId)!") as JSON
+    }
+
+    def restartOld = {
         if (!params.containsKey('id')) {
             render MessageResult.errorMessage('No queueEntry id specified') as JSON
             return false

@@ -1,0 +1,176 @@
+* {
+    padding: 0px;
+    margin: 0px;
+    font-family: tahoma, arial, sans-serif;
+    font-size: 12px;
+}
+
+.clr:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+
+a {
+    color: #333;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #C77405;
+    text-decoration: underline
+}
+
+select {
+    background: #fff;
+    color: #1C94C4;
+    border: 1px solid #ccc
+}
+
+select option {
+    color: #1C94C4;
+    background: #fff
+}
+
+.wrapper {
+    width: 90%;
+    margin: auto;
+}
+
+/* .header start */
+.wrapper .header {
+    height: 30px;
+}
+
+.wrapper .restartStatus {
+    margin-top: 20px;
+    padding: 10px 15px 10px 15px;
+    list-style-type: none;
+    width: 100%;
+    -moz-border-radius: 25px 10px;
+    border-radius: 10px;
+    box-shadow: 2px 2px 5px 3px #666;
+    margin-bottom: 20px;
+
+}
+
+.wrapper .restartStatus .statusInformation {
+    padding: 5px 0px 10px 0px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+/* standard table */
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+table tbody {
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    /*background: url("images/ui-bg_highlight-soft_100_eeeeee_1x100.png") repeat-x scroll 50% top #EEEEEE*/
+}
+
+table tbody tr:nth-Child(even) {
+    background: #fff;
+}
+
+.wrapper .statusTable tbody {
+    max-height: 300px;
+}
+
+.wrapper .statusTable thead td {
+    font-weight: bold;
+    color: #fff;
+}
+
+.wrapper .statusTable thead tr td:nth-child(1) {
+    width: 20%;
+}
+
+.wrapper .statusTable thead tr td:nth-child(2) {
+    width: 20%;
+}
+
+.wrapper .statusTable thead tr td:nth-child(3) {
+    width: 60%;
+}
+
+.wrapper .statusTable tr td {
+    padding: 5px;
+}
+
+.wrapper .statusTable tbody tr.active td {
+    background: #FD9;
+}
+
+.working {
+    color: #333000;
+    font-weight: normal;
+}
+
+.default {
+    color: #333;
+    font-weight: bold;
+}
+
+.error {
+    color: #cc0000;
+    font-weight: bold;
+    text-shadow: 1px 1px #fff;
+}
+
+.success {
+    color: #00aa00;
+    font-weight: bold;
+    text-shadow: 1px 1px #fff;
+}
+
+#tooltip {
+    text-align: center;
+    vertical-align: middle;
+    position: absolute;
+    z-index: 3000;
+    border: 1px solid #111;
+    background-color: #eee;
+    padding: 6px;
+    opacity: 0.85;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    box-shadow: 1px 1px 1px 1px #666;
+}
+
+#tooltip.wide {
+    width: 150px;
+    float: right;
+}
+
+.important {
+    font-weight: bold;
+    text-align: center;
+    vertical-align: middle;
+    color: #660000;
+}
+
+.important.tooltip {
+    text-align: right;
+    vertical-align: top;
+}
+
+.small {
+    font-size: 10px;
+}
+
+#tooltip.viewport-right {
+}
+
+.success .gritter-item{
+    -moz-opacity:.65;
+    filter:alpha(opacity=65);
+    opacity:.65;
+	background:#0a0;
+}
