@@ -34,7 +34,8 @@ class DeploymentPlanService {
 				applications.each { ApplicationVersion a ->
 					xml.application(name: a.application.filename, id: a.application.id) {
 						xml.type(a.application.type.name())
-						xml.pillar(a.application.pillar)
+						xml.balancerType(a.application.balancerType)
+						xml.startStopScript(a.application.startStopScript)
 						xml.context(a.application.context)
 						xml.artifactId(a.application.artifactId)
 						xml.groupId(a.application.groupId)
@@ -47,6 +48,8 @@ class DeploymentPlanService {
 						xml.start_on_deploy(a.application.startOnDeploy)
 						xml.assemble_properties(a.application.assembleProperties)
 						xml.instance_properties(a.application.instanceProperties)
+						xml.safeDeploy(a.application.safeDeploy)
+						xml.modulename(a.application.modulename)
 					}
 				}
 			}
