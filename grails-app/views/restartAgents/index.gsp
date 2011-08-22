@@ -22,8 +22,8 @@
     <div class="header">
     </div>
     <div class="chooseEnv">
-        <form name="restartEnv" action="<g:createLink controller="restartAgents" action="restart"/>">
-            <label>Restart Environment: </label>
+        <form name="restartEnv" action="<g:createLink controller="restartAgents" action="choose"/>">
+            <label>Choose Environment: </label>
             <select id="selectEnvId">
             <option value="0">--- select ---</option>
             <g:each in="${model.queues}" var="queue">
@@ -34,7 +34,12 @@
     </div>
     <div class="restartStatus ui-widget-content">
         <div class="statusInformation">
-            Current status:
+            <form name="restartAgents" action="<g:createLink controller="restartAgents" action="restart" />">
+                <input type = "submit" value = "Restart" disabled="true" />
+            </form>
+            <div class="statusLabel">
+                Current status: <span class="statusValue">None selected</span>
+            </div>
         </div>
         <div class="statusTable" pollUrl="<g:createLink controller="restartAgents" action="status"/>">
         <table>
@@ -45,18 +50,6 @@
                 <td class="col3">Message</td>
             </tr>
         </thead>
-        <tbody>
-            <tr>
-                <td>Host1</td>
-                <td>IN_PROGRESS</td>
-                <td>Statusmessage</td>
-            </tr>
-            <tr>
-                <td>Host2</td>
-                <td>IN_PROGRESS</td>
-                <td>Statusmessage</td>
-            </tr>
-        </tbody>
         </table>
         </div>
         <div class="clr"></div>
