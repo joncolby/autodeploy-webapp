@@ -14,8 +14,26 @@ class RestartAgentsController {
         [model: model]
     }
 
-    def restart = {
+
+    def status = {
         def queueId = params.id as long
+        def model = []
+
+        model['status'] = 'IN_PROGRESS';
+
+        render model as JSON
+    }
+
+    def choose = {
+        def queueId = params.id as long
+
+        def model = [queueId: queueId, status: 'IDLE']
+        if (queueId == 10) { model.status = 'IN_PROGRESS' }
+
+        render model as JSON
+    }
+
+    def restart = {
         render MessageResult.successMessage("It worked ($queueId)!") as JSON
     }
 
