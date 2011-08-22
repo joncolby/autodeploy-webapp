@@ -57,6 +57,7 @@ $.fn.DetailsMessagesTable = function(queueList){
 			if (entry == null)
 				this.prependEntry(this.getNewEntry(data[x]));
 			else{
+				this.entries = {};
 				this.empty(); // if a message id comes again, this means, that it is a redeploy and all messages should be removed
 				this.prependEntry(this.getNewEntry(data[x]));
 			}
