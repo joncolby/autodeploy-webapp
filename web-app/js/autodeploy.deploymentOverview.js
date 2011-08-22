@@ -123,7 +123,7 @@ $.fn.QueueList = function(){
 				$.AppRevisionDialog({url:$this.attr('href'),height:"500",width:"1000"});
 				return false;
 			}
-            $('.queueEntryHeader').html("Queue: " + $this.text());
+            $('.queueEntryHeader .queueText').html($this.text());
 			$.ajax({url:$this.attr('href'),data:{},
 				success:function(data){
 					that.pollurl = $this.attr('href');

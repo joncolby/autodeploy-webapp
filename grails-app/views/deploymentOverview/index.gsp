@@ -20,11 +20,12 @@
 <script src="${resource(dir:'js',file:'jquery.cookie.js')}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'jquery.periodicalupdater.js')}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'jquery.gritter.min.js')}" type="text/javascript"></script>
-<script src="${resource(dir:'js',file:'autodeploy.Field.js')}" type="text/javascript"></script>
-<script src="${resource(dir:'js',file:'autodeploy.Row.js')}" type="text/javascript"></script>
-<script src="${resource(dir:'js',file:'autodeploy.Table.js')}" type="text/javascript"></script>
-<script src="${resource(dir:'js',file:'autodeploy.List.js')}" type="text/javascript"></script>
-<script src="${resource(dir:'js',file:'default.js')}" type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'autodeploy.generics.js')}" type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'autodeploy.deploymentOverview.Field.js')}" type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'autodeploy.deploymentOverview.Row.js')}" type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'autodeploy.deploymentOverview.Table.js')}" type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'autodeploy.deploymentOverview.List.js')}" type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'autodeploy.deploymentOverview.js')}" type="text/javascript"></script>
 <link rel="stylesheet"
 	href="${resource(dir:'css',file:'deploymentOverview.css')}" />
 <title>Deployment Overview</title>
@@ -46,7 +47,7 @@
 		<li><strong><a href="<g:createLink controller="applicationVersions" action="index" />" class="modalDiv">App Revisions</a></strong></li>
 		</ul>
 	</div>
-        <div class="queueEntryHeader ui-state-hover">Queue: (none selected yet)</div>
+        <div class="queueEntryHeader ui-state-hover">Queue: <span class="queueText">(none selected yet)</span></div>
 
         <div class="fastDeploy">
         

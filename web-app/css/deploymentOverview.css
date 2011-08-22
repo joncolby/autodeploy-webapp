@@ -12,6 +12,10 @@ colors:
 *{
 	padding: 0px;
 	margin: 0px;
+}
+
+body,td{
+	
 	font-family: tahoma, arial, sans-serif;
 	font-size: 12px;
 }
@@ -22,6 +26,11 @@ colors:
     height: 0;
     clear: both;
     visibility: hidden;
+}
+
+h2{
+	font-size:12px
+	
 }
 
 a{
