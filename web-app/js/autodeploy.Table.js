@@ -46,7 +46,23 @@ $.fn.DetailsMessagesTable = function(queueList){
 	AbstractTable.apply(this,arguments);  // "ableitung"
 	
 	this.getNewEntry = function(data,x){ return $('<li></li>').EntryMessageRow(queueList).create(data) }
-
+	
+	/*
+	 * @override
+	 * */
+	this.update = function(data){
+		var entry = null;
+		for(var x=0;x<data.length;x++){
+			entry = this.getEntry(data[x][this.idString]);
+			if (entry == null)
+				this.prependEntry(this.getNewEntry(data[x]));
+			else{
+				this.empty(); // if a message id comes again, this means, that it is a redeploy and all messages should be removed
+				this.prependEntry(this.getNewEntry(data[x]));
+			}
+		}
+	}
+	
 	this.container = this;
 	return this;
 }
