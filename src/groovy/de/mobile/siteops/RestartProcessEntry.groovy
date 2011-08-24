@@ -2,7 +2,7 @@ package de.mobile.siteops
 
 class RestartProcessEntry {
 
-    enum RestartProcessState { IDLE, REQUESTED_RESTART, RESTARTING, FINISHED }
+    enum RestartProcessState { IDLE, REQUESTED_RESTART, RESTARTING, FINISHED, ERROR }
 
     Long queueId
     String hostname
@@ -25,12 +25,12 @@ class RestartProcessEntry {
     }
 
     void restartFailed(message) {
-        state = RestartProcessState.FINISHED
+        state = RestartProcessState.ERROR
         statusMessage = message
     }
 
     boolean finished() {
-        return state == RestartProcessState.FINISHED
+        return (state == RestartProcessState.FINISHED || state == RestartProcessState.ERROR)
     }
 
     String toString() {

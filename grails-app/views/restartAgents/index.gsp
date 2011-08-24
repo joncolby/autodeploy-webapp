@@ -50,6 +50,9 @@
                 <td class="col3">Message</td>
             </tr>
         </thead>
+        <tbody>
+        </tbody>
+            <tr><td colspan="3" class="important">Please select an environment to restart or see status of last restart</td></tr>
         </table>
         </div>
         <div class="clr"></div>

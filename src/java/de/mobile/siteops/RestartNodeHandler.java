@@ -5,10 +5,11 @@ import de.mobile.zookeeper.ZookeeperNode;
 import de.mobile.zookeeper.ZookeeperService;
 
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 public class RestartNodeHandler extends AbstractNodeHandler {
 
-    private static final int CHECK_INTERVAL = 10000;
+    private static final int CHECK_INTERVAL = 30000; // 30 seconds
 
     private final String nodeName;
 
@@ -31,11 +32,12 @@ public class RestartNodeHandler extends AbstractNodeHandler {
     public void onNodeInitialized(ZookeeperNode node) {
         if (node != null) {
             if (node.exists()) {
+                sleep(300);
                 node.setData("restart - " + new Date().toString());
                 processEntry.restartRequested();
                 observer.start();
             } else {
-                processEntry.restartFailed("Node is not registered in zookeeper (most likely agent is not running");
+                processEntry.restartFailed("Node is not registered in zookeeper (most likely agent is not running)");
                 zookeeperService.unregisterNode(node);
                 restartAgentsService.agentRestartFinished(processEntry);
             }
@@ -67,6 +69,12 @@ public class RestartNodeHandler extends AbstractNodeHandler {
 
     public String getNodeName() {
         return nodeName;
+    }
+
+    private static void sleep(int milliseconds) {
+        try {
+            TimeUnit.MILLISECONDS.sleep(milliseconds);
+        } catch (InterruptedException e) {}
     }
 
     class RestartObserver {

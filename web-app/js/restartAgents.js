@@ -1,42 +1,3 @@
-AbstractTable = function() { // abstract class
-
-    this.appendEntry = function(entry) {
-        this.entries[entry.id] = entry;
-        this.container.append(entry.addClass('appended'));
-        return entry;
-    }
-
-    this.prependEntry = function(entry) {
-        this.entries[entry.id] = entry;
-        this.container.prepend(entry.addClass('appended'));
-        return entry;
-    }
-
-    this.getEntry = function(id) {
-        return (typeof this.entries[id] == 'object') ? this.entries[id] : null;
-    }
-
-    this.create = function(data) {
-        this.data = data;
-        this.container.children('.appended').remove();
-        for (var x = 0; x < data.length; x++) {
-            this.appendEntry(this.getNewEntry(data[x]));
-        }
-    }
-
-    this.update = function(data) {
-        var entry = null;
-        for (var x = 0; x < data.length; x++) {
-            entry = this.getEntry(data[x][this.idString]);
-            if (entry == null)
-                this.prependEntry(this.getNewEntry(data[x]));
-            else
-                entry.update(data[x]);
-        }
-    }
-}
-
-
 MessageProcessor = function(data, item) {
     $.gritter.add({
         title: data.title,
@@ -46,14 +7,64 @@ MessageProcessor = function(data, item) {
     });
 }
 
+$.fn.RestartStatusTableEntry = function(data) {
+
+    this.init = function(data) {
+        var class = 'default';
+        if (data.state == 'FINISHED') {
+            class = 'success';
+        } else if (data.state == 'ERROR') {
+            class = 'error';
+        } else if (data.state == 'RESTARTING' || data.state == 'REQUESTED_RESTART') {
+            class = 'working';
+        }
+        this.appendEntry(data.hostname);
+        var entry = this.appendEntry(data.state);
+        entry.addClass(class);
+        this.appendEntry(data.statusMessage);
+    }
+
+    this.appendEntry = function(data) {
+        var entry = $('<td></td>');
+        entry.append(data)
+        this.append(entry);
+        return entry;
+    }
+
+    this.init(data);
+
+    return this;
+}
+
 $.fn.RestartStatusTable = function(statusHandler) {
     var that = this;
     this.statusHandler = statusHandler;
     this.pollUrl = $('.wrapper .restartStatus .statusTable').attr('pollUrl');
+
+    this.update = function(data) {
+        this.clearTable();
+        if (data.messages.length > 0) {
+            for (var i=0; i < data.messages.length; i++) {
+                var entry = $('<tr/>').RestartStatusTableEntry(data.messages[i]);
+                this.append(entry);
+            }
+        } else {
+            this.append($('<tr/>').append('<td colspan="3" class="important">No agents restarted since last application start</td>'));
+        }
+    }
+
+    this.createNewEntry = function(data) {
+    }
+
+    this.clearTable = function() {
+        this.find('tbody').find('tr').remove();
+    }
+
     return this;
 }
 
 $.fn.RestartStatusInformation = function(statusHandler) {
+    var that = this;
     this.statusHandler = statusHandler;
     this.restartForm = $('.wrapper .statusInformation form[name=restartAgents]');
     this.restartAction = this.restartForm.find('input[type=submit]');
@@ -62,7 +73,8 @@ $.fn.RestartStatusInformation = function(statusHandler) {
 
     this.init = function() {
         this.restartForm.bind('submit', function() {
-            var that = this;
+            that.restartAction.attr('disabled', 'disable');
+            that.statusLabel.text("Please wait....");
             $.ajax({url:$(this).attr('action'),
                 data: { id: $('#selectEnvId').val() },
                 dataType: 'json',
@@ -102,12 +114,13 @@ $.fn.RestartStatusHandler = function() {
     this.updater = null;
     this.pollurl = this.attr('pollUrl');
     this.statusInfos = $('.wrapper .statusInformation').RestartStatusInformation(this);
-    this.detailTable =  $('.wrapper .restartStatus .statusTable table').RestartStatusTable(this)
+    this.detailTable = $('.wrapper .restartStatus .statusTable table').RestartStatusTable(this)
 
 
     this.stopUpdater = function() {
         if (this.updater != null) {
             this.updater.stop();
+            this.updater = null;
         }
     }
 
@@ -117,6 +130,7 @@ $.fn.RestartStatusHandler = function() {
                 data: function() {
                     return { id:that.id }
                 },
+                maxTimeout: 2000,
                 error:function() {
 
                 },
@@ -132,8 +146,13 @@ $.fn.RestartStatusHandler = function() {
         if (data.status) {
             this.statusInfos.update(data);
         }
+        if (data.messages) {
+            this.detailTable.update(data)
+        }
         if (this.statusInfos.running) {
-            this.startUpdater();
+            if (this.updater == null) {
+                this.startUpdater();
+            }
         } else {
             this.stopUpdater();
         }
