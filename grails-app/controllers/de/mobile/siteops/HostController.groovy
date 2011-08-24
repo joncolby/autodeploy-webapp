@@ -7,68 +7,60 @@ class HostController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
-	/*
-	 * ajax Functions
-	 */
-	
-	def ajaxList = {
-		def data = []
-		def hosts = Host.findAll()
-		
-		if (hosts) {
-			data = hosts.collect { [id: it.id, name: it.name] }
-		}
-		
-		data.each{ entry->
-			entry['actions'] = []
-			entry['actions'] += [title: 'Edit', type: 'edit', action: g.createLink(action: 'ajaxEdit', controller: 'host', id: entry.id)]
-			entry['actions'] += [title: 'Delete', type: 'remove', action: g.createLink(action: 'ajaxRemove', controller: 'host', id: entry.id)]
-	  }
-		render data as JSON
-	}
-	
-	
-	//@Secured(['ROLE_ADMIN','IS_AUTHENTICATED_REMEMBERED'])
-	def ajaxEdit = {
-		def data = [ [:] ]
-		def hostInstance = Host.get(params.id)
-		def hostClassList = []
-		def environmentList = []
-		
-		HostClass.findAll().each{ entry ->
-			hostClassList += [id:entry['id'],name:entry['name']]
-		}
-		
-		Environment.findAll().each{ entry ->
-			environmentList += [id:entry['id'],name:entry['name']]
-		}
-		
-		if (hostInstance) {
-			data = [saveUrl:g.createLink(action: 'ajaxSave', controller: 'host', id:params.id)]
-			data['values'] = [
-				dateCreated:[value:hostInstance.dateCreated,type:'text',disabled:true],
-				lastUpdated:[value:hostInstance.lastUpdated,type:'text',disabled:true],
-				environment:[value:hostInstance.environment.id,type:'select'],
-			//	hostClass:[value:hostInstance.className.id,type:'select']
-				name:[value:hostInstance.name,type:'text']
-			]
-			data['hostClass'] = hostClassList
-			data['environment'] = environmentList
-		}
-		else data = [ [:] ]
-		
-		render data as JSON
-	}
-	
-	/*
-	 * ajax Functions End
-	 */
-	
-	def index = {
+    /*
+      * ajax Functions
+      */
+
+    def ajaxList = {
+        def data = []
+        def hosts = Host.findAll()
+
+        if (hosts) {
+            data = hosts.collect { [id: it.id, name: it.name] }
+        }
+
+        data.each { entry ->
+            entry['actions'] = []
+            entry['actions'] += [title: 'Edit', type: 'edit', action: g.createLink(action: 'ajaxEdit', controller: 'host', id: entry.id)]
+            entry['actions'] += [title: 'Delete', type: 'remove', action: g.createLink(action: 'ajaxRemove', controller: 'host', id: entry.id)]
+        }
+        render data as JSON
+    }
+
+    //@Secured(['ROLE_ADMIN','IS_AUTHENTICATED_REMEMBERED'])
+    def ajaxEdit = {
+        def data = [[:]]
+
+        def hostId = params.id as long
+        def host = Host.get(hostId)
+
+        if (host) {
+
+            def hostClassList = HostClass.findAll().collect { [id: it.id, name: it.name] }
+            def environmentList = Environment.findAll().collect { [id: it.id, name: it]}
+
+            data = [saveUrl: g.createLink(action: 'ajaxSave', controller: 'host', id: hostId), hostClass: hostClassList, environment: environmentList]
+            data['values'] = [
+                    dateCreated: [value: host.dateCreated, type: 'text', disabled: true],
+                    lastUpdated: [value: host.lastUpdated, type: 'text', disabled: true],
+                    environment: [value: host.environment.id, type: 'select'],
+                    //	hostClass:[value:host.className.id,type:'select']
+                    name: [value: host.name, type: 'text']
+            ]
+        }
+
+        render data as JSON
+    }
+
+    /*
+      * ajax Functions End
+      */
+
+    def index = {
         redirect(action: "list", params: params)
     }
 
-	def list = {
+    def list = {
         params.max = Math.min(params.max ? params.int('max') : 25, 25)
         params.sort = 'name'
         [hostInstanceList: Host.list(params), hostInstanceTotal: Host.count()]
@@ -80,7 +72,7 @@ class HostController {
 
         params.max = Math.min(params.max ? params.int('max') : 25, 25)
         params.sort = 'name'
-        render(view:"list", model: [hostInstanceList: Host.findAllByEnvironment(environmentInstance,params), hostInstanceTotal: Host.findAllByEnvironment(environmentInstance).size(), environmentInstance: environmentInstance])
+        render(view: "list", model: [hostInstanceList: Host.findAllByEnvironment(environmentInstance, params), hostInstanceTotal: Host.findAllByEnvironment(environmentInstance).size(), environmentInstance: environmentInstance])
     }
 
     def search = {
@@ -91,14 +83,14 @@ class HostController {
         //def hosts =  Host.findAllByName(params?.hostname, params)
 
 
-        def hosts = Host.createCriteria().list (max: params?.max, sort: params?.sort, offset: params?.offset) {
+        def hosts = Host.createCriteria().list(max: params?.max, sort: params?.sort, offset: params?.offset) {
             like("name", "${params?.hostname}%")
-                projections {
-                  rowCount()
-                }
-         }
+            projections {
+                rowCount()
+            }
+        }
 
-         def hostInstanceTotal = hosts.totalCount
+        def hostInstanceTotal = hosts.totalCount
 
         render(view: "list", model: [hostInstanceList: hosts, hostInstanceTotal: hostInstanceTotal, hostname: params?.hostname])
     }
@@ -111,33 +103,33 @@ class HostController {
         params.max = Math.min(params.max ? params.int('max') : 25, 25)
         params.sort = 'name'
 
-      //  def hosts =  Host.findAllByEnvironmentAndNameLike(environmentInstance, "${params?.host}%", params)
-      //  def hostInstanceTotal = Host.findAllByEnvironmentAndNameLike(environmentInstance, "${params?.host}%").size()
+        //  def hosts =  Host.findAllByEnvironmentAndNameLike(environmentInstance, "${params?.host}%", params)
+        //  def hostInstanceTotal = Host.findAllByEnvironmentAndNameLike(environmentInstance, "${params?.host}%").size()
 
-          def hosts = Host.createCriteria().list (max: params?.max, sort: params?.sort, offset: params?.offset) {
+        def hosts = Host.createCriteria().list(max: params?.max, sort: params?.sort, offset: params?.offset) {
 
-            and{
+            and {
                 eq("environment", environmentInstance)
                 like("name", "${params?.host}%")
             }
             projections {
-              rowCount()
+                rowCount()
             }
-          }
+        }
 
-          def hostInstanceTotal = hosts.totalCount
+        def hostInstanceTotal = hosts.totalCount
 
-        render(view: "deploy_host", model: [hostInstanceList: hosts, hostInstanceTotal: hostInstanceTotal, deploymentQueueEntryInstance:deploymentQueueEntryInstance, deploymentQueueEntryId: params?.deploymentQueueEntryId,host: params?.host])
+        render(view: "deploy_host", model: [hostInstanceList: hosts, hostInstanceTotal: hostInstanceTotal, deploymentQueueEntryInstance: deploymentQueueEntryInstance, deploymentQueueEntryId: params?.deploymentQueueEntryId, host: params?.host])
     }
 
-    @Secured(['ROLE_ADMIN','IS_AUTHENTICATED_REMEMBERED'])
+    @Secured(['ROLE_ADMIN', 'IS_AUTHENTICATED_REMEMBERED'])
     def create = {
         def hostInstance = new Host()
         hostInstance.properties = params
         return [hostInstance: hostInstance]
     }
 
-    @Secured(['ROLE_ADMIN','IS_AUTHENTICATED_REMEMBERED'])
+    @Secured(['ROLE_ADMIN', 'IS_AUTHENTICATED_REMEMBERED'])
     def save = {
         def hostInstance = new Host(params)
         if (hostInstance.save(flush: true)) {
@@ -160,7 +152,7 @@ class HostController {
         }
     }
 
-    @Secured(['ROLE_ADMIN','IS_AUTHENTICATED_REMEMBERED'])
+    @Secured(['ROLE_ADMIN', 'IS_AUTHENTICATED_REMEMBERED'])
     def edit = {
         def hostInstance = Host.get(params.id)
         if (!hostInstance) {
@@ -172,14 +164,14 @@ class HostController {
         }
     }
 
-    @Secured(['ROLE_ADMIN','IS_AUTHENTICATED_REMEMBERED'])
+    @Secured(['ROLE_ADMIN', 'IS_AUTHENTICATED_REMEMBERED'])
     def update = {
         def hostInstance = Host.get(params.id)
         if (hostInstance) {
             if (params.version) {
                 def version = params.version.toLong()
                 if (hostInstance.version > version) {
-                    
+
                     hostInstance.errors.rejectValue("version", "default.optimistic.locking.failure", [message(code: 'host.label', default: 'Host')] as Object[], "Another user has updated this Host while you were editing")
                     render(view: "edit", model: [hostInstance: hostInstance])
                     return
@@ -208,7 +200,7 @@ class HostController {
             // no extra binding needed
             //params.applications = chosenApps
             */
-            
+
             hostInstance.properties = params
             if (!hostInstance.hasErrors() && hostInstance.save(flush: true)) {
                 flash.message = "${message(code: 'default.updated.message', args: [message(code: 'host.label', default: 'Host'), hostInstance.id])}"
@@ -224,7 +216,7 @@ class HostController {
         }
     }
 
-    @Secured(['ROLE_ADMIN','IS_AUTHENTICATED_REMEMBERED'])
+    @Secured(['ROLE_ADMIN', 'IS_AUTHENTICATED_REMEMBERED'])
     def delete = {
         def hostInstance = Host.get(params.id)
         if (hostInstance) {
@@ -249,11 +241,11 @@ class HostController {
         def applicationList = params.applications
 
         if (applicationList instanceof String) {
-          applicationList = []
-          applicationList << params.applications
+            applicationList = []
+            applicationList << params.applications
         }
 
-        def applicationChosen = applicationList.collect{Application.get(it)}
+        def applicationChosen = applicationList.collect {Application.get(it)}
 
         return applicationChosen
     }
