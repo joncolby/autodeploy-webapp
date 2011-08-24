@@ -6,8 +6,7 @@ import grails.converters.JSON
 class DeploymentAdminController {
 
 	def index = {
-       
 	}
-
-   
+	
+	
 }

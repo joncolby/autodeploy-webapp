@@ -1,11 +1,35 @@
 package de.mobile.siteops
 
 import grails.plugins.springsecurity.Secured
+import grails.converters.JSON
 
 class PillarController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
-
+	
+	/*
+	 * ajax Functions
+	 */
+	
+	def ajaxList = {
+		def data = []
+		def pillars = Pillar.findAll()
+		
+		if (pillars) {
+			data = pillars.collect { [id: it.id, name: it.name] }
+		}
+		
+		data.each{ entry->
+			entry['actions'] = []
+			entry['actions'] += [title: 'Edit', type: 'edit', action: g.createLink(action: 'edit', controller: 'deploymentAdmin', id: entry.id)]
+			entry['actions'] += [title: 'Delete', type: 'remove', action: g.createLink(action: 'remove', controller: 'deploymentAdmin', id: entry.id)]
+	  }
+		render data as JSON
+	}
+	
+	/*
+	 * ajax Functions End
+	 */
     def index = {
         redirect(action: "list", params: params)
     }

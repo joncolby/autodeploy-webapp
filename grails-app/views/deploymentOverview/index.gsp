@@ -21,7 +21,6 @@
 <script src="${resource(dir:'js',file:'jquery.periodicalupdater.js')}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'jquery.gritter.min.js')}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'autodeploy.generics.js')}" type="text/javascript"></script>
-<script src="${resource(dir:'js',file:'autodeploy.deploymentOverview.Field.js')}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'autodeploy.deploymentOverview.Row.js')}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'autodeploy.deploymentOverview.Table.js')}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'autodeploy.deploymentOverview.List.js')}" type="text/javascript"></script>

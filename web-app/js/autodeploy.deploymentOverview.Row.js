@@ -1,11 +1,3 @@
-AbstractRow = function(){	
-	this.data('this',this);
-	this.appendEntry = function(data){
-		var entry = $('<td></td>');
-		entry.append(data)
-		this.append(entry);
-	}
-}
 
 $.fn.QueueEntryRow = function(queueList){
 	this.id = null;
@@ -61,10 +53,10 @@ $.fn.QueueEntryRow = function(queueList){
 		item.bind('click',this,this.fetchDetails)
 		this.appendEntry(item);
 		this.appendEntry(data.revision);
-		this.status = $('<td/>').StatusField().set(data);
+		this.status = $('<td/>').StatusContainer().set(data);
 		this.append(this.status);
 		this.appendEntry(data.created);
-		this.actions = $('<td></td>').ActionsField(this).set(data);
+		this.actions = $('<td></td>').ActionsContainer(this).set(data);
 		this.append(this.actions);
 
 		return this;
@@ -205,7 +197,7 @@ $.fn.DetailsHostRow = function(queueList){
 		this.values = data;
 		this.append('<td class="col1">'+data.name+'</td>');
 
-		this.status = $('<td col="2"/>').StatusField().set(data);
+		this.status = $('<td col="2"/>').StatusContainer().set(data);
 		this.append(this.status);
 		
 		this.messages = $('<ul></ul>').DetailsMessagesTable();
@@ -259,7 +251,7 @@ $.fn.DetailsAppRow = function(queueList){
 		if (data.context != null) context = data.context;
 		this.append('<td>'+context+'</td>');
 
-		this.actions = $('<td></td>').ActionsField(this).set(data);
+		this.actions = $('<td></td>').ActionsContainer(this).set(data);
 		this.append(this.actions);
 		return this;
 	}

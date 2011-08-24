@@ -15,11 +15,7 @@
 <script src="${resource(dir:'js',file:'jquery.periodicalupdater.js')}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'jquery.gritter.min.js')}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'autodeploy.generics.js')}" type="text/javascript"></script>
-<script src="${resource(dir:'js',file:'autodeploy.deploymentOverview.Field.js')}" type="text/javascript"></script>
-<script src="${resource(dir:'js',file:'autodeploy.deploymentOverview.Row.js')}" type="text/javascript"></script>
-<script src="${resource(dir:'js',file:'autodeploy.deploymentOverview.Table.js')}" type="text/javascript"></script>
-<script src="${resource(dir:'js',file:'autodeploy.deploymentOverview.List.js')}" type="text/javascript"></script>
-<script src="${resource(dir:'js',file:'autodeploy.deploymentOverview.js')}" type="text/javascript"></script>
+<script src="${resource(dir:'js',file:'autodeploy.deploymentAdmin.js')}" type="text/javascript"></script>
 <link rel="stylesheet"
 	href="${resource(dir:'css',file:'deploymentOverview.css')}" />
 <title>Deployment Overview</title>
@@ -31,12 +27,13 @@
 	<div class="queueContainer">
 		<ul class="queues ui-widget-content">
 			<li><h2>Inventory</h2></li>
-            <li><g:link controller="host" action="list">Hosts</g:link></li>
-            <li><g:link controller="application" action="list">Applications</g:link></li>
-            <li><g:link controller="hostClass" action="list">Host Classes</g:link></li>
-            <li><g:link controller="pillar" action="list">Pillars</g:link></li>
-            <li><g:link controller="environment" action="list">Environments</g:link></li>
-            <li><g:link controller="repository" action="list">Repositories</g:link></li>
+            <li><g:link controller="host" action="ajaxList">Hosts</g:link></li>
+            <li><g:link controller="application" action="ajaxList" >Applications</g:link></li>
+            <li><g:link controller="hostClass" action="ajaxList" >Host Classes</g:link></li>
+            <li><g:link controller="pillar" action="ajaxList" >Pillars</g:link></li>
+            <li><g:link controller="environment" action="ajaxList" >Environments</g:link></li>
+            <li><g:link controller="repository" action="ajaxList" >Repositories</g:link></li>
+            <li><g:link controller="team" action="ajaxList" >Teams</g:link></li>
         </ul>
 	</div>
 	

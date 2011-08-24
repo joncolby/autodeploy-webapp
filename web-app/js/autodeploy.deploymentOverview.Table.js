@@ -1,41 +1,3 @@
-AbstractTable = function(){ // abstract class
-	this.data('this',this);
-	
-	this.appendEntry = function(entry){
-		this.entries[entry.id] = entry;
-		this.container.append(entry.addClass('appended'));
-		return entry;
-	}
-	
-	this.prependEntry = function(entry){
-		this.entries[entry.id] = entry;
-		this.container.prepend(entry.addClass('appended'));
-		return entry;
-	}
-	
-	this.getEntry = function(id){
-		return (typeof this.entries[id] == 'object') ? this.entries[id] : null;
-	}
-	
-	this.create = function(data){
-		this.data = data;
-		this.container.children('.appended').remove();
-		for(var x=0;x<data.length;x++){
-			this.appendEntry(this.getNewEntry(data[x]));
-		}
-	}
-	
-	this.update = function(data){
-		var entry = null;
-		for(var x=0;x<data.length;x++){
-			entry = this.getEntry(data[x][this.idString]);
-			if (entry == null)
-				this.prependEntry(this.getNewEntry(data[x]));
-			else
-				entry.update(data[x]);
-		}
-	}
-}
 
 
 $.fn.DetailsMessagesTable = function(queueList){
@@ -76,28 +38,6 @@ $.fn.AppRevisonBody = function(queueList){
 	AbstractTable.apply(this,arguments);  // "ableitung"
 	
 	this.getNewEntry = function(data,x){ return $('<tr></tr>').DetailsAppRow(queueList).create(data) }
-	
-	this.searchAction = function(){
-		var $this = $(this);
-		var search = {};
-		
-		that.find('tr:first-child th input').each(function(index){
-			search[index+1] = $(this).val();
-		})
-		
-		var trs = $this.closest('table').find('tr:not(:first-child)');
-		trs.each(function(){
-			var text = '';
-			var show = true;
-			for (x in search){
-				text = $(this).find('td:nth-child('+x+')').text();
-				if (search[x] != "" && text.indexOf(search[x]) < 0) show = false;
-			}
-
-			if (show) $(this).show();
-			else $(this).hide();			
-		})
-	}
 		
 	this.append('<tr><th>Name</th><th>Pillar</th><th>Revision</th><th>Type</th><th>Context</th><th></th></tr>');
 	

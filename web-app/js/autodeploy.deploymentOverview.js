@@ -1,32 +1,6 @@
-MessageProcessor = function(data,item){
-	$.gritter.add({
-		title: data.title,
-		text: data.message,
-		sticky: (data.type == 'error' || data.type == 'warning'),
-		class_name:data.type
-	});
-	if ($(item).hasClass('action_remove')) {
-		$(item).closest('tr').next().find('td:nth-child(2) a').click();
-		$(item).closest('tr').remove();
-	}
-	else{
-		$('.wrapper ul.queues').data('this').updater.restart();
-	}
-}
-
-FieldMessageProcessor = function(data,container){
-	if (data.type != 'error')
-		container.saveSuccessAction();
-	else{
-		container.find('p[name]').InputError().reset();
-		for (var i=0; i<data.fields.length; i++){
-			container.find('p[name='+data.fields[i].field+']').InputError().showError(data.fields[0].message);
-		}
-	}
-}
 
 
-QueueDialog = function(options){
+AutodeployDialog = function(options){
 
 	this.afterAjaxAction = function(){} // to overwrite
 
@@ -38,7 +12,6 @@ QueueDialog = function(options){
 		}
 	}
 }
-
 $.DeploymentPlanDialog = function(options){
 
 	var container = $('<div class="containerWrapper"/>').attr('title','Plan management');
@@ -48,7 +21,7 @@ $.DeploymentPlanDialog = function(options){
 			$(this).dialog("destroy").remove();
 		},modal:true})
 		
-	QueueDialog.apply(this,arguments);  // "ableitung"
+	AutodeployDialog.apply(this,arguments);  // "ableitung"
 	
 	this.afterAjaxAction = function(data){
 		container.append(data);
@@ -70,7 +43,7 @@ $.AppRevisionDialog = function(options){
 			$(this).dialog("destroy").remove();
 		},modal:true})
 		
-	QueueDialog.apply(this,arguments);  // "ableitung"
+	AutodeployDialog.apply(this,arguments);  // "ableitung"
 	var container = $('<div class="containerWrapper entryDetails"/>').attr('title','Plan Management');
 	var table = $('<table></table>');
 	var appBody = $('<tbody class="appView"></tbody>').AppRevisonBody(null);	

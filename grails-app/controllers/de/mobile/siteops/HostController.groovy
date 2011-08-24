@@ -1,16 +1,74 @@
 package de.mobile.siteops
 
 import grails.plugins.springsecurity.Secured
+import grails.converters.JSON
 
 class HostController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
-    def index = {
+	/*
+	 * ajax Functions
+	 */
+	
+	def ajaxList = {
+		def data = []
+		def hosts = Host.findAll()
+		
+		if (hosts) {
+			data = hosts.collect { [id: it.id, name: it.name] }
+		}
+		
+		data.each{ entry->
+			entry['actions'] = []
+			entry['actions'] += [title: 'Edit', type: 'edit', action: g.createLink(action: 'ajaxEdit', controller: 'host', id: entry.id)]
+			entry['actions'] += [title: 'Delete', type: 'remove', action: g.createLink(action: 'ajaxRemove', controller: 'host', id: entry.id)]
+	  }
+		render data as JSON
+	}
+	
+	
+	//@Secured(['ROLE_ADMIN','IS_AUTHENTICATED_REMEMBERED'])
+	def ajaxEdit = {
+		def data = [ [:] ]
+		def hostInstance = Host.get(params.id)
+		def hostClassList = []
+		def environmentList = []
+		
+		HostClass.findAll().each{ entry ->
+			hostClassList += [id:entry['id'],name:entry['name']]
+		}
+		
+		Environment.findAll().each{ entry ->
+			environmentList += [id:entry['id'],name:entry['name']]
+		}
+		
+		if (hostInstance) {
+			data = [saveUrl:g.createLink(action: 'ajaxSave', controller: 'host', id:params.id)]
+			data['values'] = [
+				dateCreated:[value:hostInstance.dateCreated,type:'text',disabled:true],
+				lastUpdated:[value:hostInstance.lastUpdated,type:'text',disabled:true],
+				environment:[value:hostInstance.environment.id,type:'select'],
+			//	hostClass:[value:hostInstance.className.id,type:'select']
+				name:[value:hostInstance.name,type:'text']
+			]
+			data['hostClass'] = hostClassList
+			data['environment'] = environmentList
+		}
+		else data = [ [:] ]
+		
+		render data as JSON
+	}
+	
+	/*
+	 * ajax Functions End
+	 */
+	
+	def index = {
         redirect(action: "list", params: params)
     }
-  
-    def list = {
+
+	def list = {
         params.max = Math.min(params.max ? params.int('max') : 25, 25)
         params.sort = 'name'
         [hostInstanceList: Host.list(params), hostInstanceTotal: Host.count()]

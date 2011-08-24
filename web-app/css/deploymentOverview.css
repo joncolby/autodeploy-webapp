@@ -191,7 +191,7 @@ table tbody{
 	border-left:1px solid #ccc;
 	border-right:1px solid #ccc;
 	border-bottom:1px solid #ccc;
-	/*background:url("images/ui-bg_highlight-soft_100_eeeeee_1x100.png") repeat-x scroll 50% top #EEEEEE*/
+	background:url("images/ui-bg_highlight-soft_100_eeeeee_1x100.png") repeat-x scroll 50% top #EEEEEE
 }
 
 table tbody tr:nth-Child(even){
@@ -212,6 +212,44 @@ table tbody.appView th{
 	color:#fff;
 	padding:2px 5px;
 }
+
+
+
+/* table.tableEntries start */
+.wrapper .tableEntries{
+	float: right;
+	width: 1065px;
+	max-height: 300px;
+	overflow:auto;
+	box-shadow: 2px 2px 5px 3px #666;
+}
+
+.wrapper .tableEntries tbody{
+	max-height: 300px;
+}
+
+.wrapper .tableEntries thead td{
+	font-weight:bold;
+	color: #fff;
+}
+
+.wrapper .tableEntries thead td input{
+	display: inline-block;
+	margin-left: 10px;
+	width: 80px;
+	border: 1px solid #CCC;
+}
+
+.wrapper .tableEntries tr td{
+	padding: 5px;
+}
+
+
+.wrapper .tableEntries tbody tr.active td{
+	background: #FD9;
+}
+
+/* table.tableEntries end */
 
 /* table.queueEntries start */
 .wrapper .queueEntries{
