@@ -14,13 +14,8 @@ MessageProcessor = function(data,item){
 		sticky: (data.type == 'error' || data.type == 'warning'),
 		class_name:data.type
 	});
-	if ($(item).hasClass('action_remove')) {
-		$(item).closest('tr').next().find('td:nth-child(2) a').click();
-		$(item).closest('tr').remove();
-	}
-	else{
-		$('.wrapper ul.queues').data('this').updater.restart();
-	}
+	$('.wrapper ul.queues').trigger('resetTimer');
+	
 }
 
 FieldMessageProcessor = function(data,container){
@@ -272,17 +267,18 @@ $.fn.SelectField = function(writeable){
 	this.enableAction = function(){
 		alert('not needed yet, so not implemented');
 	}
-	this.create = function(name,value,list){
+	this.create = function(name,list){
 		var current;
 		var select;
 		var inputContainer = $('<span></span>');
 		this.attr('name',name);
 		this.append('<label>'+name+'</label>');
 		this.append(inputContainer);
-		select = $('<select name="'+name+'">');
+		select = $('<select name="'+name+'"/>');
+
 		for (var i=0;i<list.length;i++){
 			current = $('<option value="'+list[i].id+'">'+list[i].name+'</option>');
-			if (list[i].id==value) current.attr('selected','selected');
+			if (list[i].selected) current.attr('selected','selected');
 			select.append(current);
 		}
 		inputContainer.append(select);

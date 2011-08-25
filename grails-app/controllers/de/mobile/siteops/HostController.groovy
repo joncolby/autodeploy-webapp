@@ -13,18 +13,18 @@ class HostController {
 
     def ajaxList = {
         def data = []
+		def result = [[:]]
         def hosts = Host.findAll()
-
         if (hosts) {
-            data = hosts.collect { [id: it.id, name: it.name] }
+            data = hosts.collect { [id: it.id, name: it.name,className:(it.className)?it.className.name:""] }
         }
 
-        data.each { entry ->
-            entry['actions'] = []
-            entry['actions'] += [title: 'Edit', type: 'edit', action: g.createLink(action: 'ajaxEdit', controller: 'host', id: entry.id)]
-            entry['actions'] += [title: 'Delete', type: 'remove', action: g.createLink(action: 'ajaxRemove', controller: 'host', id: entry.id)]
-        }
-        render data as JSON
+        data.each { addActions(it) }
+		
+		result= [data: data]
+		result['actions'] = [[title: 'Create', type: 'create', action: g.createLink(action: 'ajaxEdit', controller: 'host', id: 0)]]
+		
+        render result as JSON
     }
 
     //@Secured(['ROLE_ADMIN','IS_AUTHENTICATED_REMEMBERED'])
@@ -33,25 +33,94 @@ class HostController {
 
         def hostId = params.id as long
         def host = Host.get(hostId)
+		
+		if (!host) { // for new entries
+			host = [dateCreated:"",lastUpdated:"",environment:null,className:null,name:"",id:0]
+		}
+		
+        def hostClassList = HostClass.findAll().collect { [id: it.id, name: it.name,selected: (host.className && host.className.id == it.id)] }
+        def environmentList = Environment.findAll().collect { [id: it.id, name: it.name,selected:(host.environment && host.environment.id == it.id)]}
+		
+		if (!host.className) hostClassList += [id: 0, name: '---',selected:true]
+		if (!host.environment) environmentList += [id: 0, name: '---',selected:true]
 
-        if (host) {
-
-            def hostClassList = HostClass.findAll().collect { [id: it.id, name: it.name] }
-            def environmentList = Environment.findAll().collect { [id: it.id, name: it]}
-
-            data = [saveUrl: g.createLink(action: 'ajaxSave', controller: 'host', id: hostId), hostClass: hostClassList, environment: environmentList]
-            data['values'] = [
-                    dateCreated: [value: host.dateCreated, type: 'text', disabled: true],
-                    lastUpdated: [value: host.lastUpdated, type: 'text', disabled: true],
-                    environment: [value: host.environment.id, type: 'select'],
-                    //	hostClass:[value:host.className.id,type:'select']
-                    name: [value: host.name, type: 'text']
-            ]
-        }
-
+        data = [saveUrl: g.createLink(action: 'ajaxSave', controller: 'host', id: hostId)]
+        data['values'] = [
+                dateCreated: [value: host.dateCreated, type: 'text', disabled: true],
+                lastUpdated: [value: host.lastUpdated, type: 'text', disabled: true],
+                environment: [value: environmentList, type: 'select'],
+                hostClass:[value:hostClassList,type:'select'],
+                name: [value: host.name, type: 'text']
+        ]
+        
         render data as JSON
     }
+	
+	//@Secured(['ROLE_ADMIN', 'IS_AUTHENTICATED_REMEMBERED'])
+	def ajaxSave = {
+		def result = [:]
+		def hostInstance = Host.get(params.id)
+		def values = [name:params.name,'hostClass.id':params.hostClass,'environment.id':params.environment]
+		
+		if (hostInstance) {
+			if (params.version) {
+				def version = params.version.toLong()
+				if (hostInstance.version > version) {
 
+					hostInstance.errors.rejectValue("version", "default.optimistic.locking.failure", [message(code: 'host.label', default: 'Host')] as Object[], "Another user has updated this Host while you were editing")
+					result = [MessageResult.errorMessage("Version too long")]
+					render result as JSON
+					return
+				}
+			}
+
+			hostInstance.properties = values
+			if (!hostInstance.hasErrors() && hostInstance.save(flush: true)) {
+				result = [MessageResult.successMessage("Entry successfully updated")]
+			}
+			else {
+	            result = [message:MessageResult.addFieldErrors(hostInstance.id, hostInstance)]
+			}
+		}
+		else {
+			hostInstance = new Host(values)
+			if (hostInstance.save(flush: true)) {
+				def entry = [id: hostInstance.id, name: hostInstance.name,hostInstance:(hostInstance.className)?hostInstance.className.name:""]
+				result = [entry:  addActions(entry), 
+					      message: MessageResult.successMessage("New Entry successfully saved")]
+			}
+			else {
+				result = [message:MessageResult.addFieldErrors(hostInstance.id, hostInstance)]
+			}	
+		}
+		
+		render result as JSON
+	}
+	
+	//@Secured(['ROLE_ADMIN', 'IS_AUTHENTICATED_REMEMBERED'])
+	def ajaxDelete = {
+		def hostInstance = Host.get(params.id)
+		if (hostInstance) {
+			try {
+				hostInstance.delete(flush: true)
+				render MessageResult.successMessage("Entry successfully deleted") as JSON
+			}
+			catch (org.springframework.dao.DataIntegrityViolationException e) {
+				render MessageResult.errorMessage("Entry could not be deleted") as JSON
+			}
+		}
+		else {
+			render MessageResult.successMessage("No such entry") as JSON
+		}
+	}
+	
+	private def addActions(data){
+			data['actions'] = []
+			data['actions'] += [title: 'Edit', type: 'edit', action: g.createLink(action: 'ajaxEdit', controller: 'host', id: data.id)]
+			data['actions'] += [title: 'Delete', type: 'remove', action: g.createLink(action: 'ajaxDelete', controller: 'host', id: data.id)]
+
+		return data
+	}
     /*
       * ajax Functions End
       */

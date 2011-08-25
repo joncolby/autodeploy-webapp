@@ -141,6 +141,9 @@ $.fn.QueueList = function(){
 	
 	this.init = function(){
 		this.data('this',this);
+		this.bind('resetTimer',function(){ 
+			that.updater.restart()
+			});
 		var queue = $.cookie('autodeploy_queueId');
 		this.find('li a').unbind('click').bind('click',this.select);
         var queueElement = queue != null ? this.find('li a[queueId='+queue+']') : this.find('li a').first();

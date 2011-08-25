@@ -18,6 +18,10 @@ $.fn.QueueEntryRow = function(queueList){
 		
 		$.ajax({url:$(this).attr('href'),data:data,success:function(data){
 			MessageProcessor(data, item);
+			if ($(item).hasClass('action_remove')) {
+				$(item).closest('tr').next().find('td:nth-child(2) a').click();
+				$(item).closest('tr').remove();
+			}
 		},dataType:'json'});
 		return false;
 	};
@@ -231,7 +235,7 @@ $.fn.DetailsAppRow = function(queueList){
 	this.doAction = function(event){
 		var item = this;
 		$.ajax({url:$(this).attr('href'),data:{},success:function(data){
-			MessageProcessor(data, item);
+			MessageProcessor(data);
 		},dataType:'json'});
 		return false;
 	};	
