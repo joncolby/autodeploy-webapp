@@ -5,7 +5,7 @@
     <groupId>de.mobile.siteops</groupId>
     <artifactId>mobile-autodeploy-webapp</artifactId>
     <packaging>war</packaging>
-    <version>LATEST-SNAPSHOT</version>
+    <version>0.3</version>
 
     <distributionManagement>
         <repository>
@@ -20,18 +20,6 @@
 
     </distributionManagement>
 
-    <repositories>
-        <repository>
-            <id>nexus-mobile</id>
-            <url>http://ci.corp.mobile.de/nexus/content/repositories/hosted-mobile-releases</url>
-        </repository>
-        <repository>
-            <id>java-net-nexus-proxy</id>
-            <url>http://ci.corp.mobile.de/nexus/content/repositories/javet.net</url>
-        </repository>
-
-    </repositories>
-
     <scm>
         <connection>scm:git:git@git.corp.mobile.de:mobile-platform/mobile-autodeploy-webapp.git</connection>
         <developerConnection>scm:git:git@git.corp.mobile.de:mobile-platform/mobile-autodeploy-webapp.git
@@ -43,7 +31,7 @@
         <dependency>
             <groupId>de.mobile.zookeeper</groupId>
             <artifactId>mobile-zookeeper-service</artifactId>
-            <version>0.12</version>
+            <version>0.13</version>
         </dependency>
 
         <dependency>
@@ -153,6 +141,11 @@
     </dependencies>
 
     <repositories>
+        <repository>
+            <id>autodeployment</id>
+            <url>http://maven.corp.mobile.de/archiva/repository/autodeployment-releases</url>
+        </repository>
+
         <!-- Required to get hold of JTA -->
         <repository>
             <id>jboss.org</id>
