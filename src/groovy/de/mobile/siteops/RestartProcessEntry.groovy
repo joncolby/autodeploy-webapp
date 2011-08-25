@@ -7,6 +7,7 @@ class RestartProcessEntry {
     Long queueId
     String hostname
     String statusMessage
+    String version
     RestartProcessState state
 
     void restartRequested() {
@@ -16,17 +17,22 @@ class RestartProcessEntry {
 
     void restartInProgress() {
         state = RestartProcessState.RESTARTING
-        statusMessage = "Agent ist restartung"
+        statusMessage = "Agent ist restartuig"
     }
 
     void restartDone() {
         state = RestartProcessState.FINISHED
         statusMessage = "Agent restart completed successful"
+        if (version) statusMessage += " (version " + version + ")"
     }
 
     void restartFailed(message) {
         state = RestartProcessState.ERROR
         statusMessage = message
+    }
+
+    void currentVersion(String version) {
+        this.version = version
     }
 
     boolean finished() {

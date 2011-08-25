@@ -5,7 +5,10 @@ import de.mobile.zookeeper.ZookeeperNode;
 import de.mobile.zookeeper.ZookeeperService;
 
 import java.util.Date;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
 
 public class RestartNodeHandler extends AbstractNodeHandler {
 
@@ -19,6 +22,8 @@ public class RestartNodeHandler extends AbstractNodeHandler {
 
     private final ZookeeperService zookeeperService;
 
+    private final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+
     private final RestartObserver observer;
 
     public RestartNodeHandler(String nodeName, RestartProcessEntry processEntry, ZookeeperService zookeeperService, RestartAgentsService restartAgentsService) {
@@ -29,11 +34,15 @@ public class RestartNodeHandler extends AbstractNodeHandler {
         this.observer = new RestartObserver();
     }
 
-    public void onNodeInitialized(ZookeeperNode node) {
+    public void onNodeInitialized(final ZookeeperNode node) {
         if (node != null) {
             if (node.exists()) {
-                sleep(300);
-                node.setData("restart - " + new Date().toString());
+                executorService.schedule(new Runnable() {
+                    public void run() {
+                        System.err.println("SET DATA for node " + node);
+                        node.setData("restart - " + new Date().toString());
+                    }
+                }, 5000, TimeUnit.MILLISECONDS);
                 processEntry.restartRequested();
                 observer.start();
             } else {
@@ -44,12 +53,16 @@ public class RestartNodeHandler extends AbstractNodeHandler {
         }
     }
 
-    public void onNodeCreated(ZookeeperNode node) {
+    public void onNodeCreated(final ZookeeperNode node) {
         // agent came back
         observer.stop();
-        processEntry.restartDone();
-        restartAgentsService.agentRestartFinished(processEntry);
-        zookeeperService.unregisterNode(node);
+        executorService.schedule(new Runnable() {
+            public void run() {
+                processEntry.restartDone();
+                restartAgentsService.agentRestartFinished(processEntry);
+                zookeeperService.unregisterNode(node);
+            }
+        }, 2000, TimeUnit.MILLISECONDS);
     }
 
     public void onNodeDeleted(ZookeeperNode node) {
@@ -64,7 +77,8 @@ public class RestartNodeHandler extends AbstractNodeHandler {
     }
 
     public void onNodeData(ZookeeperNode node, Object data) {
-        // nothing to do here
+        System.err.println("Recieved data for " + node + " : " + data);
+        processEntry.currentVersion(data.toString());
     }
 
     public String getNodeName() {

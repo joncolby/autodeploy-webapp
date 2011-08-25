@@ -1,3 +1,5 @@
+import sun.security.util.Debug
+
 // locations to search for config files that get merged into the main config
 // config files can either be Java properties files or ConfigSlurper scripts
 
@@ -102,6 +104,8 @@ log4j = {
            'com.jbrisbin.vpc.zk'
 
     warn   'org.mortbay.log'
+
+    debug  'de.mobile.zookeeper'
 
 }
 
