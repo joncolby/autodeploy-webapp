@@ -24,7 +24,7 @@ class DeploymentOverviewController {
         def planModel = [ [:] ]
         if (currentTeam) {
             def plans = DeploymentPlan.findAllByTeam(currentTeam, [sort: "lastUpdated", order: "desc"])
-            planModel = plans.collect { [id: it.id, name: it.name] }
+            planModel = plans.collect { [id: it.id, name: "$it.name (ID $it.id)"] }
         }
 
 		def deploymentQueues = DeploymentQueue.findAll()
@@ -37,7 +37,7 @@ class DeploymentOverviewController {
     def plans = {
         def currentTeam = Team.load(params.id)
         def plans = DeploymentPlan.findAllByTeam(currentTeam)
-        def planModel = plans.collect { [id: it.id, name: it.name] }
+        def planModel = plans.collect { [id: it.id, name: "$it.name (ID $it.id)"] }
         render planModel as JSON
     }
 

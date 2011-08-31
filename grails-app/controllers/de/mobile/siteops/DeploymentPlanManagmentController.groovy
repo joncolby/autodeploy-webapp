@@ -18,7 +18,7 @@ class DeploymentPlanManagmentController {
         Team team = Team.get(params.id)
         model += [id: 0, name: "Create new plan", url: g.createLink(action: 'createNew')]
         def plans = DeploymentPlan.findAllByTeam(team, [sort: "lastUpdated", order: "desc"])
-        model += plans.collect { [id: it.id, name: it.name, url: g.createLink(action: 'applications', id: it.id)]}
+        model += plans.collect { [id: it.id, name: "$it.name (ID $it.id)", url: g.createLink(action: 'applications', id: it.id)]}
 
         render model as JSON
     }
