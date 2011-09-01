@@ -16,13 +16,13 @@ class HostController {
 		def result = [[:]]
         def hosts = Host.findAll()
         if (hosts) {
-            data = hosts.collect { [id: it.id, name: it.name,className:(it.className)?it.className.name:""] }
+            data = hosts.collect { [id: it.id, name: it.name,className:(it.className)?it.className.name:"",environment:(it.environment)?it.environment.name:""] }
         }
 
-        data.each { addActions(it) }
+        data.each { TableUtils.addActions(it,g) }
 		
 		result= [data: data]
-		result['actions'] = [[title: 'Create', type: 'create', action: g.createLink(action: 'ajaxEdit', controller: 'host', id: 0)]]
+		result['actions'] = [[title: 'Create', type: 'create', action: g.createLink(action: 'ajaxEdit', id: 0)]]
 		
         render result as JSON
     }
@@ -44,7 +44,7 @@ class HostController {
 		if (!host.className) hostClassList += [id: 0, name: '---',selected:true]
 		if (!host.environment) environmentList += [id: 0, name: '---',selected:true]
 
-        data = [saveUrl: g.createLink(action: 'ajaxSave', controller: 'host', id: hostId)]
+        data = [saveUrl: g.createLink(action: 'ajaxSave', id: hostId)]
         data['values'] = [
                 dateCreated: [value: host.dateCreated, type: 'text', disabled: true],
                 lastUpdated: [value: host.lastUpdated, type: 'text', disabled: true],
@@ -86,7 +86,7 @@ class HostController {
 			hostInstance = new Host(values)
 			if (hostInstance.save(flush: true)) {
 				def entry = [id: hostInstance.id, name: hostInstance.name,hostInstance:(hostInstance.className)?hostInstance.className.name:""]
-				result = [entry:  addActions(entry), 
+				result = [entry:  TableUtils.addActions(entry,g), 
 					      message: MessageResult.successMessage("New Entry successfully saved")]
 			}
 			else {
@@ -114,13 +114,6 @@ class HostController {
 		}
 	}
 	
-	private def addActions(data){
-			data['actions'] = []
-			data['actions'] += [title: 'Edit', type: 'edit', action: g.createLink(action: 'ajaxEdit', controller: 'host', id: data.id)]
-			data['actions'] += [title: 'Delete', type: 'remove', action: g.createLink(action: 'ajaxDelete', controller: 'host', id: data.id)]
-
-		return data
-	}
     /*
       * ajax Functions End
       */

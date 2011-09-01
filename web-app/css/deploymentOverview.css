@@ -619,3 +619,27 @@ table tbody.appView th{
 
 #tooltip.viewport-right {
 }
+
+/* tableEntryDetails */
+.tableEntryDetails p{
+	margin-bottom:10px;
+}
+
+.tableEntryDetails label{
+	display:block;
+	font-weight:bold;
+	margin-bottom:3px;
+}
+.tableEntryDetails p span{
+	display:block
+}
+
+.tableEntryDetails .selectList ul{
+	height:300px;
+	overflow:auto;
+}
+
+.tableEntryDetails .col{
+	width:300px;
+	float:left
+}

@@ -19,12 +19,12 @@ MessageProcessor = function(data,item){
 }
 
 FieldMessageProcessor = function(data,container){
-	if (data.type != 'error')
+	if (typeof data == 'undefined' || data.type != 'error')
 		container.saveSuccessAction();
 	else{
-		container.find('p[name]').InputError().reset();
+		container.find('p[name]').trigger('reset');
 		for (var i=0; i<data.fields.length; i++){
-			container.find('p[name='+data.fields[i].field+']').InputError().showError(data.fields[0].message);
+			container.find('p[name='+data.fields[i].field+']').trigger('error',data.fields[i].message);
 		}
 	}
 }
@@ -164,6 +164,18 @@ $.fn.SelectableList = function(options){
 		return false;
 	}
 	
+	this.create = function(name){
+		var head;
+		this.attr('name',name);
+		this.addClass('selectList');
+		head = $('<h3>'+name+'</h3>');
+		head.append('<a class="none" href="#">select none</a>');
+		head.append('<a class="all" href="#">select all</a>');
+		this.append(head);
+		this.append('<ul></ul>');
+		return this;
+	}
+	
 	this.build = function(options){
 		this.settings = $.extend(this.settings,options);
 		ul = this.find('ul');
@@ -208,18 +220,26 @@ $.fn.InputError = function(){
 		return this;
 	}
 
-
+	this.unbind('error').bind('error',this,function(event,msg){event.data.showError(msg)});
+	this.unbind('reset').bind('reset',this,function(event){event.data.reset()});
 	this.unbind('enable').bind('enable',this,function(event){event.data.enableAction()});
 	this.unbind('disable').bind('disable',this,function(event){event.data.disableAction()});
 	return this;
 }
 
 $.fn.TextArea = function(){
-
 	
 	this.enableAction = function(a){
 		var field = this.find('span');
 		field.html("<textarea name ='"+this.attr('name')+"'>"+field.html()+"</textarea>");
+	}
+
+	this.create = function(name,value){
+		var val = value;
+		if (val == null) val = "";
+		this.attr('name',name);
+		this.append('<label>'+name+'</label>');
+		this.append('<span><textarea type="text" name="'+name+'">val</textarea></span>');
 	}
 	
 	this.disableAction = function(a){
@@ -244,9 +264,11 @@ $.fn.InputField = function(writeable){
 			field.html("<input type='text' name ='"+this.attr('name')+"' value='"+field.html()+"'/>");
 	}
 	this.create = function(name,value){
+		var val = value;
+		if (val == null) val = "";
 		this.attr('name',name);
 		this.append('<label>'+name+'</label>');
-		this.append('<span><input type="text" name="'+name+'" value="'+value+'"></span>');
+		this.append('<span><input type="text" name="'+name+'" value="'+val+'"></span>');
 	}
 	
 	this.disableAction = function(){
@@ -310,6 +332,13 @@ $.fn.Checkbox = function(){
 		if (input.filter(':checked').length==1) field.html("true");
 		else field.html("false");
 	}
+	
+	this.create = function(name,value){
+		this.attr('name',name);
+		this.append('<label>'+name+'</label>');
+		this.append('<span><input type="checkbox" name="'+name+'" '+((value)?'checked="checked"':'')+'></span>');
+	}
+	
 	
 	this.set = function(value){
 		if (value) this.find('span').html("true");

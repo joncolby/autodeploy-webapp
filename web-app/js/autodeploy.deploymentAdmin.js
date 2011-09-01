@@ -17,7 +17,7 @@ $.fn.EntryRow = function(){
 			}});
 		}
 		else
-			$.TableEntryEditDialog({item:this,height:"500",width:"1000"});
+			$.TableEntryEditDialog({item:this,height:"600",width:"1000"});
 		return false;
 	}
 	
@@ -51,7 +51,7 @@ $.fn.EntryTable = function(){
 	this.getNewEntry = function(data){ return $('<tr></tr>').EntryRow().create(data) }
 	
 	this.doAction = function(){
-		$.TableEntryEditDialog({item:this,height:"500",width:"1000"});
+		$.TableEntryEditDialog({item:this,height:"600",width:"1000"});
 		return false;
 	}
 	
@@ -96,32 +96,57 @@ $.TableEntryEditDialog = function(options){
 	var container = $('<form/>');
 	var wrapper = $('<div class="containerWrapper tableEntryDetails"/>').attr('title','Edit Entry').append(container);
 	var dialog;
+	var saveResponse;
 		
-	this.afterSaveAction = function(data){
-		MessageProcessor(data.message);
-		if (typeof data.entry != 'undefined'){
-			$(options.item).closest('table').trigger('appendEntry',[data.entry]);
+	container.saveSuccessAction = function(){
+		if (typeof saveResponse.entry != 'undefined'){
+			$(options.item).closest('table').trigger('appendEntry',[saveResponse.entry]);
 		}
-		dialog.dialog("destroy").remove();
+		dialog.dialog("destroy").remove()
+	}
+	
+	this.afterSaveAction = function(data){
+		saveResponse = data;
+		FieldMessageProcessor(data.message,container);
 	}
 	
 	this.afterLoadAction = function(data){
 		var fieldContainer = null;
 		var action = null;
-
+		var column = null;
+		var listContainer;
+		
 		container.attr('action', data.saveUrl);
+		column = $('<div class="col"/>');
+		container.append(column);
 		for(field in data.values){
 			switch (data.values[field].type){
-				case 'text':
-					fieldContainer = $('<p/>');
-					fieldContainer.InputField().create(field,data.values[field].value);
-				break;
-				case 'select':
-					fieldContainer = $('<p/>');
-					fieldContainer.SelectField().create(field,data.values[field].value);
+			case 'text':
+				fieldContainer = $('<p/>');
+				fieldContainer.InputField().create(field,data.values[field].value);
+			break;
+			case 'textarea':
+				fieldContainer = $('<p/>');
+				fieldContainer.TextArea().create(field,data.values[field].value);
+			break;
+			case 'checkbox':
+				fieldContainer = $('<p/>');
+				fieldContainer.Checkbox().create(field,data.values[field].value);
+			break;
+			case 'list':
+				listContainer = $('<p></p>');
+				listContainer.SelectableList({data:data.values[field].value,multiSelect:true}).create(field).build();
+			break;
+			case 'select':
+				fieldContainer = $('<p/>');
+				fieldContainer.SelectField().create(field,data.values[field].value);
 			}
 			if (data.values[field].disabled == true) fieldContainer.trigger('disable');
-			container.append(fieldContainer);
+			column.append(fieldContainer);
+			if (column.children().length == 10){
+				column = $('<div class="col"/>');
+				container.append(column);
+			}
 		}
 		fieldContainer = $('<p class="actions"></p>');
 		action = $('<input type="submit" name="edit" value="Save">');
@@ -138,7 +163,12 @@ $.TableEntryEditDialog = function(options){
 			return false;
 		});
 		fieldContainer.append(action.button());
-		container.append(fieldContainer);
+		column.append(fieldContainer);
+
+		column = $('<div class="col"/>');
+		container.append(column);
+		column.append(listContainer);
+		
 		dialog = wrapper.dialog(options);
 	} 
 	
