@@ -121,6 +121,15 @@
 
                             <tr class="prop">
                                 <td valign="top" class="name">
+                                    <label for="type"><g:message code="application.marketPlace.label" default="Marketplace" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: applicationInstance, field: 'marketPlace', 'errors')}">
+                                    <g:select name="marketPlace" from="${Application.MarketPlace.values()}" value="${applicationInstance?.marketPlace}" valueMessagePrefix="application.marketPlace"  />
+                                </td>
+                            </tr>
+
+                            <tr class="prop">
+                                <td valign="top" class="name">
                                   <label for="type"><g:message code="application.balancerType.label" default="Load Balancer Type" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: applicationInstance, field: 'balancerType', 'errors')}">

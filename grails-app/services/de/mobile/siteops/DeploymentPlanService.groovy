@@ -34,6 +34,7 @@ class DeploymentPlanService {
 				applications.each { ApplicationVersion a ->
 					xml.application(name: a.application.filename, id: a.application.id) {
 						xml.type(a.application.type.name())
+                        xml.marketPlace(a.application.marketPlace)
 						xml.balancerType(a.application.balancerType)
 						xml.startStopScript(a.application.startStopScript)
 						xml.context(a.application.context)
