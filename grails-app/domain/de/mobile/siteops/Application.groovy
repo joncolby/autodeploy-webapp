@@ -52,6 +52,7 @@ class Application {
 		releaseInfoJMXBean(blank:false,nullable:true)
 		releaseInfoJMXAttribute(blank:false,nullable:true)
 		type(blank:false,nullable:false )
+		marketPlace(blank:false,nullable:false )
 	}
 
 	String suffix() {
