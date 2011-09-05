@@ -11,7 +11,8 @@ class ApiController {
             if (plan) {
                 def modules = plan.applications.collect { it.modulename }
                 if (modules) {
-                    render modules.join(" ")
+                    render modules.join(",")
+                    return
                 }
             }
         }

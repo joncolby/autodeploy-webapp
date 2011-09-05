@@ -10,17 +10,17 @@ MessageProcessor = function(data, item) {
 $.fn.RestartStatusTableEntry = function(data) {
 
     this.init = function(data) {
-        var class = 'default';
+        var cssClass = 'default';
         if (data.state == 'FINISHED') {
-            class = 'success';
+            cssClass = 'success';
         } else if (data.state == 'ERROR') {
-            class = 'error';
+            cssClass = 'error';
         } else if (data.state == 'RESTARTING' || data.state == 'REQUESTED_RESTART') {
-            class = 'working';
+            cssClass = 'working';
         }
         this.appendEntry(data.hostname);
         var entry = this.appendEntry(data.state);
-        entry.addClass(class);
+        entry.addClass(cssClass);
         this.appendEntry(data.statusMessage);
     }
 
