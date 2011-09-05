@@ -152,6 +152,8 @@ $.TableEntryEditDialog = function(options){
 		action = $('<input type="submit" name="edit" value="Save">');
 		action.bind('click',function(){
 			var form = $(this).closest('form');
+			var values = form.serialize();
+			form.find('.selectList').trigger('updateField');
 			$.ajax({url:form.attr('action'),data:form.serialize(),success:that.afterSaveAction,dataType:'json'});
 			return false;
 		});

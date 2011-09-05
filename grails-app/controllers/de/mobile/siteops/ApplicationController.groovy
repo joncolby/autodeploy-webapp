@@ -69,7 +69,7 @@ class ApplicationController {
 		   instanceProperties:[value:application.instanceProperties, type: 'checkbox'],
 		   safeDeploy:[value:application.safeDeploy, type: 'checkbox'],
 		   startOnDeploy:[value:application.startOnDeploy, type: 'checkbox'],
-		   hostClass:[value:hostClassList,type:'list']
+		   hostClasses:[value:hostClassList,type:'list']
 	   ]
 	   
 	   render data as JSON
@@ -134,7 +134,7 @@ class ApplicationController {
 		   }
 	   }
 	   
-	   def hostClasses = HostClass.findAllByIdInList((params.hostClasses)?params.hostClasses.split(','):[])
+	   def hostClasses = HostClass.findAllByIdInList(getListFromSeparated(params.hostClasses))
 	   if (hostClasses && !hostClasses.isEmpty()) {
 		   handleHostClasses(hostClasses, application)
 	   }
@@ -142,6 +142,7 @@ class ApplicationController {
 	   render result as JSON
    }
    
+
    //@Secured(['ROLE_ADMIN', 'IS_AUTHENTICATED_REMEMBERED'])
    def ajaxDelete = {
 	   def instance = Application.get(params.id)
@@ -159,22 +160,22 @@ class ApplicationController {
 	   }
    }
    
+   
    private def handleHostClasses(hostClasses, Application app) {
 	   hostClasses.each {
 		   if (app.hostclasses == null || !app.hostclasses.contains(it)) {
-			   app.addToHostClasses(it)
+			   app.addToHostclasses(it)
 		   }
 	   }
 	   def removeApps = []
 	   app.hostclasses.each { 
-		   if (!apps.contains(it)) removeHostClasses += it
+		   if (!hostClasses.contains(it)) removeHostClasses += it
 	   }
-	   removeHostClasses.each {
-		   app.removeFromHostClassesns(it)
+	   removeApps.each {
+		   app.removeFromHostclasses(it)
 	   }
    }
    
-   /* maybe there is a function */
    private def getListFromSeparated(separated,separator=",") {
 	   def result = []
 	   if (separated) {

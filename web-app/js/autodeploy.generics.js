@@ -106,7 +106,7 @@ $.fn.SelectableList = function(options){
 	}
 	this.settings = $.extend(this.settings,options);
 	var ul = null;
-	
+	var that = this;
 	this.getSelected = function(){
 		var selected = this.find('.active');
 		var ids = [];
@@ -202,6 +202,10 @@ $.fn.SelectableList = function(options){
 		this.buildAction();
 		return this;
 	}
+	this.bind('updateField',function(){ 
+		that.find('input[name='+that.attr('name')+']').remove();
+		that.append('<input type="hidden" name="'+that.attr('name')+'" value="'+that.getSelected()+'"/>')
+	});
 	
 	return this;
 }
