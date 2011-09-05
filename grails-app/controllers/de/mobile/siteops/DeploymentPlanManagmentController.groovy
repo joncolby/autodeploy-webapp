@@ -5,6 +5,8 @@ import de.mobile.siteops.ExecutionPlan.PlanType
 
 class DeploymentPlanManagmentController {
 
+    def deploymentPlanService
+
     def index = {
         def teams = Team.findAllByShortNameNotEqual("System", [sort: "fullName", order: "asc"])
         def model = teams.collect { [id: it.id, fullName: it.fullName, shortName: it.shortName, planCount: it.plans.size()]}
@@ -106,62 +108,13 @@ class DeploymentPlanManagmentController {
         def deploymentPlanId = params.long("planId")
         def revision = params.revision
 
-        def targetQueue = DeploymentQueue.get(deploymentQueueId)
-        if (!targetQueue) {
-            render MessageResult.errorMessage("Could not find queue for deploymentQueueId '$deploymentQueueId'") as JSON
-            return
-        }
-        def plan = DeploymentPlan.get(deploymentPlanId)
-        def applications = plan.applications
-
-        def env = targetQueue.environment
-        def hostclasses = applications.collect { it.hostclasses }.flatten().unique()
-        def hosts = Host.findAllByClassNameInListAndEnvironment(hostclasses, env)
-        def applicationsInThisEnv = []
-        hosts.each { host ->
-            host.className.applications.each { applicationsInThisEnv += it }
-        }
-
-        if (!applicationsInThisEnv.containsAll(applications)) {
-            def foundAtLeastOne = false
-            for (Application app: applications) {
-                if (applicationsInThisEnv.contains(app)) {
-                    foundAtLeastOne = true
-                    break
-                }
-            }
-            if (!foundAtLeastOne) {
-                render MessageResult.errorMessage("This enviroment does not support any applications in this plan, could not add to queue") as JSON
-                return
-            }
-        }
-
-        def executionPlan = new ExecutionPlan(name: plan.name, contribution: plan.contribution, ticket: plan.ticket ? plan.ticket : "", planType: PlanType.NORMAL, team: plan.team, applicationVersions: [])
-
-        applications.each { app ->
-            if (applicationsInThisEnv.contains(app)) {
-                executionPlan.addToApplicationVersions(new ApplicationVersion(application: app, revision: revision).save())
-            }
-        }
-        executionPlan.save()
-
-        def queueEntry = new DeploymentQueueEntry(state: HostStateType.QUEUED, executionPlan: executionPlan, plan: plan, revision: revision, duration: 0)
-        targetQueue.addToEntries(queueEntry)
-        targetQueue.save(false)
-
-        if (executionPlan.applicationVersions.size() < plan.applications.size()) {
-            def missingHostForApps = []
-            def executionPlanApps = executionPlan.applicationVersions.collect { it.application.id }
-            plan.applications.each { planApp ->
-                if (!executionPlanApps.contains(planApp.id)) {
-                    missingHostForApps += planApp
-                }
-            }
-            def missingAppsText = []
-            missingHostForApps.each { Application app -> missingAppsText += "<span class='important small'>$app.filename</span>" }
-            render MessageResult.warningMessage("Plan '<strong>$executionPlan.name</strong>' submitted to queue but the following applications in this plan have no host in this environment:<br/><br/>" + missingAppsText.join("<br/>") + "</p>") as JSON
-        } else {
-            render MessageResult.successMessage("Plan '<strong>$executionPlan.name</strong>' submitted to queue.") as JSON
+        def result = deploymentPlanService.addPlanToQueue(deploymentQueueId, deploymentPlanId, revision)
+        if (result.type == 'success') {
+            render MessageResult.successMessage(result.message) as JSON
+        } else if (result.type == 'error') {
+            render MessageResult.errorMessage(result.message) as JSON
+        } else if (result.type == 'warning') {
+            render MessageResult.warningMessage(result.message) as JSON
         }
     }
 
