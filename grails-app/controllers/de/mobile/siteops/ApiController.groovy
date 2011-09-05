@@ -2,6 +2,8 @@ package de.mobile.siteops
 
 class ApiController {
 
+    def deploymentPlanService
+
     def modulesForPlan = {
         def planId = params.planId
         if (planId) {
@@ -14,6 +16,15 @@ class ApiController {
             }
         }
         render ""
+    }
+
+    def addToQueue = {
+        def planId = params.planId
+        def queueId = params.queueId
+        def revision = params.revision
+
+        def result = deploymentPlanService.addPlanToQueue(queueId, planId, revision)
+        render "status:$result.type\nmessage:$result.message\nqueueEntryId:$result.queueEntryId"
     }
 
     def deployPlan = {

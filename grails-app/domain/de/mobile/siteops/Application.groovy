@@ -6,6 +6,8 @@ class Application {
 
     enum ApplicationType { TANUKI_TOMCAT, TANUKI_DAEMON, STATIC_CONTENT, TARBALL }
 
+    enum MarketPlace { FRANCE, GERMANY, ITALY, POLAND, ROMANIA }
+
 	def dataSource
 
 	String filename
@@ -13,6 +15,7 @@ class Application {
 	String description
 	ApplicationType type
     LoadBalancerType balancerType = LoadBalancerType.NONE
+    MarketPlace marketPlace = MarketPlace.GERMANY   // default marketplace
     String startStopScript
 	String releaseInfoJMXBean
 	String releaseInfoJMXAttribute
@@ -49,6 +52,7 @@ class Application {
 		releaseInfoJMXBean(blank:false,nullable:true)
 		releaseInfoJMXAttribute(blank:false,nullable:true)
 		type(blank:false,nullable:false )
+		marketPlace(blank:false,nullable:false )
 	}
 
 	String suffix() {

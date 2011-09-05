@@ -105,7 +105,12 @@
                             <td valign="top" class="name"><g:message code="application.type.label" default="Type" /></td>
                             
                             <td valign="top" class="value">${fieldValue(bean: applicationInstance, field: "type")}</td>
-                            
+                        </tr>
+
+                        <tr class="prop">
+                            <td valign="top" class="name"><g:message code="application.marketPlace.label" default="Marketplace" /></td>
+
+                            <td valign="top" class="value">${fieldValue(bean: applicationInstance, field: "marketPlace")}</td>
                         </tr>
 
                         <tr class="prop">
