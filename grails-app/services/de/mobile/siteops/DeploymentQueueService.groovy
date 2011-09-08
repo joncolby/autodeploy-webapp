@@ -120,7 +120,7 @@ class DeploymentQueueService {
     def abortDeployment(DeploymentQueueEntry queueEntry) {
         def entries = deployQueueMap.find { it.key.id == queueEntry.id }?.value
         def deployProcessEntries = entries.findAll { it.state == HostStateType.QUEUED }
-        for (DeployProcessEntry entry : deployProcessEntries) {
+        for (DeployProcessEntry entry: deployProcessEntries) {
             entry.addDeploymentMessage('DEPLOYMENT_INFO', 'Abort deployment as requested')
             entry.changeState(HostStateType.CANCELLED)
         }
@@ -143,7 +143,7 @@ class DeploymentQueueService {
     void deploymentDone(DeploymentQueueEntry queueEntry) {
         DeployedHost.withTransaction { status ->
             def totalDuration = 0
-            def finalState
+            def finalState = null
             deployQueueMap[queueEntry].each { DeployProcessEntry entry ->
                 int duration = entry.processTime()
                 totalDuration += duration
@@ -236,23 +236,26 @@ class DeploymentQueueService {
             } else {
                 def hostclassAppMap = getHostclassApplicationMap(queueEntry)
                 deployedHosts.each {
-                    def entry = new DeployProcessEntry(
-                            deployedHostId: it.id,
-                            queueEntry: it.entry,
-                            host: it.host,
-                            hostname: it.host.name,
-                            hostid: it.host.id,
-                            environment: it.host.environment,
-                            state: it.state,
-                            priority: it.priority,
-                            deployErrorType: it.host.environment.deployErrorType,
-                            useHostClassConcurrency: it.host.environment.useHostClassConcurrency,
-                            avgDuration: it.duration,
-                            hostclass: hostclassAppMap[it.host.className.id],
-                            queueService: this)
-                    entry.addMessages(it.message)
-                    entry.timestamp = queueEntry.lastUpdated.time
-                    entries += entry
+                    def hostclass = hostclassAppMap[it.host.className.id]
+                    if (hostclass) {
+                        def entry = new DeployProcessEntry(
+                                deployedHostId: it.id,
+                                queueEntry: it.entry,
+                                host: it.host,
+                                hostname: it.host.name,
+                                hostid: it.host.id,
+                                environment: it.host.environment,
+                                state: it.state,
+                                priority: it.priority,
+                                deployErrorType: it.host.environment.deployErrorType,
+                                useHostClassConcurrency: it.host.environment.useHostClassConcurrency,
+                                avgDuration: it.duration,
+                                hostclass: hostclass,
+                                queueService: this)
+                        entry.addMessages(it.message)
+                        entry.timestamp = queueEntry.lastUpdated.time
+                        entries += entry
+                    }
                 }
             }
         }
@@ -260,7 +263,6 @@ class DeploymentQueueService {
     }
 
     def getHostclassApplicationMap(DeploymentQueueEntry queueEntry) {
-        def queue = queueEntry.queue
         def plan = queueEntry.executionPlan
 
         def hostclassAppMap = [:]
