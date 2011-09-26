@@ -21,9 +21,8 @@
     </distributionManagement>
 
     <scm>
-        <connection>scm:git:git@git.corp.mobile.de:mobile-platform/mobile-autodeploy-webapp.git</connection>
-        <developerConnection>scm:git:git@git.corp.mobile.de:mobile-platform/mobile-autodeploy-webapp.git
-        </developerConnection>
+        <connection>scm:git:git@git.corp.mobile.de:autodeploy/autodeploy-webapp.git</connection>
+        <developerConnection>scm:git:git@git.corp.mobile.de:autodeploy/autodeploy-webapp.git</developerConnection>
     </scm>
 
 
