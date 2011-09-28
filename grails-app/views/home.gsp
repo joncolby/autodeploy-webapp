@@ -68,6 +68,7 @@
 
                 <h2>Inventory:</h2>
                 <ul>
+                        <li><g:link controller="team" action="list">Teams</g:link></li>
                         <li><g:link controller="host" action="list">Hosts</g:link></li>
                         <li><g:link controller="application" action="list">Applications</g:link></li>
                         <li><g:link controller="hostClass" action="list">Host Classes</g:link></li>

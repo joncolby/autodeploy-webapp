@@ -381,6 +381,10 @@ table tbody.appView th{
 	background: url(../images/icons/Shield.png)
 }
 
+.entryDetails table tbody tr td div.application .UNPACK_ONLY{
+	background: url(../images/icons/Archive.png)
+}
+
 .entryDetails table tbody tr td div.application .TARBALL{
 	background: url(../images/icons/Archive.png)
 }
