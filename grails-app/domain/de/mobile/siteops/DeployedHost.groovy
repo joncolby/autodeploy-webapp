@@ -20,7 +20,7 @@ class DeployedHost {
 		entry(nullable:false)
 		state(nullable:false)
 		priority(nullable:false)
-		message(nullable:true,blank:true,maxSize:50000)
+		message(nullable:true,blank:true,maxSize:200000)
 	}
 
     static mapping = {
@@ -40,7 +40,7 @@ class DeployedHost {
 			}
 		}
 	}
-	
+
 	String toString() {
 		return "id: $id, host: $host?.name"
 	}
