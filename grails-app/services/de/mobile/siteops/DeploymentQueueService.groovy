@@ -163,7 +163,14 @@ class DeploymentQueueService {
                             duration: duration,
                             message: entry.messagesAsJSON())
                 }
-                deployedHost.save(flush: true)
+
+                if (!deployedHost.save(flush: true)) {
+                    finalState = HostStateType.ERROR
+                    log.fatal("Could not save deployed host, due validation error!")
+                    deployedHost.errors.each {
+                        log.fatal(it)
+                    }
+                }
                 if (!finalState || !entry.state.isHigherPriority(finalState)) finalState = entry.state
             }
             def e = DeploymentQueueEntry.get(queueEntry.id)

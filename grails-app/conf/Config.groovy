@@ -105,7 +105,7 @@ log4j = {
 
     warn   'org.mortbay.log'
 
-    info  'de.mobile.zookeeper'
+    error  'de.mobile.zookeeper'
 
 }
 

@@ -39,7 +39,6 @@ public class RestartNodeHandler extends AbstractNodeHandler {
             if (node.exists()) {
                 executorService.schedule(new Runnable() {
                     public void run() {
-                        System.err.println("SET DATA for node " + node);
                         node.setData("restart - " + new Date().toString());
                     }
                 }, 5000, TimeUnit.MILLISECONDS);
@@ -77,7 +76,6 @@ public class RestartNodeHandler extends AbstractNodeHandler {
     }
 
     public void onNodeData(ZookeeperNode node, Object data) {
-        System.err.println("Recieved data for " + node + " : " + data);
         processEntry.currentVersion(data.toString());
     }
 

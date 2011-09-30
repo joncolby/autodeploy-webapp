@@ -20,7 +20,7 @@ class DeployedHost {
 		entry(nullable:false)
 		state(nullable:false)
 		priority(nullable:false)
-		message(nullable:true,blank:true,maxSize:20000)
+		message(nullable:true,blank:true,maxSize:50000)
 	}
 
     static mapping = {
