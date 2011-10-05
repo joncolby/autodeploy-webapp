@@ -15,7 +15,6 @@
 <link rel="stylesheet" type="text/css" href="${resource(dir:'css',file:'jquery.gritter.css')}"/>
 <script src="${resource(dir:'js',file:'jquery-1.6.min.js')}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'jquery-ui-1.8.14.custom.min.js')}" type="text/javascript"></script>
-<script src="${resource(dir:'js',file:'jquery.dimensions.min.js')}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'jquery.tooltip.min.js')}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'jquery.cookie.js')}" type="text/javascript"></script>
 <script src="${resource(dir:'js',file:'jquery.periodicalupdater.js')}" type="text/javascript"></script>
