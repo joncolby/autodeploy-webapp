@@ -1,3 +1,18 @@
+$.LoadingIndicator = function(loading){
+	var indicator = $('.loadingIndicator');
+	
+	function addIndicator(){
+		var pb = ('<div class="animated"/>').progressbar({ value: 100 });
+		indicator = $('<div style="height:100%;width:100%;background:#000"/>').append(pb);
+		$('body').append(indicator);
+	}
+	
+	if (indicator.length == 0) addIndicator();
+	
+	if (loading) indicator.show();
+	else indicator.hide();
+}
+
 AbstractRow = function(){	
 	this.data('this',this);
 	this.appendEntry = function(data){

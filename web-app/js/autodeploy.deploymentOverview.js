@@ -90,25 +90,27 @@ $.fn.QueueList = function(){
 			$this=$(this);
 			if ($this.hasClass('modal')){
 				$.DeploymentPlanDialog({url:$this.attr('href'),height:"500",width:"1000"});
-				return false;
 			}
 			else if ($this.hasClass('modalDiv')){
 				$.AppRevisionDialog({url:$this.attr('href'),height:"500",width:"1000"});
-				return false;
 			}
-            $('.queueEntryHeader .queueText').html($this.text());
-			$.ajax({url:$this.attr('href'),data:{},
-				success:function(data){
-					that.pollurl = $this.attr('href');
-					$this.parent().parent().children().removeClass('active');
-					$this.parent().addClass('active');
-					$.cookie('autodeploy_queueId',$this.attr('queueId'));
-					that.processData(data,true,true);
-					$('.wrapper .fastDeploy form[name=syncEnv] select option').show();
-					$('.wrapper .fastDeploy form[name=syncEnv] select option[value='+$this.attr('queueId')+']').hide();
-					that.startUpdater();
-					
-			},dataType:'json'});
+			else {
+	            $('.queueEntryHeader .queueText').html($this.text());
+				$.ajax({url:$this.attr('href'),data:{},
+					success:function(data){
+						if (!$this.parent().hasClass('locked')) $('.fastDeploy').show();
+						else $('.fastDeploy').hide();
+						that.pollurl = $this.attr('href');
+						$this.parent().parent().children().removeClass('active');
+						$this.parent().addClass('active');
+						$.cookie('autodeploy_queueId',$this.attr('queueId'));
+						that.processData(data,true,true);
+						$('.wrapper .fastDeploy form[name=syncEnv] select option').show();
+						$('.wrapper .fastDeploy form[name=syncEnv] select option[value='+$this.attr('queueId')+']').hide();
+						that.startUpdater();
+						
+				},dataType:'json'});
+			}
 			return false;
 	}	
 	

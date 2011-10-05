@@ -147,6 +147,9 @@ td.status .animated .ui-progressbar-value { background-image: url(ui-lightness/i
 	text-decoration: underline;
 }
 
+
+
+
 .wrapper ul.queues li.active a{
 	font-weight:bold;
 }
@@ -157,6 +160,13 @@ td.status .animated .ui-progressbar-value { background-image: url(ui-lightness/i
 	cursor:default;
 }
 
+
+.wrapper ul.queues li a .ui-icon{
+	display:inline-block;
+	vertical-align:top;
+	width: 14px;
+	height: 14px;
+}
 
 /* ul.queues end */
 .wrapper .fastDeploy{
