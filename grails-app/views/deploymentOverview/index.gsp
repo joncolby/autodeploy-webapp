@@ -37,7 +37,10 @@
 		
 		<li><h2>Queues</h2></li>
 		<g:each in="${model.queues}" var="queue">
-			<li><g:link action="queueEntries" id="${queue.id}" queueId="${queue.id}">${queue.name}</g:link></li>
+			<li <g:if test="${queue.id == 2}">class="locked"</g:if>><g:link action="queueEntries" id="${queue.id}" queueId="${queue.id}">
+			${queue.name}
+			<g:if test="${queue.id == 2}"><span class="ui-icon ui-icon-key"></span></g:if>
+			</g:link></li>
 		</g:each>
 		</ul>		
 		<ul class="queues ui-widget-content">
