@@ -379,16 +379,26 @@ table tbody.appView th{
 .entryDetails table tbody tr td div.application ,
 .entryDetails table tbody tr td div.host {
     font-size: 10px;
+    margin-right:10px;
 }
+
 
 .entryDetails table tbody tr td div.application span,
 .entryDetails table tbody tr td div.host span{
 	height:16px;
-	width: 16px;
-	margin:0px 2px 0px 6px;
+	width:16px;
+	margin:0px 3px 0px 0px;
 	vertical-align:middle;
 	display: inline-block;
 	position:relative;
+}
+
+
+.entryDetails table tbody tr td div.application span.small{
+	width:auto;
+	margin-left: 3px;
+	vertical-align:baseline;
+	
 }
 
 .entryDetails table tbody tr td div.host span{
