@@ -1,0 +1,62 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="/mobile-autodeploy-webapp/css/qunit.css"/>
+<script src="/mobile-autodeploy-webapp/js/jquery-1.6.min.js" type="text/javascript"></script>
+<script src="/mobile-autodeploy-webapp/js/jquery-ui-1.8.14.custom.min.js" type="text/javascript"></script>
+<script src="/mobile-autodeploy-webapp/js/jquery.tooltip.min.js" type="text/javascript"></script>
+<script src="/mobile-autodeploy-webapp/js/autodeploy.generics.js" type="text/javascript"></script>
+<script src="/mobile-autodeploy-webapp/js/autodeploy.deploymentOverview.Table.js" type="text/javascript"></script>
+<script src="/mobile-autodeploy-webapp/js/autodeploy.deploymentOverview.Row.js" type="text/javascript"></script>
+<script src="/mobile-autodeploy-webapp/js/autodeploy.deploymentOverview.List.js" type="text/javascript"></script>
+<script src="/mobile-autodeploy-webapp/js/qunit.js" type="text/javascript"></script>
+<script type="text/javascript">
+var ticker1 = {"lastTimeStamp":1317909437972,"queueEntries":[{"entryId":581,"team":"GoC","name":"PDF 2.0 - Part II","revision":"sdf","status":"QUEUED","planId":487,"created":"06.10.11 15:57","colorState":"default","actions":[{"title":"Deploy plan","type":"deploy-all","action":"/mobile-autodeploy-webapp/deployAction/deployAll/581"},{"title":"Remove from list","type":"remove","action":"/mobile-autodeploy-webapp/deployAction/remove/581"}]}],"id":10,"entryDetails":{"entryId":581,"content":[]}}
+var ticker2 = {"lastTimeStamp":1317909437972,"queueEntries":[{"entryId":582,"team":"GoC","name":"test","revision":"sdf","status":"QUEUED","planId":487,"created":"06.10.11 15:57","colorState":"default","actions":[{"title":"Deploy plan","type":"deploy-all","action":"/mobile-autodeploy-webapp/deployAction/deployAll/581"},{"title":"Remove from list","type":"remove","action":"/mobile-autodeploy-webapp/deployAction/remove/581"}]}],"id":10,"entryDetails":{"entryId":581,"content":[]}}
+
+
+$.fn.testTable = function(queueList){
+	var that = this;
+	this.entries = {};
+	this.idString = "id";
+	
+	AbstractTable.apply(this,arguments);  // "ableitung"
+	
+	this.getNewEntry = function(data,x){ return $('<tr></tr>').QueueEntryRow(queueList).create(data) }
+		
+	this.container = this;
+	return this;
+}
+
+
+$(document).ready(function(){
+
+	module("AbstractTable Test");
+	var instance = $('<table/>').testTable();
+	test('Created Instance Ok',3,function(){
+		equal(typeof instance,'object', 'Instance is an Object.');
+		notEqual( instance, null, 'Instance is not NULL.' );
+		equal(instance.get(0).nodeName,'TABLE', 'Node is a Table.');
+	})
+	
+	instance.update(ticker1.queueEntries);
+	instance.update(ticker2.queueEntries);
+	var result = instance.getEntry(ticker1.queueEntries[0].entryId);
+	test('Get of appends ok',5,function(){
+		equal(typeof result,'object', 'Result is an Object.');
+		notEqual( result, null, 'Result is not NULL.' );
+		equal(result.get(0).nodeName,'TR', 'Result is a TR.');
+		equal(result.attr('entryid'),ticker1.queueEntries[0].entryId, 'EntryId equals.');
+		equal(result.find('td:eq(1) a').text(),ticker1.queueEntries[0].name, 'EntryId equals.');
+	})
+});
+</script>
+</head>
+<body>
+  <h1 id="qunit-header">QUnit example</h1>
+ <h2 id="qunit-banner"></h2>
+ <div id="qunit-testrunner-toolbar"></div>
+ <h2 id="qunit-userAgent"></h2>
+ <ol id="qunit-tests"></ol>
+ <div id="qunit-fixture">test markup, will be hidden</div>
+</body>
+</html>
