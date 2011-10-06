@@ -20,6 +20,22 @@ body,td{
 	font-size: 12px;
 }
 
+.ajaxLoader{
+	 margin:auto; 
+	 width: 100px;
+	 height:100px;
+	 background:url('../images/ajax-loader-big.gif');
+}
+
+.loadingIndicator{
+	background:#fff;
+	z-index:100000;
+	opacity:0.8;
+	position:absolute;
+	top:0;
+	left:0
+}
+
 .clr:after {
     content: ".";
     display: block;

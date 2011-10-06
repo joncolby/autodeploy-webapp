@@ -1,15 +1,21 @@
 $.LoadingIndicator = function(loading){
 	var indicator = $('.loadingIndicator');
+	var body = $('body');
+	var w = $(window);
 	
 	function addIndicator(){
-		var pb = ('<div class="animated"/>').progressbar({ value: 100 });
-		indicator = $('<div style="height:100%;width:100%;background:#000"/>').append(pb);
-		$('body').append(indicator);
+		var pb = $('<div class="ajaxLoader"/>');
+		indicator = $('<div class="loadingIndicator"/>').append(pb);
+		body.append(indicator);
 	}
 	
 	if (indicator.length == 0) addIndicator();
 	
-	if (loading) indicator.show();
+	if (loading) {
+		indicator.css({height:body.height(),width:body.width()});
+		indicator.find('.ajaxLoader').css({'margin-top':(w.scrollTop()+(w.height()/2)-50)+'px'});
+		indicator.show();
+	}
 	else indicator.hide();
 }
 

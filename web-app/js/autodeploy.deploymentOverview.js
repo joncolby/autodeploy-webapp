@@ -5,8 +5,10 @@ AutodeployDialog = function(options){
 	this.afterAjaxAction = function(){} // to overwrite
 
 	this.getContents = function(){
-		if ($('.queueContainer .queues li.active a').attr('queueId'))
+		if ($('.queueContainer .queues li.active a').attr('queueId')){
+			$.LoadingIndicator(true);
 			$.ajax({url:options.url,data:{id:$('.queueContainer .queues li.active a').attr('queueId')},success:this.afterAjaxAction});
+		}
 		else {
 			container.attr('title','Error').append('Please select a queue first!').dialog();
 		}
@@ -24,6 +26,7 @@ $.DeploymentPlanDialog = function(options){
 	AutodeployDialog.apply(this,arguments);  // "ableitung"
 	
 	this.afterAjaxAction = function(data){
+		$.LoadingIndicator(false);
 		container.append(data);
 		dialog = container.dialog(options);
 		container.find('.right input[type=submit]').button();
@@ -50,6 +53,7 @@ $.AppRevisionDialog = function(options){
 	var dialog;
 	
 	this.afterAjaxAction = function(data){
+		$.LoadingIndicator(false);
 		table.append(appBody);
 		container.append(table);
 		dialog = container.dialog(options);
@@ -96,8 +100,10 @@ $.fn.QueueList = function(){
 			}
 			else {
 	            $('.queueEntryHeader .queueText').html($this.text());
+	            $.LoadingIndicator(true);
 				$.ajax({url:$this.attr('href'),data:{},
 					success:function(data){
+			            $.LoadingIndicator(false);
 						if (!$this.parent().hasClass('locked')) $('.fastDeploy').show();
 						else $('.fastDeploy').hide();
 						that.pollurl = $this.attr('href');
