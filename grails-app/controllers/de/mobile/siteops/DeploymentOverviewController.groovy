@@ -2,12 +2,17 @@ package de.mobile.siteops
 
 import static de.mobile.siteops.HostStateType.*
 import grails.converters.JSON
+import grails.plugins.springsecurity.SpringSecurityService
+import org.codehaus.groovy.grails.plugins.springsecurity.GrailsUser
+import org.springframework.security.core.GrantedAuthority
 
 class DeploymentOverviewController {
 
-	def deploymentQueueService;
+	def deploymentQueueService
+    def accessControlService
 
 	def index = {
+
         def teamId = g.cookie(name: 'autodeploy_teamId')
         def planId = g.cookie(name: 'autodeploy_planId')
 
@@ -28,7 +33,7 @@ class DeploymentOverviewController {
         }
 
 		def deploymentQueues = DeploymentQueue.findAll()
-		def queues = deploymentQueues.collect { [name: it.environment.name, id: it.id ] }.sort { it.name }
+		def queues = deploymentQueues.collect { [name: it.environment.name, id: it.id, locked: !accessControlService.hasWriteAccessForQueue(it) ] }.sort { it.name }
         def model = [queues: queues, teams: teamModel, plans: planModel, selectedTeamId: teamId, selectedPlanId: planId]
 
 		[model: model]
@@ -55,10 +60,10 @@ class DeploymentOverviewController {
 		if (!queue) {
 			render model as JSON
 			return
-		}
-		
+        }
+
 		model['id'] = queue.id
-		
+
 		def queueEntries = []
 		if (timestamp > 0) {
 			queueEntries = DeploymentQueueEntry.overview(queue, timestamp).list()
@@ -114,6 +119,10 @@ class DeploymentOverviewController {
                 detailModel = createDetailModel(entry, viewType, fullDetails ? 0 : timestamp)
             }
 
+            if (!accessControlService.hasWriteAccessForQueue(queue)) {
+                modelEntry.actions = []
+            }
+
 			model['queueEntries'] += modelEntry
 		}
 
@@ -156,13 +165,15 @@ class DeploymentOverviewController {
 				def resultEntry = details.find { it.hostclassId == entry?.hostclass?.id }
 				if (!resultEntry) {
                     def apps = entry.getApplications()
-                    if (entry.state == HostStateType.DEPLOYED) {
-                        apps.each {
-                            it.actions += [title: 'Rollback this application', type: 'rollback', action: g.createLink(action: 'rollbackApplication', controller: 'deployAction', id: queueEntry.id, params: [appId: it.id])]
-                        }
-                    } else if ([ABORTED, ERROR, CANCELLED].contains(entry.state)) {
-                        apps.each {
-                            it.actions += [title: 'Redeploy this application', type: 'retry', action: g.createLink(action: 'retryApplication', controller: 'deployAction', id: queueEntry.id, params: [appId: it.id])]
+                    if (accessControlService.hasWriteAccessForQueue(queueEntry.queue)) {
+                        if (entry.state == HostStateType.DEPLOYED) {
+                            apps.each {
+                                it.actions += [title: 'Rollback this application', type: 'rollback', action: g.createLink(action: 'rollbackApplication', controller: 'deployAction', id: queueEntry.id, params: [appId: it.id])]
+                            }
+                        } else if ([ABORTED, ERROR, CANCELLED].contains(entry.state)) {
+                            apps.each {
+                                it.actions += [title: 'Redeploy this application', type: 'retry', action: g.createLink(action: 'retryApplication', controller: 'deployAction', id: queueEntry.id, params: [appId: it.id])]
+                            }
                         }
                     }
 					resultEntry = [ hostclassId: entry.hostclass.id, hostclassName: entry.hostclass.name, applications: apps, hosts: []]

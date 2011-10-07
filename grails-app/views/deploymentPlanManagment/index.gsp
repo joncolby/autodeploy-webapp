@@ -58,6 +58,7 @@
 			</p>
 			<p class="actions">
 			<input type="submit" name="edit" value="Edit">
+            <input type="submit" name="delete" value="Delete">
 			<input type="submit" name="cancel" value="Cancel">
 			</p>
 			<p class="revisionBox">

@@ -29,6 +29,7 @@ $.fn.DeploymentPlanDetails = function(options){
 	this.makeEditAction = function(e){
 		e.data.enableFields();
 		e.data.find('[name=cancel][type=submit]').show().unbind('click').bind('click',e.data,e.data.cancelAction);
+        e.data.find('[name=delete][type=submit]').hide();
 		$(this).val('Save').unbind('click').bind('click',e.data,e.data.saveAction);
 		$('.container .revisionBox').hide();
 	}
@@ -36,6 +37,7 @@ $.fn.DeploymentPlanDetails = function(options){
 	this.saveSuccessAction = function(e){
 		this.disableFields();
 		this.find('[name=edit][type=submit]').val('Edit').unbind('click').bind('click',this,this.makeEditAction);
+        this.find('[name=delete][type=submit]').show().unbind('click').bind('click',this,this.deleteAction);
 		this.find('[name=cancel][type=submit]').hide();
 		$('.container .revisionBox').show();
 		var selectedPlan = $('.selectList.deploymentPlans .active');
@@ -54,7 +56,11 @@ $.fn.DeploymentPlanDetails = function(options){
 				}
 			});
 	}	
-	
+
+    this.deleteAction = function(e){
+        console.log(this)
+    }
+
 	this.cancelAction = function(e){
 		e.data.find('p[name]').InputError().reset();
 		$('.selectList.deploymentPlans li.active').click();
@@ -72,6 +78,13 @@ $.fn.DeploymentPlanDetails = function(options){
 		this.find('[name=requiresDatabaseChanges]').Checkbox().set(data.requiresDatabaseChanges);
 		this.find('[name=edit][type=submit]').val('Edit').attr('url',data.url).unbind('click').bind('click',this,this.makeEditAction);
 		this.find('[name=cancel][type=submit]').hide();
+        var deleteBtn = this.find('[name=delete][type=submit]');
+        if (data.deleteUrl) {
+            deleteBtn.show().attr('url', data.deleteUrl).unbind('click').bind('click',this,this.deleteAction);
+        } else {
+            deleteBtn.hide();
+        }
+
 		return this;
 	}
 	return this;
@@ -131,7 +144,8 @@ $.fn.DeploymentPlanList = function(options){
 		
 		$('.container .right').find('[name=cancel][type=submit]').hide();
 		$('.container .right').find('[name=edit][type=submit]').val('Save').unbind('click').bind('click',DPD,DPD.saveAction);
-		
+        $('.container .right').find('[name=delete][type=submit]').val('Delete').unbind('click').bind('click',DPD,DPD.deleteAction);
+
 		$('.container .revisionBox input[type=text]').val("");
         $('.container .revisionBox').hide();
 	}

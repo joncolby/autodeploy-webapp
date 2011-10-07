@@ -34,7 +34,7 @@ class DeploymentPlanManagmentController {
         def apps = plan.applications
         def allApps = Application.list()
 
-        def model = [url: g.createLink(action: 'editPlan', id: params.id), contribution: plan.contribution, ticket: plan.ticket, name: plan.name, requiresDatabaseChanges: plan.requiresDatabaseChanges, requiresPropertyChanges: plan.requiresPropertyChanges, created: plan.dateCreated, modified: plan.lastUpdated, apps: []]
+        def model = [deleteUrl: g.createLink(action: 'deletePlan', id: params.id), url: g.createLink(action: 'editPlan', id: params.id), contribution: plan.contribution, ticket: plan.ticket, name: plan.name, requiresDatabaseChanges: plan.requiresDatabaseChanges, requiresPropertyChanges: plan.requiresPropertyChanges, created: plan.dateCreated, modified: plan.lastUpdated, apps: []]
         allApps.sort { a, b -> a.filename.compareTo(b.filename) }.each { app ->
             model['apps'] += [selected: apps.contains(app), name: "$app.filename ($app.pillar)", id: app.id]
         }
@@ -44,13 +44,23 @@ class DeploymentPlanManagmentController {
 
     def createNew = {
         def allApps = Application.list()
-        def model = [url: g.createLink(action: 'createPlan'), apps: []]
+        def model = [url: g.createLink(action: 'createPlan'), deleteUrl: '', apps: []]
         allApps.sort { a, b -> a.filename.compareTo(b.filename) }.each { app ->
             model['apps'] += [selected: false, name: "$app.filename ($app.pillar)", id: app.id]
         }
 
         render model as JSON
 
+    }
+
+    def deletePlan = {
+        if (!params.id) {
+            render MessageResult.errorMessage('Internal error: No plan id specified') as JSON
+        }
+        DeploymentPlan plan = DeploymentPlan.get(params.id)
+        plan.delete()
+
+        render MessageResult.successMessage("Removed plan") as JSON
     }
 
     def createPlan = {
