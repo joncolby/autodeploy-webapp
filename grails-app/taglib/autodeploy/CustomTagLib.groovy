@@ -103,7 +103,7 @@ class CustomTagLib {
       def hostClassInstance = HostClass.get(attrs['id'])
       def props = [:]
       props.name = "priority"
-      props.from = ['NORMAL','FIRST','LAST']
+      props.from = ['FIRST','NORMAL','LAST']
       props.keys = ['0','1','2']
       props.noSelection = ['-1':'-SELECT PRIORITY-']
       if (hostClassInstance)
