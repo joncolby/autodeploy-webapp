@@ -32,8 +32,9 @@ $.fn.QueueEntryRow = function(queueList){
 				timestamp: queueList.timestamp,
 				fulldetails:true
 		}
-		
+		$.LoadingIndicator(true);
 		$.ajax({url:queueList.pollurl,data:data,success:function(data){
+			$.LoadingIndicator(false);
 			queueList.processData(data,false,true);
 		},dataType:'json'});
 		return false;

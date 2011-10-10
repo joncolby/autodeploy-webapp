@@ -44,6 +44,8 @@ $.fn.EntryRow = function(){
 $.fn.EntryTable = function(){
 	var that = this;
 	var head = this.find('thead tr');
+	this.appendTimeout = null;
+	
 	this.entries = {};
 	this.idString = "entryId";
 	AbstractTable.apply(this,arguments);  // "ableitung"
@@ -55,6 +57,13 @@ $.fn.EntryTable = function(){
 		return false;
 	}
 	
+	this.appendEntryRecursive = function(x,callback){
+		if (this.data.length == x) return;
+		this.appendEntry(this.getNewEntry(this.data[x]));
+		this.appendTimeout = setTimeout(function(){
+			that.appendEntryRecursive(x+1);	
+		},1);
+	}
 	/*
 	 * @override
 	 * */
@@ -71,9 +80,13 @@ $.fn.EntryTable = function(){
 			else
 				$(current).append($('<span/>').ActionsContainer(this).set(result));
 		}
-		for(var x=0;x<result.data.length;x++){
-			this.appendEntry(this.getNewEntry(result.data[x]));
-		}
+		clearTimeout(this.appendTimeout);
+		this.appendEntryRecursive(0);
+//		for(var x=0;x<result.data.length;x++){
+//			var starttime =(new Date()).getTime();
+//			this.appendEntry(this.getNewEntry(result.data[x]));
+//			console.log('row complete in '+((new Date()).getTime()-starttime) + 'ms');
+//		}
 	}
 	
 	this.bind('appendEntry',function(event,entry){
@@ -193,11 +206,17 @@ $.fn.MenuList = function(){
 				return false;
 			}
             $('.queueEntryHeader .queueText').html($this.text());
+            $.LoadingIndicator(true);
 			$.ajax({url:$this.attr('href'),data:{},
 				success:function(data){
+					var starttime = (new Date()).getTime();
+					console.log('data complete');
+					$.LoadingIndicator(false);
 					$this.parent().parent().children().removeClass('active');
 					$this.parent().addClass('active');
-					that.entryTable.create(data)
+					that.entryTable.create(data);
+					console.log('table complete in '+((new Date()).getTime()-starttime) + 'ms');
+					
 					
 			},dataType:'json'});
 			return false;

@@ -54,6 +54,8 @@ FieldMessageProcessor = function(data,container){
 AbstractTable = function(){ // abstract class
 	var that = this;
 	this.data('this',this);
+
+	var searchTimeout = null;
 	
 	this.appendEntry = function(entry){
 		this.entries[entry.id] = entry;
@@ -91,25 +93,34 @@ AbstractTable = function(){ // abstract class
 	}
 	
 	this.searchAction = function(){
-		var $this = $(this);
-		var search = {};
-		
-		that.find('tr:first-child th input,tr:first-child td input').each(function(index){
-			search[index+1] = $(this).val();
-		})
-		
-		var trs = $this.closest('table').find('tbody tr');
-		trs.each(function(){
-			var field = null;
-			var show = true;
-			for (x in search){
-				field = $(this).find('td:nth-child('+x+')'); 
-				if (field.length==1 && search[x] != "" && field.text().indexOf(search[x]) < 0) show = false;
-			}
+		clearTimeout(searchTimeout);
+		searchTimeout = setTimeout(function(){
+			console.log('search begin');
+			var starttime = (new Date()).getTime();
+			var $this = $(that);
+			var search = {};
+			that.find('tr:first-child th input,tr:first-child td input').each(function(index){
+				search[index] = $(this).val();
+			})
+			
+			var trs = $this.closest('table').find('tbody tr');
+			
+			trs.each(function(){
+				var field = null;
+				var show = true;
+				var fields = $(this).find('td');
+				for (x in search){
+					field = $(fields[x]); 
+					if (field.length==1 && search[x] != "" && field.text().indexOf(search[x]) < 0) show = false;
+				}
+	
+				if (show) $(this).show();
+				else $(this).hide();	
 
-			if (show) $(this).show();
-			else $(this).hide();			
-		})
+			});
+			console.log('search complete in '+((new Date()).getTime()-starttime) + 'ms');
+			
+		},1000);
 	}
 }
 

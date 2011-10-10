@@ -257,6 +257,7 @@ table tbody.appView th{
 .wrapper .tableEntries thead td{
 	font-weight:bold;
 	color: #fff;
+	white-space:nowrap;
 }
 
 .wrapper .tableEntries thead td input{
