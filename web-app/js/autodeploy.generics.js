@@ -299,12 +299,16 @@ $.fn.InputField = function(writeable){
 		if (writeable)
 			field.html("<input type='text' name ='"+this.attr('name')+"' value='"+field.html()+"'/>");
 	}
-	this.create = function(name,value){
-		var val = value;
+	this.create = function(name, data){
+		var val = data.value;
 		if (val == null) val = "";
 		this.attr('name',name);
 		this.append('<label>'+name+'</label>');
 		this.append('<span><input type="text" name="'+name+'" value="'+val+'"></span>');
+        var input = this.find('input')
+        if (data.size != null) {
+            input.attr('size', data.size)
+        }
 	}
 	
 	this.disableAction = function(){
@@ -317,6 +321,7 @@ $.fn.InputField = function(writeable){
 	this.set = function(value){
 		this.find('span').html(value);
 	}
+    console.log(this);
 	return this;
 }
 

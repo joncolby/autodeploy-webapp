@@ -73,12 +73,22 @@ $.fn.EntryTable = function(){
 		this.container.children('.appended').remove();
 		head.empty();
 		for (var title in result.data[0]){
+            var columnConfig = null
+            if (typeof result.config != 'undefined' && result.config[title]) {
+                columnConfig = result.config[title]
+            }
 			current = $('<td>'+title+'</td>');
+            if (columnConfig && columnConfig.width) {
+                current.css('width', columnConfig.width);
+            }
 			head.append(current);
-			if (title != 'actions')
-				$(current).append($('<input/>').bind('keyup',that,that.searchAction));
-			else
-				$(current).append($('<span/>').ActionsContainer(this).set(result));
+			if (title != 'actions') {
+                if (!columnConfig || (columnConfig && (typeof columnConfig.searchable == 'undefined' || columnConfig.searchable))) {
+                    $(current).append($('<input/>').bind('keyup',that,that.searchAction));
+                }
+            } else {
+                $(current).append($('<span/>').ActionsContainer(this).set(result));
+            }
 		}
 		clearTimeout(this.appendTimeout);
 		this.appendEntryRecursive(0);
@@ -136,7 +146,7 @@ $.TableEntryEditDialog = function(options){
 			switch (data.values[field].type){
 			case 'text':
 				fieldContainer = $('<p/>');
-				fieldContainer.InputField().create(field,data.values[field].value);
+				fieldContainer.InputField().create(field, data.values[field]);
 			break;
 			case 'textarea':
 				fieldContainer = $('<p/>');

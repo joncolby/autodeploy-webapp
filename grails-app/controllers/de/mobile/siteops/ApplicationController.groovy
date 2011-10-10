@@ -2,6 +2,7 @@ package de.mobile.siteops
 
 import grails.plugins.springsecurity.Secured
 import grails.converters.JSON
+import de.mobile.siteops.Application.MarketPlace
 
 class ApplicationController {
 
@@ -14,18 +15,16 @@ class ApplicationController {
 	
    def ajaxList = {
 	   def data = []
-	   def result = [:]
 	   def application = Application.findAll()
 
 	   if (application) {
-		   data = application.collect { [id: it.id, filename: it.filename,pillar:it.pillar.name,description:it.description] }
+		   data = application.collect { [id: it.id, filename: it.filename, modulename: it.modulename, pillar:it.pillar.name,description:it.description] }
 	   }
 	   data.each { TableUtils.addActions(it,g) }
-	   
-	   result= [data: data]
-	   result['actions'] = [[title: 'Create', type: 'create', action: g.createLink(action: 'ajaxEdit', id: 0)]]
-		
-	  
+
+       def config = [description: [width: '300px', searchable: true], id: [width: '30px', searchable: false]]
+	   def result = [data: data, config: config, actions: [[title: 'Create', type: 'create', action: g.createLink(action: 'ajaxEdit', id: 0)]]]
+
 	   render result as JSON
    }
    
@@ -43,7 +42,8 @@ class ApplicationController {
 	   def pillarList = Pillar.findAll().collect { [id: it.id, name: it.name,selected: (application.pillar && application.pillar.id == it.id)] }
 	   def typeList = Application.ApplicationType.collect { [id: it.name(), name: it.name(),selected: (application.type && application.type.name() == it.name())] }
 	   def balancerTypeList = Application.LoadBalancerType.collect { [id:it.name(), name: it.name(),selected: (application.balancerType && application.balancerType.name() == it.name())] }
-	   
+       def marketPlaceList = MarketPlace.values().collect { [id: it.name(), name: it.name(), selected: (application.marketPlace && application.marketPlace == it) ]}
+
 	   def hostClasses = application.hostclasses
 	   def hostClassList = HostClass.findAll().collect{[id: it.id, name: it.name, selected: (hostClasses)?hostClasses.contains(it):false]}
    
@@ -54,13 +54,14 @@ class ApplicationController {
 	   data = [saveUrl: g.createLink(action: 'ajaxSave', id: applicationId)]
 	   data['values'] = [
 		   pillar:[value:pillarList, type:'select'],
-		   filename:[value: application.filename, type: 'text'],
+		   filename:[value: application.filename, type: 'text', size: 30],
 		   startStopScript:[value: application.startStopScript, type: 'text'],
 		   installDir:[value: application.installDir, type: 'text'],
 		   description:[value: application.description, type: 'textarea'],
 		   context:[value: application.context, type: 'text'],
 		   releaseInfoJMXBean:[value: application.releaseInfoJMXBean, type: 'text'],
 		   type:[value:typeList, type:'select'],
+           marketPlace:[value: marketPlaceList, type:'select'],
 		   balancerType:[value:balancerTypeList, type:'select'],
 		   modulename:[value:application.modulename, type: 'text'],
 		   artifactId:[value:application.artifactId, type: 'text'],
@@ -87,6 +88,7 @@ class ApplicationController {
 		   context:params.context,
 		   releaseInfoJMXBean:params.releaseInfoJMXBean,
 		   type:params.type,
+           marketPlace: params.marketPlace,
 		   balancerType:params.balancerType,
 		   modulename:params.modulename,
 		   artifactId:params.artifactId,
