@@ -33,7 +33,16 @@ $.fn.DeploymentPlanDetails = function(options){
 		$(this).val('Save').unbind('click').bind('click',e.data,e.data.saveAction);
 		$('.container .revisionBox').hide();
 	}
-	
+
+    this.deleteSuccessAction = function(e) {
+        $('.container .revisionBox').show();
+        var selectedPlan = $('.selectList.deploymentPlans .active');
+        var planName = this.find('[name=name] span').html();
+
+        $('.fastDeploy [name=teamId]').change();
+        $('.selectList.teams .active').click();
+    }
+
 	this.saveSuccessAction = function(e){
 		this.disableFields();
 		this.find('[name=edit][type=submit]').val('Edit').unbind('click').bind('click',this,this.makeEditAction);
@@ -58,7 +67,11 @@ $.fn.DeploymentPlanDetails = function(options){
 	}	
 
     this.deleteAction = function(e){
-        console.log(this)
+        $.ajax({url:$(this).attr('url'),
+            success:function(data){
+                e.data.deleteSuccessAction(e.data)
+            }
+        });
     }
 
 	this.cancelAction = function(e){

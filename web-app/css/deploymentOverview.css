@@ -217,7 +217,7 @@ table tbody{
 	border-left:1px solid #ccc;
 	border-right:1px solid #ccc;
 	border-bottom:1px solid #ccc;
-	background:url("images/ui-bg_highlight-soft_100_eeeeee_1x100.png") repeat-x scroll 50% top #EEEEEE
+	background:#EEEEEE
 }
 
 table tbody tr:nth-Child(even){
