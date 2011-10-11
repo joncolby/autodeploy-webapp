@@ -100,7 +100,8 @@ AbstractTable = function(){ // abstract class
 			var $this = $(that);
 			var search = {};
 			that.find('tr:first-child th input,tr:first-child td input').each(function(index){
-				search[index] = $(this).val();
+				if ($(this).css('color') == '#AAA'){ search[index] = ""}
+				else { search[index] = $(this).val(); }
 			})
 			
 			var trs = $this.closest('table').find('tbody tr');
@@ -108,10 +109,12 @@ AbstractTable = function(){ // abstract class
 			trs.each(function(){
 				var field = null;
 				var show = true;
+				var searchString = "";
 				var fields = $(this).find('td');
 				for (x in search){
 					field = $(fields[x]); 
-					if (field.length==1 && search[x] != "" && field.text().indexOf(search[x]) < 0) show = false;
+					searchString = new RegExp(".*"+search[x]+".*","i");
+					if (field.length==1 && search[x] != "" && field.text() != "" && !searchString.test(field.text())) show = false;
 				}
 	
 				if (show) $(this).show();
@@ -442,7 +445,7 @@ $.fn.ActionsContainer = function(row){
 		var selector = [];
 		for (var x=0;x<data.actions.length;x++){
 			selector.push( ".action_"+ data.actions[x].type);
-			if (this.find(".action_"+ data.actions[x].type).length  == 0)
+			if (this.find(".action_"+ data.actions[x].type).length  == 0);
 				createItem(data.actions[x]);
 		}
 		this.find('a.ui-icon:not('+selector.join(',')+')').remove();

@@ -23,6 +23,8 @@ $.fn.EntryRow = function(){
 	
 	
 	this.create = function(data){
+		
+		//var starttime = (new Date()).getTime();
 		this.values = data;
 		
 		for (var title in data){
@@ -30,8 +32,10 @@ $.fn.EntryRow = function(){
 				this.appendEntry(data[title]);
 		}
 		
-		this.actions = $('<td></td>').ActionsContainer(this).set(data);
-		this.append(this.actions);
+		that.actions = $('<td></td>').ActionsContainer(that).set(data);
+		that.append(that.actions);
+
+		//console.log('table complete in '+((new Date()).getTime()-starttime) + 'ms');
 		//this.id = data.entryId;
 		//this.attr('entryId',data.entryId);
 		
@@ -58,11 +62,14 @@ $.fn.EntryTable = function(){
 	}
 	
 	this.appendEntryRecursive = function(x,callback){
-		if (this.data.length == x) return;
+		if (this.data.length == x) {
+			this.find('tr:first-Child input').removeAttr('disabled');
+			return;
+		}
 		this.appendEntry(this.getNewEntry(this.data[x]));
 		this.appendTimeout = setTimeout(function(){
 			that.appendEntryRecursive(x+1);	
-		},1);
+		},0);
 	}
 	/*
 	 * @override
@@ -75,8 +82,20 @@ $.fn.EntryTable = function(){
 		for (var title in result.data[0]){
 			current = $('<td>'+title+'</td>');
 			head.append(current);
-			if (title != 'actions')
-				$(current).append($('<input/>').bind('keyup',that,that.searchAction));
+			if (title != 'actions'){
+				$(current).append($('<input value="'+title+'" style="color:#AAA"/>')
+						.bind('keyup',that,that.searchAction).attr('disabled','disabled')
+						.bind('focus',function(){
+							$(this).css('color','#000');
+							if($(this).val()==title) $(this).val('');
+						}).bind('focusout',function(){
+							if($(this).val()==title || $(this).val()=='') {
+								$(this).val(title);
+								$(this).css('color','#AAA');
+							}
+						})
+				);
+			}
 			else
 				$(current).append($('<span/>').ActionsContainer(this).set(result));
 		}
