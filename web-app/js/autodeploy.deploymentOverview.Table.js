@@ -30,7 +30,7 @@ $.fn.DetailsMessagesTable = function(queueList){
 	return this;
 }
 
-$.fn.AppRevisonBody = function(queueList){
+$.fn.AppRevisonTable = function(queueList){
 	var that = this;
 	this.entries = {};
 	this.idString = "id";
@@ -39,13 +39,23 @@ $.fn.AppRevisonBody = function(queueList){
 	
 	this.getNewEntry = function(data,x){ return $('<tr></tr>').DetailsAppRow(queueList).create(data) }
 		
-	this.append('<thead><tr><th>name</th><th>pillar</th><th>revision</th><th>type</th><th>context</th><th></th></tr><thead>');
 	
-	this.find('tr th:not(:nth-child(6))').each(function(){
-		 $(this).append($.SearchField($(this).text(),that));
-	});
+	this.create = function(data){
+		this.data = data;
+		this.empty();
+		for(var x=0;x<data.length;x++){
+			this.appendEntry(this.getNewEntry(data[x]));
+		}
+		this.append('<thead class="appView"><tr><th>name</th><th>pillar</th><th>revision</th><th>type</th><th>context</th><th></th></tr></thead>');
+
+		this.append(this.container);
+		this.find('tr th:not(:nth-child(6))').each(function(){
+			var str = $(this).text();
+			 $(this).empty().append($.SearchField(str,that));
+		});
+	}
+	
 	this.container = $('<tbody/>');
-	this.append(this.container);
 	return this;
 }
 

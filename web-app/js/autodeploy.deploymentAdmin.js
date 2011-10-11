@@ -83,7 +83,7 @@ $.fn.EntryTable = function(){
 				head.append(current);
 				if (title != 'actions'){
 					if (!columnConfig || (columnConfig && (typeof columnConfig.searchable == 'undefined' || columnConfig.searchable))) {
-						$(current).append($.SearchField(title,that));
+						$(current).empty().append($.SearchField(title,that));
 					}
 				}
 				else

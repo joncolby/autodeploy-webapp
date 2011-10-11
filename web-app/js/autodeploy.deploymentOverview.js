@@ -48,16 +48,14 @@ $.AppRevisionDialog = function(options){
 		
 	AutodeployDialog.apply(this,arguments);  // "ableitung"
 	var container = $('<div class="containerWrapper entryDetails"/>').attr('title','Plan Management');
-	var table = $('<table></table>');
-	var appBody = $('<tbody class="appView"></tbody>').AppRevisonBody(null);	
+	var table = $('<table></table>').AppRevisonTable(null);	
 	var dialog;
 	
 	this.afterAjaxAction = function(data){
 		$.LoadingIndicator(false);
-		table.append(appBody);
 		container.append(table);
 		dialog = container.dialog(options);
-		appBody.create(data.apps);
+		table.create(data.apps);
 	} 
 	this.getContents();
 

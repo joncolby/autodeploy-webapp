@@ -230,7 +230,7 @@ table tbody tr:nth-Child(even){
 
 /* standard table end */
 
-table tbody.appView th{
+table .appView th{
 	text-align:left;
 	font-weight:bold;
 	font-size:10px;
