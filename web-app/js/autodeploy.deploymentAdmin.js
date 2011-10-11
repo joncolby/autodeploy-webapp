@@ -61,16 +61,7 @@ $.fn.EntryTable = function(){
 		return false;
 	}
 	
-	this.appendEntryRecursive = function(x,callback){
-		if (this.data.length == x) {
-			this.find('tr:first-Child input').removeAttr('disabled');
-			return;
-		}
-		this.appendEntry(this.getNewEntry(this.data[x]));
-		this.appendTimeout = setTimeout(function(){
-			that.appendEntryRecursive(x+1);	
-		},0);
-	}
+	
 	/*
 	 * @override
 	 * */
@@ -80,27 +71,27 @@ $.fn.EntryTable = function(){
 		this.container.children('.appended').remove();
 		head.empty();
 		for (var title in result.data[0]){
-			current = $('<td>'+title+'</td>');
-			head.append(current);
-			if (title != 'actions'){
-				$(current).append($('<input value="'+title+'" style="color:#AAA"/>')
-						.bind('keyup',that,that.searchAction).attr('disabled','disabled')
-						.bind('focus',function(){
-							$(this).css('color','#000');
-							if($(this).val()==title) $(this).val('');
-						}).bind('focusout',function(){
-							if($(this).val()==title || $(this).val()=='') {
-								$(this).val(title);
-								$(this).css('color','#AAA');
-							}
-						})
-				);
-			}
-			else
-				$(current).append($('<span/>').ActionsContainer(this).set(result));
+			(function(title){
+	            var columnConfig = null
+	            if (typeof result.config != 'undefined' && result.config[title]) {
+	                columnConfig = result.config[title]
+	            }
+				current = $('<td>'+title+'</td>');
+	            if (columnConfig && columnConfig.width) {
+	                current.css('width', columnConfig.width);
+	            }
+				head.append(current);
+				if (title != 'actions'){
+					if (!columnConfig || (columnConfig && (typeof columnConfig.searchable == 'undefined' || columnConfig.searchable))) {
+						$(current).append($.SearchField(title,that));
+					}
+				}
+				else
+					$(current).append($('<span/>').ActionsContainer(this).set(result));
+			})(title)
 		}
-		clearTimeout(this.appendTimeout);
-		this.appendEntryRecursive(0);
+
+		$.AppendController($.extend([],result.data),that);
 //		for(var x=0;x<result.data.length;x++){
 //			var starttime =(new Date()).getTime();
 //			this.appendEntry(this.getNewEntry(result.data[x]));
@@ -155,7 +146,7 @@ $.TableEntryEditDialog = function(options){
 			switch (data.values[field].type){
 			case 'text':
 				fieldContainer = $('<p/>');
-				fieldContainer.InputField().create(field,data.values[field].value);
+				fieldContainer.InputField().create(field, data.values[field]);
 			break;
 			case 'textarea':
 				fieldContainer = $('<p/>');

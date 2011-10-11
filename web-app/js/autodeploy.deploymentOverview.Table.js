@@ -39,12 +39,13 @@ $.fn.AppRevisonBody = function(queueList){
 	
 	this.getNewEntry = function(data,x){ return $('<tr></tr>').DetailsAppRow(queueList).create(data) }
 		
-	this.append('<tr><th>Name</th><th>Pillar</th><th>Revision</th><th>Type</th><th>Context</th><th></th></tr>');
+	this.append('<thead><tr><th>name</th><th>pillar</th><th>revision</th><th>type</th><th>context</th><th></th></tr><thead>');
 	
 	this.find('tr th:not(:nth-child(6))').each(function(){
-		 $(this).append($('<input/>').bind('keyup',that,that.searchAction));
+		 $(this).append($.SearchField($(this).text(),that));
 	});
-	this.container = this;
+	this.container = $('<tbody/>');
+	this.append(this.container);
 	return this;
 }
 

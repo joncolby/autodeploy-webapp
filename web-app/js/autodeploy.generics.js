@@ -51,6 +51,7 @@ FieldMessageProcessor = function(data,container){
 }
 
 
+
 AbstractTable = function(){ // abstract class
 	var that = this;
 	this.data('this',this);
@@ -99,35 +100,94 @@ AbstractTable = function(){ // abstract class
 			var starttime = (new Date()).getTime();
 			var $this = $(that);
 			var search = {};
+			var show = true;
+			
 			that.find('tr:first-child th input,tr:first-child td input').each(function(index){
-				if ($(this).css('color') == '#AAA'){ search[index] = ""}
-				else { search[index] = $(this).val(); }
+				if ($(this).hasClass('greyed')){ search[$(this).attr('title')] = ""}
+				else { search[$(this).attr('title')] = $(this).val(); }
 			})
 			
-			var trs = $this.closest('table').find('tbody tr');
-			
-			trs.each(function(){
-				var field = null;
-				var show = true;
-				var searchString = "";
-				var fields = $(this).find('td');
+			var data = $.extend([],that.data);
+			for(var i=data.length-1;i>=0;i--){
+				show = true;
 				for (x in search){
-					field = $(fields[x]); 
 					searchString = new RegExp(".*"+search[x]+".*","i");
-					if (field.length==1 && search[x] != "" && field.text() != "" && !searchString.test(field.text())) show = false;
+					if (search[x] != "" && !searchString.test(data[i][x])) show = false;
 				}
-	
-				if (show) $(this).show();
-				else $(this).hide();	
-
-			});
+				if (!show) data.splice(i,1);
+			}
+			$.AppendController(data,that);
 			console.log('search complete in '+((new Date()).getTime()-starttime) + 'ms');
 			
 		},1000);
-	}
+	}	
+//	this.searchAction = function(){
+//		clearTimeout(searchTimeout);
+//		searchTimeout = setTimeout(function(){
+//			console.log('search begin');
+//			var starttime = (new Date()).getTime();
+//			var $this = $(that);
+//			var search = {};
+//			that.find('tr:first-child th input,tr:first-child td input').each(function(index){
+//				if ($(this).hasClass('greyed')){ search[index] = ""}
+//				else { search[index] = $(this).val(); }
+//			})
+//			
+//			var trs = $this.closest('table').find('tbody tr');
+//			
+//			trs.each(function(){
+//				var field = null;
+//				var show = true;
+//				var searchString = "";
+//				var fields = $(this).find('td');
+//				for (x in search){
+//					field = $(fields[x]); 
+//					searchString = new RegExp(".*"+search[x]+".*","i");
+//					if (field.length==1 && search[x] != "" && field.text() != "" && !searchString.test(field.text())) show = false;
+//				}
+//	
+//				if (show) $(this).show();
+//				else $(this).hide();	
+//
+//			});
+//			console.log('search complete in '+((new Date()).getTime()-starttime) + 'ms');
+//			
+//		},1000);
+//	}
 }
 
+$.AppendController = function(data,table){
+	var that = this;
+	this.id = Math.floor(Math.random()*10000000);
+	
+	table.find('tbody').empty();
+	function appendEntryRecursive(data,id){
+		if (data.length == 0 || (that.id != id)) {return;}
+		table.appendEntry(table.getNewEntry(data.shift()));
+		setTimeout(function(){
+			if (that.id == id) appendEntryRecursive(data,id);	
+		},0);
+	}
+	
+	appendEntryRecursive(data,this.id);
+}
 
+$.SearchField = function(title,table){
+	var item = $('<input value="'+title+'" title="'+title+'" class="greyed" style="color:#AAA"/>')
+	.bind('keyup',table.searchAction)
+	.bind('focus',function(){
+		$(this).css('color','').removeClass('greyed');
+		if($(this).val()==title) {
+			$(this).val('');
+		}
+	}).bind('focusout',function(){
+		if($(this).val()==title || $(this).val()=='') {
+			$(this).val(title);
+			$(this).css('color','#AAA').addClass('greyed');
+		}
+	});
+	return item;
+}
 
 $.fn.SelectableList = function(options){
 	this.settings = {
@@ -302,12 +362,16 @@ $.fn.InputField = function(writeable){
 		if (writeable)
 			field.html("<input type='text' name ='"+this.attr('name')+"' value='"+field.html()+"'/>");
 	}
-	this.create = function(name,value){
-		var val = value;
+	this.create = function(name, data){
+		var val = data.value;
 		if (val == null) val = "";
 		this.attr('name',name);
 		this.append('<label>'+name+'</label>');
 		this.append('<span><input type="text" name="'+name+'" value="'+val+'"></span>');
+        var input = this.find('input')
+        if (data.size != null) {
+            input.attr('size', data.size)
+        }
 	}
 	
 	this.disableAction = function(){
@@ -320,6 +384,7 @@ $.fn.InputField = function(writeable){
 	this.set = function(value){
 		this.find('span').html(value);
 	}
+    console.log(this);
 	return this;
 }
 
