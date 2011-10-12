@@ -60,8 +60,7 @@ class HostController {
 	def ajaxSave = {
 		def result = [:]
 		def hostInstance = Host.get(params.id)
-		def values = [name:params.name,'hostClass.id':params.hostClass,'environment.id':params.environment]
-		
+		def values = [name:params.name,'className.id':params.hostClass,'environment.id':params.environment]
 		if (hostInstance) {
 			if (params.version) {
 				def version = params.version.toLong()
@@ -85,7 +84,7 @@ class HostController {
 		else {
 			hostInstance = new Host(values)
 			if (hostInstance.save(flush: true)) {
-				def entry = [id: hostInstance.id, name: hostInstance.name,hostInstance:(hostInstance.className)?hostInstance.className.name:""]
+				def entry = [id: hostInstance.id, name: hostInstance.name,className:(hostInstance.className)?hostInstance.className.name:"", environment: hostInstance.environment.name]
 				result = [entry:  TableUtils.addActions(entry,g), 
 					      message: MessageResult.successMessage("New Entry successfully saved")]
 			}
