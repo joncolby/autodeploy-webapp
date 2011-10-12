@@ -59,6 +59,18 @@ a:hover{
 	text-decoration:underline
 }
 
+
+input,select,textarea{
+	border: 1px solid #CCC 
+}
+
+input:focus,select:focus,textarea:focus{
+	border: 1px solid #FBD850 !important
+}
+
+
+
+1px solid #CCC
 select{
 	background:#fff;
 	color:#1C94C4;
@@ -111,6 +123,10 @@ td.status div.working{
 }
 
 td.status .animated .ui-progressbar-value { background-image: url(ui-lightness/images/pbar-ani.gif); }
+
+.ui-widget-header .ui-icon{
+	background-image: url(ui-lightness/images/ui-icons_222222_256x240.png);
+}
 
 .working{ color: #333000; font-weight:normal; }
 .default{ color: #333; font-weight:bold; }
@@ -262,8 +278,7 @@ table .appView th{
 
 .wrapper .tableEntries thead td input{
 	display: inline-block;
-	margin-left: 10px;
-	width: 80px;
+	width: 100px;
 	border: 1px solid #CCC;
 }
 
@@ -275,6 +290,11 @@ table .appView th{
 .wrapper .tableEntries tbody tr.active td{
 	background: #FD9;
 }
+
+.wrapper .tableEntries tr td:last-child{
+	width:50px	
+}
+
 
 /* table.tableEntries end */
 
@@ -328,6 +348,7 @@ table .appView th{
 
 .wrapper .entryDetails table{
 	box-shadow: 2px 2px 5px 3px #666;
+	margin-bottom:10px;
 }
 
 .entryDetails table .hostView tr td:nth-child(1){

@@ -118,7 +118,6 @@ AbstractTable = function(){ // abstract class
 			}
 			$.AppendController(data,that);
 			console.log('search complete in '+((new Date()).getTime()-starttime) + 'ms');
-			
 		},1000);
 	}	
 //	this.searchAction = function(){
@@ -158,18 +157,36 @@ AbstractTable = function(){ // abstract class
 
 $.AppendController = function(data,table){
 	var that = this;
+	var div = table.closest('div');
+	
 	this.id = Math.floor(Math.random()*10000000);
 	
 	table.find('tbody').empty();
 	function appendEntryRecursive(data,id){
-		if (data.length == 0 || (that.id != id)) {return;}
+		if (data.length == 0 || (that.id != id)) {div.find('.loader').remove();return;}
 		table.appendEntry(table.getNewEntry(data.shift()));
 		setTimeout(function(){
 			if (that.id == id) appendEntryRecursive(data,id);	
 		},0);
 	}
 	
+	function addLoading(){
+		div.css('position','relative');
+		if (div.find('.loader').length == 0){
+			var loader = $('<img class="loader" src="../images/ajax-loader-big.gif"/>').css({
+				position:'absolute',
+				bottom:'0',
+				left:'0'
+			});
+			div.append(loader);
+			div.bind('scroll',function(){
+				loader.css('bottom',-$(this).scrollTop());
+			})
+		}
+	}
+	
 	appendEntryRecursive(data,this.id);
+	addLoading();
 }
 
 $.SearchField = function(title,table){
@@ -493,6 +510,7 @@ $.fn.ActionsContainer = function(row){
 				'edit':'pencil',
 				'remove':'close',
 				'cancel':'stop',
+				'create':'plus',
 				'deploy-all':'play',
 				'retry':'circle-triangle-e',
 				'rollback':'seek-first'

@@ -87,7 +87,7 @@ $.fn.EntryTable = function(){
 					}
 				}
 				else
-					$(current).append($('<span/>').ActionsContainer(this).set(result));
+					$(current).empty().append($('<span/>').ActionsContainer(that).set(result));
 			})(title)
 		}
 
