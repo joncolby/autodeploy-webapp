@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 
 public class RestartNodeHandler extends AbstractNodeHandler {
 
-    private static final int CHECK_INTERVAL = 30000; // 30 seconds
+    private static final int CHECK_INTERVAL = 60000; // 60 seconds
 
     private final String nodeName;
 
