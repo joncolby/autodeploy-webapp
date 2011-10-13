@@ -83,7 +83,7 @@ select option{
 }
 
 .wrapper{
-	width: 1250px;
+	width: 1150px;
 	margin:auto;
 }
 
@@ -203,7 +203,7 @@ td.status .animated .ui-progressbar-value { background-image: url(ui-lightness/i
 /* ul.queues end */
 .wrapper .fastDeploy{
 	float: right;
-	width: 1065px;
+	width: 965px;
 	margin-bottom:10px;
 }
 
@@ -260,7 +260,7 @@ table .appView th{
 /* table.tableEntries start */
 .wrapper .tableEntries{
 	float: right;
-	width: 1065px;
+	width: 965px;
 	max-height: 300px;
 	overflow:auto;
 	box-shadow: 2px 2px 5px 3px #666;
@@ -301,7 +301,7 @@ table .appView th{
 /* table.queueEntries start */
 .wrapper .queueEntries{
 	float: right;
-	width: 1065px;
+	width: 965px;
 	max-height: 300px;
 	overflow:auto;
 	box-shadow: 2px 2px 5px 3px #666;
@@ -637,7 +637,7 @@ table .appView th{
     padding: 5px 0px 5px 0px;
     font-size: 20px;
     text-align: center;
-    width: 1065px;
+    width: 965px;
     margin-bottom:20px;
     -moz-border-radius: 10px;
     border-radius: 10px;
