@@ -528,8 +528,9 @@ $.fn.ActionsContainer = function(row){
 		var selector = [];
 		for (var x=0;x<data.actions.length;x++){
 			selector.push( ".action_"+ data.actions[x].type);
-			if (this.find(".action_"+ data.actions[x].type).length  == 0);
-				createItem(data.actions[x]);
+			if (this.find(".action_"+ data.actions[x].type).length  == 0) {
+                createItem(data.actions[x]);
+            }
 		}
 		this.find('a.ui-icon:not('+selector.join(',')+')').remove();
 		return this;

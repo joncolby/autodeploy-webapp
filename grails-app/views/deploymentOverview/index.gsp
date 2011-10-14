@@ -73,7 +73,7 @@
 		        	</option>
 		            </g:each>
 		        </select>
-	      	  <select name="planId">
+	      	  <select name="planId" class="planSelect">
 		            <g:each in="${model.plans}" var="plan">
 		            <option value="${plan.id}"
 				        <g:if test="${model.selectedPlanId && model.selectedPlanId == plan.id}" >
