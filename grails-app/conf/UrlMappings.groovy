@@ -16,6 +16,7 @@ class UrlMappings {
 
         "/home"(view:"/home")
         "/admin"(controller: "deploymentAdmin")
+        "/admin/createNote"(controller: "deploymentAdmin", action: "createNote")
 		"/"(controller:"deploymentOverview")
 		"500"(view:'/error')
 	}

@@ -24,6 +24,14 @@ class AccessControlService {
         }
     }
 
+    String getCurrentUser() {
+        def auth = springSecurityService.authentication
+        if (!auth) return "(none)"
+        def user = auth.name
+        if (!user) return "(none)"
+        return user
+    }
+
     boolean hasRole(role) {
         def auth = springSecurityService.authentication
         return auth.authorities.collect { it.authority.toLowerCase() }.contains(role.toLowerCase())

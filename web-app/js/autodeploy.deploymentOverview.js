@@ -63,13 +63,54 @@ $.AppRevisionDialog = function(options){
 }
 
 
+$.fn.NotificationArea = function() {
+    var that = this;
+
+    var currentActive = false;
+    var currentMessage = null;
+
+    this.process = function(data) {
+        if (that.currentActive && typeof data == 'undefined') {
+            this.clearNotification();
+        } else {
+            if (typeof data != 'undefined') {
+                var message = data.message + " (from " + data.user + " on " + data.created +")";
+                if (message != that.currentMessage) {
+                    this.showNotification(message);
+                }
+            }
+        }
+    }
+
+    this.clearNotification = function() {
+        that.currentActive = false;
+        that.currentMessage = null;
+        $(this).empty();
+        $(this).slideUp("slow");
+        //$(this).hide();
+    }
+
+    this.showNotification = function(message) {
+        that.currentActive = true;
+        that.currentMessage = message;
+        $(this).empty().append(message);
+        $(this).slideDown("slow");
+        $(this).show();
+    }
+
+    return this;
+}
+
 $.fn.QueueList = function(){
 	var that = this;
 	this.entryTable = $('.wrapper .queueEntries table').QueueEntryTable(this);
 	this.detailsTable = $('.wrapper .entryDetails table').QueueEntryDetailsTable(this);
+    this.notificationArea = $('.wrapper .notification').NotificationArea();
     this.updater = null;
 	
 	this.processData = function(data,newEntryTable,newDetailsTable){
+        console.log(data);
+        this.notificationArea.process(data.notification);
 		if (data.queueEntries != null){
 			if (newEntryTable)
 				this.entryTable.create(data.queueEntries);
@@ -136,7 +177,7 @@ $.fn.QueueList = function(){
 		    	  return { timestamp:that.timestamp, entryId: that.entryId }
 		    	  },
 		    	  error:function(){
-
+                      console.log("ERROR!");
 		    	  },
 		      type:'json'
 		   },

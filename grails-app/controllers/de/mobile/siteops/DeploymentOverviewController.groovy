@@ -10,6 +10,7 @@ class DeploymentOverviewController {
 
 	def deploymentQueueService
     def accessControlService
+    def notificationService
 
 	def index = {
 
@@ -63,6 +64,10 @@ class DeploymentOverviewController {
         }
 
 		model['id'] = queue.id
+         if (notificationService.hasNotification()) {
+             model['notification'] = notificationService.getNotification()
+         }
+
 
 		def queueEntries = []
 		if (timestamp > 0) {

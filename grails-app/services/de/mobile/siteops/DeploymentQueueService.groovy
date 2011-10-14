@@ -1,9 +1,8 @@
 package de.mobile.siteops
 
-import java.util.concurrent.ConcurrentHashMap
-
-import org.springframework.transaction.annotation.Transactional
 import de.mobile.siteops.Environment.DeployErrorType
+import java.util.concurrent.ConcurrentHashMap
+import org.springframework.transaction.annotation.Transactional
 
 class DeploymentQueueService {
 
@@ -15,8 +14,14 @@ class DeploymentQueueService {
 
     def deployQueueMap = new ConcurrentHashMap<DeploymentQueueEntry, List<DeployProcessEntry>>()
 
+    def deployAllowed = true
+
     def canDeploy(DeploymentQueueEntry queueEntry) {
+
         DeploymentQueue queue = queueEntry.queue
+        if (!deployAllowed) {
+            return [success: false, message: "No deployments currently allowed, application will be restarted soon"]
+        }
         if (queue.frozen) return [success: false, message: "This deployment queue is currently 'frozen'<br/>Currently no deployment allowed"]
         if (!zookeeperHandlerService.connected) return [success: false, message: "Zookeeper is not connected, no deployment possible"]
 

@@ -30,6 +30,8 @@
 </head>
 <body>
 <div class="wrapper">
+    <div class="notification">
+    </div>
 	<div class="header">
 	</div>
 	<div class="queueContainer">
