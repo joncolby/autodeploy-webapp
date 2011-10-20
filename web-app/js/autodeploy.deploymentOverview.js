@@ -143,8 +143,6 @@ $.fn.QueueList = function(){
 				$.ajax({url:$this.attr('href'),data:{},
 					success:function(data){
 			            $.LoadingIndicator(false);
-						if (!$this.parent().hasClass('locked')) $('.fastDeploy').show();
-						else $('.fastDeploy').hide();
 						that.pollurl = $this.attr('href');
 						$this.parent().parent().children().removeClass('active');
 						$this.parent().addClass('active');
