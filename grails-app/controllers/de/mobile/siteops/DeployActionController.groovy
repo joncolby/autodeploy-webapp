@@ -41,6 +41,29 @@ class DeployActionController {
         render MessageResult.successMessage("Deployment started for '$queueEntry.executionPlan.name'") as JSON
     }
 
+    def reDeployAll = {
+        DeploymentQueueEntry queueEntry = params.queueEntry
+        ExecutionPlan plan = queueEntry.executionPlan
+
+        def revisions = []
+        def newExecutionPlan = new ExecutionPlan(forceDeploy: true, name: plan.name, contribution: plan.contribution, ticket: plan.ticket, team: plan.team, planType: PlanType.REDEPLOY, applicationVersions: [])
+        plan.applicationVersions.each {
+            if (it.revision) {
+                revisions += it.revision
+                newExecutionPlan.addToApplicationVersions(new ApplicationVersion(application: it.application, revision: it.revision))
+            }
+        }
+        newExecutionPlan.save()
+
+        def newQueueEntry = new DeploymentQueueEntry(state: HostStateType.QUEUED, executionPlan: newExecutionPlan, revision: revisions.unique().size() == 1 ? revisions[0] : '(Multiple)', duration: 0)
+        def deploymentQueue = queueEntry.queue
+        deploymentQueue.addToEntries(newQueueEntry)
+        deploymentQueue.save(false)
+
+        render MessageResult.successMessage("Created redeploy for plan '" + newExecutionPlan.outputName() + "'") as JSON
+    }
+
+
     def redeployFailed = {
         DeploymentQueueEntry queueEntry = params.queueEntry
         def canDeploy = deploymentQueueService.canDeploy(queueEntry)

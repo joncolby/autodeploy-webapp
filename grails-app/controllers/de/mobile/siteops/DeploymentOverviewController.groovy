@@ -105,6 +105,7 @@ class DeploymentOverviewController {
 					break;
 				case DEPLOYED:
                     modelEntry['duration'] = TimeUtils.formatDuration(entry.duration)
+                    modelEntry['actions'] += [title: 'Redeploy', type: 'redeploy', action: g.createLink(action: 'reDeployAll', controller: 'deployAction', id: entry.id)]
                     modelEntry['actions'] += [title: 'Rollback complete plan', type: 'rollback', action: g.createLink(action: 'rollback', controller: 'deployAction', id: entry.id)]
                     break;
                 case CANCELLED:

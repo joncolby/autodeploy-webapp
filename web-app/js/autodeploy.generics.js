@@ -513,13 +513,18 @@ $.fn.ActionsContainer = function(row){
 				'create':'plus',
 				'deploy-all':'play',
 				'retry':'circle-triangle-e',
-				'rollback':'seek-first'
+				'rollback':'seek-first',
+                'redeploy':'circle-arrow-e'
 			}
 	}
 	function createItem(data){
 		item = $('<a class="ui-icon action_'+data.type+'" href="'+data.action+'" title="' +data.title+'"></a>');
-		if(typeof settings.icons[data.type] == 'undefined') item.addClass('ui-icon-help');
-		else item.addClass('ui-icon-'+settings.icons[data.type]);
+		if(typeof settings.icons[data.type] == 'undefined') {
+            item.addClass('ui-icon-help');
+        } else {
+            item.addClass('ui-icon-'+settings.icons[data.type]);
+        }
+
 		
 		item.bind('click',row,row.doAction).button().tooltip({showURL: false, fade: 300, extraClass:"wide"});
 		that.append(item);

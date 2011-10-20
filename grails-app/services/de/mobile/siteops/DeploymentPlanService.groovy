@@ -32,6 +32,8 @@ class DeploymentPlanService {
 					xml.type(type: repository?.type)
 				}
 
+                xml.forceDeploy(plan.forceDeploy)
+
 				applications.each { ApplicationVersion a ->
 					xml.application(name: a.application.filename, id: a.application.id) {
 						xml.type(a.application.type.name())

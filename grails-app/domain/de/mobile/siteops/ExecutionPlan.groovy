@@ -2,7 +2,7 @@ package de.mobile.siteops
 
 class ExecutionPlan {
 
-    public static enum PlanType { NORMAL, ROLLBACK, RETRY, SYNC }
+    public static enum PlanType { NORMAL, ROLLBACK, REDEPLOY, RETRY, SYNC }
 
     String name
     String contribution
@@ -12,6 +12,8 @@ class ExecutionPlan {
 
     Date dateCreated
     Date lastUpdated
+
+    boolean forceDeploy = false
 
     static belongsTo = [ DeploymentQueueEntry ]
 
@@ -29,6 +31,8 @@ class ExecutionPlan {
             result = "Retry of " + name
         } else if (planType == PlanType.ROLLBACK) {
             result = "Rollback of " + name
+        } else if (planType == PlanType.REDEPLOY) {
+            result = "Redeploy of " + name
         } else {
             result = name
         }
