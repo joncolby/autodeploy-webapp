@@ -40,9 +40,12 @@
                     
                         <tr class="prop">
                             <td valign="top" class="name"><g:message code="application.filename.label" default="Filename" /></td>
-                            
                             <td valign="top" class="value">${fieldValue(bean: applicationInstance, field: "filename")}</td>
-                            
+                        </tr>
+
+                        <tr class="prop">
+                            <td valign="top" class="name"><g:message code="application.downloadName.label" default="downloadName" /></td>
+                            <td valign="top" class="value">${fieldValue(bean: applicationInstance, field: "downloadName")}</td>
                         </tr>
 
 
@@ -187,9 +190,9 @@
                         </tr>
                     
                         <tr class="prop">
-                            <td valign="top" class="name"><g:message code="application.safeDeploy.label" default="Safe Deploy" /></td>
+                            <td valign="top" class="name"><g:message code="application.doProbe.label" default="Probe after deployment" /></td>
                             
-                            <td valign="top" class="value"><g:formatBoolean boolean="${applicationInstance?.safeDeploy}" /></td>
+                            <td valign="top" class="value"><g:formatBoolean boolean="${applicationInstance?.doProbe}" /></td>
                             
                         </tr>
                     

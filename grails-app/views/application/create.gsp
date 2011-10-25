@@ -52,7 +52,16 @@
                                     <label for="filename"><g:message code="application.filename.label" default="Filename" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: applicationInstance, field: 'filename', 'errors')}">
-                                    <g:textField name="filename" size="40" value="${applicationInstance?.filename}" />
+                                    <g:textField name="filename" size="50" value="${applicationInstance?.filename}" />
+                                </td>
+                            </tr>
+
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="downloadName"><g:message code="application.downloadName.label" default="downloadName" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: applicationInstance, field: 'downloadName', 'errors')}">
+                                    <g:textField name="downloadName" size="50" value="${applicationInstance?.downloadName}" />
                                 </td>
                             </tr>
 
@@ -61,7 +70,7 @@
                                     <label for="startStopScript"><g:message code="application.startStopScript.label" default="Start/Stop Script" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: applicationInstance, field: 'startStopScript', 'errors')}">
-                                    <g:textField name="startStopScript" size="40" value="${applicationInstance?.startStopScript}" />
+                                    <g:textField name="startStopScript" size="50" value="${applicationInstance?.startStopScript}" />
                                 </td>
                             </tr>
 
@@ -184,10 +193,10 @@
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="safeDeploy"><g:message code="application.safeDeploy.label" default="Safe Deploy" /></label>
+                                    <label for="doProbe"><g:message code="application.doProbe.label" default="Probe after deployment" /></label>
                                 </td>
-                                <td valign="top" class="value ${hasErrors(bean: applicationInstance, field: 'safeDeploy', 'errors')}">
-                                    <g:checkBox name="safeDeploy" value="${applicationInstance?.safeDeploy}" />
+                                <td valign="top" class="value ${hasErrors(bean: applicationInstance, field: 'doProbe', 'errors')}">
+                                    <g:checkBox name="doProbe" value="${applicationInstance?.doProbe}" />
                                 </td>
                             </tr>
                         

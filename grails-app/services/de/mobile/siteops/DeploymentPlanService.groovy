@@ -41,18 +41,19 @@ class DeploymentPlanService {
 						xml.balancerType(a.application.balancerType)
 						xml.startStopScript(a.application.startStopScript)
 						xml.context(a.application.context)
+                        xml.downloadName(a.application.downloadName)
 						xml.artifactId(a.application.artifactId)
 						xml.groupId(a.application.groupId)
 						xml.suffix(a.application.suffix())
                         xml.releaseInfoJMXBean(a.application.releaseInfoJMXBean)
                         xml.releaseInfoJMXAttribute(a.application.releaseInfoJMXAttribute)
-						xml.release("git") // TODO remove if no longer used in agent deployscript
+						xml.release("git")
 						xml.revision(a.revision)
 						xml.install_path(a.application.installDir)
 						xml.start_on_deploy(a.application.startOnDeploy)
 						xml.assemble_properties(a.application.assembleProperties)
 						xml.instance_properties(a.application.instanceProperties)
-						xml.safeDeploy(a.application.safeDeploy)
+						xml.doProbe(a.application.doProbe)
 						xml.modulename(a.application.modulename)
 					}
 				}

@@ -54,6 +54,15 @@
 
                             <tr class="prop">
                                 <td valign="top" class="name">
+                                  <label for="downloadName"><g:message code="application.downloadName.label" default="downloadName" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: applicationInstance, field: 'downloadName', 'errors')}">
+                                    <g:textField size="40" name="downloadName" value="${applicationInstance?.downloadName}" />
+                                </td>
+                            </tr>
+
+                            <tr class="prop">
+                                <td valign="top" class="name">
                                   <label for="startStopScript"><g:message code="application.startStopScript.label" default="Start/Stop Script" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: applicationInstance, field: 'startStopScript', 'errors')}">
@@ -181,10 +190,10 @@
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                  <label for="safeDeploy"><g:message code="application.safeDeploy.label" default="Safe Deploy" /></label>
+                                  <label for="doProbe"><g:message code="application.doProbe.label" default="Probe after deployment" /></label>
                                 </td>
-                                <td valign="top" class="value ${hasErrors(bean: applicationInstance, field: 'safeDeploy', 'errors')}">
-                                    <g:checkBox name="safeDeploy" value="${applicationInstance?.safeDeploy}" />
+                                <td valign="top" class="value ${hasErrors(bean: applicationInstance, field: 'doProbe', 'errors')}">
+                                    <g:checkBox name="doProbe" value="${applicationInstance?.doProbe}" />
                                 </td>
                             </tr>
                         

@@ -11,6 +11,7 @@ class Application {
 	def dataSource
 
 	String filename
+    String downloadName
     String modulename
 	String description
 	ApplicationType type
@@ -26,7 +27,7 @@ class Application {
 	Boolean startOnDeploy = true
 	Boolean assembleProperties = true
 	Boolean instanceProperties = true
-	Boolean safeDeploy = true
+	Boolean doProbe = true
 
 	Date dateCreated
 	Date lastUpdated
@@ -42,6 +43,7 @@ class Application {
 	static constraints = {
 		pillar(nullable:false)
 		filename(blank:false,nullable:false)
+		downloadName(blank:false,nullable:false)
         modulename(blank:false,nullable:false)
         startStopScript(blank:true,nullable: true)
 		installDir(blank:false,nullable: true)

@@ -36,7 +36,7 @@ class ApplicationController {
 	   
 	   if (!application) { // for new entries
 		   application = [
-			   pillar:null,filename:"",startStopScript:"",installDir:"",description:"",context:"",releaseInfoJMXBean:"",type:null,balancerType:null, modulename:"",artifactId:"",groupId:"",assembleProperties:false,instanceProperties:false,safeDeploy:false,startOnDeploy:false]
+			   pillar:null,filename:"",downloadName:"",startStopScript:"",installDir:"",description:"",context:"",releaseInfoJMXBean:"",type:null,balancerType:null, modulename:"",artifactId:"",groupId:"",assembleProperties:false,instanceProperties:false,doProbe:false,startOnDeploy:false]
 	   }
 	   
 	   def pillarList = Pillar.findAll().collect { [id: it.id, name: it.name,selected: (application.pillar && application.pillar.id == it.id)] }
@@ -55,6 +55,7 @@ class ApplicationController {
 	   data['values'] = [
 		   pillar:[value:pillarList, type:'select'],
 		   filename:[value: application.filename, type: 'text', size: 30],
+		   downloadName:[value: application.downloadName, type: 'text', size: 30],
 		   startStopScript:[value: application.startStopScript, type: 'text'],
 		   installDir:[value: application.installDir, type: 'text'],
 		   description:[value: application.description, type: 'textarea'],
@@ -68,7 +69,7 @@ class ApplicationController {
 		   groupId:[value:application.groupId, type: 'text'],
 		   assembleProperties:[value:application.assembleProperties, type: 'checkbox'],
 		   instanceProperties:[value:application.instanceProperties, type: 'checkbox'],
-		   safeDeploy:[value:application.safeDeploy, type: 'checkbox'],
+		   doProbe:[value:application.doProbe, type: 'checkbox'],
 		   startOnDeploy:[value:application.startOnDeploy, type: 'checkbox'],
 		   hostClasses:[value:hostClassList,type:'list']
 	   ]
@@ -82,6 +83,7 @@ class ApplicationController {
 	   def application = Application.get(params.id)
 	   def values = ['pillar.id':params.pillar,
 		   filename:params.filename,
+           downloadName:params.downloadName,
 		   startStopScript:params.startStopScript,
 		   installDir:params.installDir,
 		   description:params.description,
@@ -95,7 +97,7 @@ class ApplicationController {
 		   groupId:params.groupId,
 		   assembleProperties:(params.assembleProperties)?true:false,
 		   instanceProperties:(params.instanceProperties)?true:false,
-		   safeDeploy:(params.safeDeploy)?true:false,
+		   doProbe:(params.doProbe)?true:false,
 		   startOnDeploy:(params.startOnDeploy)?true:false
 		]
 	      
