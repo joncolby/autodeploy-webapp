@@ -52,7 +52,7 @@
                                     <label for="filename"><g:message code="application.filename.label" default="Filename" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: applicationInstance, field: 'filename', 'errors')}">
-                                    <g:textField name="filename" size="60" value="${applicationInstance?.filename}" />
+                                    <g:textField name="filename" size="50" value="${applicationInstance?.filename}" />
                                 </td>
                             </tr>
 
@@ -62,7 +62,7 @@
                                     <br>(Macro %REV% can be used for revision)
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: applicationInstance, field: 'downloadName', 'errors')}">
-                                    <g:textField name="downloadName" size="60" value="${applicationInstance?.downloadName}" />
+                                    <g:textField name="downloadName" size="50" value="${applicationInstance?.downloadName}" />
                                 </td>
                             </tr>
 
@@ -71,7 +71,7 @@
                                     <label for="startStopScript"><g:message code="application.startStopScript.label" default="Start/Stop Script" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: applicationInstance, field: 'startStopScript', 'errors')}">
-                                    <g:textField name="startStopScript" size="60" value="${applicationInstance?.startStopScript}" />
+                                    <g:textField name="startStopScript" size="50" value="${applicationInstance?.startStopScript}" />
                                 </td>
                             </tr>
 
@@ -107,7 +107,7 @@
                                     <label for="releaseInfoJMXBean"><g:message code="application.releaseInfoJMXBean.label" default="Release Info JMX Bean" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: applicationInstance, field: 'releaseInfoJMXBean', 'errors')}">
-                                    <g:textField name="releaseInfoJMXBean" size="60" value="${applicationInstance?.releaseInfoJMXBean}" />
+                                    <g:textField name="releaseInfoJMXBean" size="50" value="${applicationInstance?.releaseInfoJMXBean}" />
                                 </td>
                             </tr>
                         
@@ -116,7 +116,7 @@
                                     <label for="releaseInfoJMXAttribute"><g:message code="application.releaseInfoJMXAttribute.label" default="Release Info JMX Attribute" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: applicationInstance, field: 'releaseInfoJMXAttribute', 'errors')}">
-                                    <g:textField name="releaseInfoJMXAttribute" size="60" value="${applicationInstance?.releaseInfoJMXAttribute}" />
+                                    <g:textField name="releaseInfoJMXAttribute" size="50" value="${applicationInstance?.releaseInfoJMXAttribute}" />
                                 </td>
                             </tr>
                         

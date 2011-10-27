@@ -81,14 +81,14 @@ padding: 5px 0px 0px 0px;
 }
 #col_one {
 margin: 0px 0px 0px 0px;
-width: 80%;
+width: 75%;
 float: left;
 /* background: #cff; */
 /* border: thin solid #000; */
 }
 #col_two {
 margin: 0px 0px 0px 10px;
-width: 20%;
+width: 25%;
 float: right;
 /* background: #6cf; */ 
 /* border: thin solid #000; */ 
