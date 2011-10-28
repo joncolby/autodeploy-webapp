@@ -140,6 +140,8 @@ td.status .animated .ui-progressbar-value { background-image: url(ui-lightness/i
 /* .header start */
 .wrapper .header{
 	height: 10px;
+    margin-bottom: 10px;
+    text-align: right;
 }
 
 /* .header end */

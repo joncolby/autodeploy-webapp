@@ -33,7 +33,7 @@
     <div class="notification">
     </div>
 	<div class="header">
-	</div>
+        Mobile Autodeploy version <b>${grailsApplication.metadata['app.version']}</b></div>
 	<div class="queueContainer">
 		<ul class="queues ui-widget-content">
 		
