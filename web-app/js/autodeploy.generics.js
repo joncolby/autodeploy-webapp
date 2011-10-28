@@ -401,7 +401,6 @@ $.fn.InputField = function(writeable){
 	this.set = function(value){
 		this.find('span').html(value);
 	}
-    console.log(this);
 	return this;
 }
 
@@ -514,7 +513,8 @@ $.fn.ActionsContainer = function(row){
 				'deploy-all':'play',
 				'retry':'circle-triangle-e',
 				'rollback':'seek-first',
-                'redeploy':'circle-arrow-e'
+                'redeploy':'circle-arrow-e',
+                'retryInProcess':'circle-triangle-e'
 			}
 	}
 	function createItem(data){

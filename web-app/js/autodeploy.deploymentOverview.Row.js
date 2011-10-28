@@ -100,7 +100,6 @@ $.fn.QueueEntryDetailsHostRow = function(queueList){
 			td.append(div);
 			item = $('<span revision="'+data.applications[x].revision+'" application="'+data.applications[x].name+'" title="'+data.applications[x].name+' (revision '+data.applications[x].revision+')" class="'+data.applications[x].type+'"></span>');
 			item.tooltip({showURL: false, fade: 300, top: -10, left: 15, bodyHandler: function() {
-                console.log(this);
                 return $(this).attr('application') + '&nbsp;<span class="important tooltip">' + $(this).attr('revision') + '</span>';
             }});
 			div.append(item);

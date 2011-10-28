@@ -72,12 +72,29 @@ class DeployActionController {
             return
         }
 
-        def deployedHosts = deploymentQueueService.createdRedeployDeployProcessEntries(queueEntry)
-        if (!deployedHosts) render MessageResult.errorMessage("No failed hosts to redeploy found") as JSON
+        def deployedHosts = deploymentQueueService.createdRedeployDeployProcessEntries(queueEntry, false)
+        if (!deployedHosts) {
+            render MessageResult.errorMessage("No failed hosts to redeploy found") as JSON
+            return
+        }
 
         deploymentQueueService.deployNextHosts(queueEntry)
 
         render MessageResult.successMessage("Deployment started for '$queueEntry.executionPlan.name'") as JSON
+    }
+
+    def redeployProcessFailed = {
+        DeploymentQueueEntry queueEntry = params.queueEntry
+
+        def deployedHosts = deploymentQueueService.createdRedeployDeployProcessEntries(queueEntry, true)
+        if (!deployedHosts) {
+            render MessageResult.errorMessage("No failed hosts to redeploy found") as JSON
+            return
+        }
+
+        deploymentQueueService.deployNextHosts(queueEntry)
+
+        render MessageResult.successMessage("Rescheduled failed host for running process") as JSON
     }
 
     def abort = {

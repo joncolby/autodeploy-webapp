@@ -89,9 +89,12 @@ class DeploymentOverviewController {
                     modelEntry['actions'] += [title: 'Remove from list', type: 'remove', action: g.createLink(action: 'remove', controller: 'deployAction', id: entry.id)]
 					break;
 				case IN_PROGRESS:
-					modelEntry['actions'] += [title: 'Abort deployment', type: 'cancel', action: g.createLink(action: 'abort', controller: 'deployAction', id: entry.id)]
-
 					def processEntries = deploymentQueueService.getDeployedHostsForQueueEntry(entry)
+                    if (processEntries.find { HostStateType.isFailed(it.state) }) {
+                        modelEntry['actions'] += [title: 'Redeploy failed hosts', type: 'retryInProcess', action: g.createLink(action: 'redeployProcessFailed', controller: 'deployAction', id: entry.id)]
+                    }
+                    modelEntry['actions'] += [title: 'Abort deployment', type: 'cancel', action: g.createLink(action: 'abort', controller: 'deployAction', id: entry.id)]
+
 					def totalAvgDuration = processEntries.collect { it.avgDuration }.sum()
 					def duration = new Date().time - entry.lastUpdated?.time
                     if (duration && totalAvgDuration) {

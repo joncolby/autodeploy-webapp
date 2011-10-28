@@ -40,15 +40,15 @@ class DeploymentQueueService {
         queueEntry.lastUpdated = new Date()
         queueEntry.save()
 
-        if (!deployQueueMap[queueEntry]) {
-            deployQueueMap.remove(queueEntry)
+        def deployQueueMapEntry = getDeployQueueMapEntry(queueEntry)
+        if (!deployQueueMapEntry) {
             return null
         } else {
-            return deployQueueMap[queueEntry]
+            return deployQueueMapEntry
         }
     }
 
-    def createdRedeployDeployProcessEntries(DeploymentQueueEntry queueEntry) {
+    def createdRedeployDeployProcessEntries(DeploymentQueueEntry queueEntry, boolean deploymentRunning) {
         def queue = queueEntry.queue
         def env = queue.environment
         def plan = queueEntry.executionPlan
@@ -57,7 +57,9 @@ class DeploymentQueueService {
         if (entries) {
             entries.each { DeployProcessEntry entry ->
                 if (HostStateType.isFailed(entry.state)) {
-                    entry.deploymentPlan = deploymentPlanService.createDeploymentXml(queueEntry, plan, entry.host, env)
+                    def host = Host.get(entry.hostid)
+                    entry.deploymentPlan = deploymentPlanService.createDeploymentXml(queueEntry, plan, host, env)
+                    entry.host = host
                     entry.state = HostStateType.QUEUED
                     entry.startTime = new Date().time
                     entry.messages = []
@@ -65,22 +67,33 @@ class DeploymentQueueService {
                 }
             }
         }
-        deployQueueMap[queueEntry] = entries
 
-        queueEntry.state = HostStateType.IN_PROGRESS
-        queueEntry.lastUpdated = new Date()
-        queueEntry.save(flush: true)
+        if (!deploymentRunning) {
+            def existingEntry = deployQueueMap.find { it.key.id == queueEntry.id }
+            if (existingEntry) {
+                deployQueueMap[existingEntry.key] = entries
+            } else {
+                deployQueueMap[queueEntry] = entries
+            }
+            queueEntry.state = HostStateType.IN_PROGRESS
+            queueEntry.lastUpdated = new Date()
+            queueEntry.save(flush: true)
+        }
 
-        if (!deployQueueMap[queueEntry]) {
-            deployQueueMap.remove(queueEntry)
+        def deployQueueMapEntry = getDeployQueueMapEntry(queueEntry)
+        if (!deployQueueMapEntry) {
             return null
         } else {
-            return deployQueueMap[queueEntry]
+            return deployQueueMapEntry
         }
     }
 
     def deployNextHosts(DeploymentQueueEntry queueEntry) {
-        def processHosts = deployQueueMap[queueEntry]
+        def processHosts = getDeployQueueMapEntry(queueEntry)
+        if (processHosts == null || processHosts.empty) {
+            log.fatal "Could not find queue entry in deploy queue map when trying to deploy next hosts"
+            return
+        }
         handleDeployErrors(processHosts)
         def minPrioEntry = processHosts?.findAll { it.state == HostStateType.QUEUED || it.state == HostStateType.IN_PROGRESS }?.min { it.priority }
         if (minPrioEntry) {
@@ -149,7 +162,16 @@ class DeploymentQueueService {
         DeployedHost.withTransaction { status ->
             def totalDuration = 0
             def finalState = null
-            deployQueueMap[queueEntry].each { DeployProcessEntry entry ->
+            def deployQueueMapEntry = getDeployQueueMapEntry(queueEntry)
+            if (!deployQueueMapEntry) {
+                log.fatal "Could not find queue entry in deployment queue map!"
+                def e = DeploymentQueueEntry.get(queueEntry.id)
+                e.state = HostStateType.ERROR
+                e.finalizedDate = new Date()
+                e.save(flush: true)
+                return
+            }
+            deployQueueMapEntry.each { DeployProcessEntry entry ->
                 int duration = entry.processTime()
                 totalDuration += duration
                 def deployedHost
@@ -183,8 +205,15 @@ class DeploymentQueueService {
             e.state = finalState ? finalState : HostStateType.CANCELLED
             e.finalizedDate = new Date()
             e.save(flush: true)
-            deployQueueMap.remove(queueEntry)
-            log.info "No queued hosts found, deployment done for $queueEntry.id"
+
+            def queueEntryKey = deployQueueMap.find { it.key.id == queueEntry.id }?.key
+            if (queueEntryKey) {
+                deployQueueMap.remove(queueEntryKey)
+                log.info "No queued hosts found, deployment done for $queueEntry.id"
+            } else {
+                log.error "Could not find queue entry in map for queueentry id $queueEntry.id"
+            }
+
         }
 
     }
@@ -295,6 +324,10 @@ class DeploymentQueueService {
             }
         }
         hostclassAppMap
+    }
+
+    private def getDeployQueueMapEntry(queueEntry) {
+        return deployQueueMap.find { it.key.id == queueEntry.id }?.value
     }
 
 }
