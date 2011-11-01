@@ -4,7 +4,7 @@ class Application {
 
     enum LoadBalancerType { NONE, MODJK, NETSCALER }
 
-    enum ApplicationType { TANUKI_TOMCAT, TANUKI_DAEMON, STATIC_CONTENT, TARBALL, UNPACK_ONLY }
+    enum ApplicationType { TANUKI_TOMCAT, TANUKI_DAEMON, STATIC_CONTENT, TARBALL, UNPACK_ONLY, TANUKI_JAR, JAR_DOWNLOAD }
 
     enum MarketPlace { FRANCE, GERMANY, ITALY, POLAND, ROMANIA }
 

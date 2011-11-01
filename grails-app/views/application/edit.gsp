@@ -55,7 +55,7 @@
                             <tr class="prop">
                                 <td valign="top" class="name">
                                   <label for="downloadName"><g:message code="application.downloadName.label" default="downloadName" /></label>
-                                  <br>(Macro %REV% can be used for revision)
+                                  <br>(%REV% can be used for revision)
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: applicationInstance, field: 'downloadName', 'errors')}">
                                     <g:textField size="40" name="downloadName" value="${applicationInstance?.downloadName}" />
