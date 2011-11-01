@@ -221,7 +221,7 @@
           <%-- column --%>
                 <div id="col_two">
                    <h3>Select Host Classes</h3>
-                   <g:checkBoxList name="hostclasses" form="applicationForm" from="${de.mobile.siteops.HostClass.list()}" value="${applicationInstance?.hostclasses?.collect{it.id}}" optionKey="id" />
+                   <g:checkBoxList name="hostclasses" form="applicationForm" from="${de.mobile.siteops.HostClass.list(sort:'name')}" value="${applicationInstance?.hostclasses?.collect{it.id}}" optionKey="id" />
                 </div>
               </div>
           <%-- column --%>
