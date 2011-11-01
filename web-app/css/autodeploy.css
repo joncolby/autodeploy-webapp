@@ -75,23 +75,23 @@
 #container {
 /* height: 100%; */
 height: 100%;
-width: 800px;
+width: 700px;
 padding: 5px 0px 0px 0px;
 /* background: #000; */
 }
 #col_one {
 margin: 0px 0px 0px 0px;
-width: 70%;
+width: 400px;
 float: left;
 /* background: #cff; */
 /* border: thin solid #000; */
 }
 #col_two {
 margin: 0px 0px 0px 10px;
-width: 30%;
+width: 160px;
 float: right;
 /* background: #6cf; */ 
-/* border: thin solid #000; */ 
+/* border: thin solid #000;  */
 }
 
 

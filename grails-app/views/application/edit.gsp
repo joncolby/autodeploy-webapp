@@ -48,7 +48,7 @@
                                   <label for="filename"><g:message code="application.filename.label" default="Filename" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: applicationInstance, field: 'filename', 'errors')}">
-                                    <g:textField size="50" name="filename" value="${applicationInstance?.filename}" />
+                                    <g:textField size="40" name="filename" value="${applicationInstance?.filename}" />
                                 </td>
                             </tr>
 
@@ -58,7 +58,7 @@
                                   <br>(Macro %REV% can be used for revision)
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: applicationInstance, field: 'downloadName', 'errors')}">
-                                    <g:textField size="50" name="downloadName" value="${applicationInstance?.downloadName}" />
+                                    <g:textField size="40" name="downloadName" value="${applicationInstance?.downloadName}" />
                                 </td>
                             </tr>
 
@@ -67,7 +67,7 @@
                                   <label for="startStopScript"><g:message code="application.startStopScript.label" default="Start/Stop Script" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: applicationInstance, field: 'startStopScript', 'errors')}">
-                                    <g:textField size="50" name="startStopScript" value="${applicationInstance?.startStopScript}" />
+                                    <g:textField size="40" name="startStopScript" value="${applicationInstance?.startStopScript}" />
                                 </td>
                             </tr>
 
@@ -76,7 +76,7 @@
                                   <label for="installDir"><g:message code="application.installDir.label" default="Install Directory" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: applicationInstance, field: 'installDir', 'errors')}">
-                                    <g:textField size="50" name="installDir" value="${applicationInstance?.installDir}" />
+                                    <g:textField size="40" name="installDir" value="${applicationInstance?.installDir}" />
                                 </td>
                             </tr>
                         
@@ -85,7 +85,7 @@
                                   <label for="description"><g:message code="application.description.label" default="Description" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: applicationInstance, field: 'description', 'errors')}">
-                                    <g:textArea rows="3" cols="50" name="description" value="${applicationInstance?.description}" />
+                                    <g:textArea rows="3" cols="40" name="description" value="${applicationInstance?.description}" />
                                 </td>
                             </tr>
                         
@@ -94,7 +94,7 @@
                                   <label for="context"><g:message code="application.context.label" default="Context" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: applicationInstance, field: 'context', 'errors')}">
-                                    <g:textField name="context" size="50" value="${applicationInstance?.context}" />
+                                    <g:textField name="context" size="40" value="${applicationInstance?.context}" />
                                 </td>
                             </tr>
                         
@@ -103,7 +103,7 @@
                                   <label for="releaseInfoJMXBean"><g:message code="application.releaseInfoJMXBean.label" default="Release Info JMX Bean" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: applicationInstance, field: 'releaseInfoJMXBean', 'errors')}">
-                                    <g:textField name="releaseInfoJMXBean" size="50" value="${applicationInstance?.releaseInfoJMXBean}" />
+                                    <g:textField name="releaseInfoJMXBean" size="40" value="${applicationInstance?.releaseInfoJMXBean}" />
                                 </td>
                             </tr>
                         
@@ -112,7 +112,7 @@
                                   <label for="releaseInfoJMXAttribute"><g:message code="application.releaseInfoJMXAttribute.label" default="Release Info JMX Attribute" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: applicationInstance, field: 'releaseInfoJMXAttribute', 'errors')}">
-                                    <g:textField name="releaseInfoJMXAttribute" size="50" value="${applicationInstance?.releaseInfoJMXAttribute}" />
+                                    <g:textField name="releaseInfoJMXAttribute" size="40" value="${applicationInstance?.releaseInfoJMXAttribute}" />
                                 </td>
                             </tr>
                         
@@ -148,7 +148,7 @@
                                   <label for="modulename"><g:message code="application.modulename.label" default="Module Name" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: applicationInstance, field: 'modulename', 'errors')}">
-                                    <g:textField size="50" name="modulename" value="${applicationInstance?.modulename}" />
+                                    <g:textField size="40" name="modulename" value="${applicationInstance?.modulename}" />
                                 </td>
                             </tr>
     
@@ -158,7 +158,7 @@
                                     <label for="artifactId"><g:message code="application.artifactId.label" default="Artifact Id" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: applicationInstance, field: 'artifactId', 'errors')}">
-                                    <g:textField name="artifactId" size="50" value="${applicationInstance?.artifactId}" />
+                                    <g:textField name="artifactId" size="40" value="${applicationInstance?.artifactId}" />
                                 </td>
                             </tr>
 
