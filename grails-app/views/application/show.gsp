@@ -181,6 +181,13 @@
                             <td valign="top" class="value"><g:formatBoolean boolean="${applicationInstance?.instanceProperties}" /></td>
                             
                         </tr>
+
+                        <tr class="prop">
+                            <td valign="top" class="name"><g:message code="application.propertiesPath.label" default="Properties Directory" /></td>
+
+                            <td valign="top" class="value">${fieldValue(bean: applicationInstance, field: "propertiesPath")}</td>
+
+                        </tr>
                     
                         <tr class="prop">
                             <td valign="top" class="name"><g:message code="application.lastUpdated.label" default="Last Updated" /></td>

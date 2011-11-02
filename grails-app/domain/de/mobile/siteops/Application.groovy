@@ -4,7 +4,7 @@ class Application {
 
     enum LoadBalancerType { NONE, MODJK, NETSCALER }
 
-    enum ApplicationType { TANUKI_TOMCAT, TANUKI_DAEMON, STATIC_CONTENT, TARBALL, UNPACK_ONLY, TANUKI_JAR, JAR_DOWNLOAD }
+    enum ApplicationType { TANUKI_TOMCAT, TANUKI_DAEMON, STATIC_CONTENT, UNPACK_AND_SYMLINK, TANUKI_JAR, UNPACK_ONLY, COPY_AND_SYMLINK }
 
     enum MarketPlace { FRANCE, GERMANY, ITALY, POLAND, ROMANIA }
 
@@ -24,6 +24,7 @@ class Application {
 	String installDir
 	String artifactId
 	String groupId
+    String propertiesPath
 	Boolean startOnDeploy = true
 	Boolean assembleProperties = true
 	Boolean instanceProperties = true
@@ -47,6 +48,7 @@ class Application {
         modulename(blank:false,nullable:false)
         startStopScript(blank:true,nullable: true)
 		installDir(blank:false,nullable: true)
+		propertiesPath(blank:false,nullable: true)
 		artifactId(blank:false,nullable:true)
 		groupId(blank:false,nullable:true)
 		description(blank:false,nullable:true)

@@ -188,6 +188,14 @@
                                     <g:checkBox name="instanceProperties" value="${applicationInstance?.instanceProperties}" />
                                 </td>
                             </tr>
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                  <label for="propertiesPath"><g:message code="application.propertiesPath.label" default="Properties Directory" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: applicationInstance, field: 'propertiesPath', 'errors')}">
+                                    <g:textField size="40" name="propertiesPath" value="${applicationInstance?.propertiesPath}" />
+                                </td>
+                            </tr>
                         
                             <tr class="prop">
                                 <td valign="top" class="name">

@@ -50,6 +50,7 @@ class DeploymentPlanService {
 						xml.release("git")
 						xml.revision(a.revision)
 						xml.install_path(a.application.installDir)
+						xml.properties_path(a.application.propertiesPath)
 						xml.start_on_deploy(a.application.startOnDeploy)
 						xml.assemble_properties(a.application.assembleProperties)
 						xml.instance_properties(a.application.instanceProperties)
