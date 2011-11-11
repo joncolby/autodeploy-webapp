@@ -290,7 +290,7 @@ class DeployActionController {
 
         def applicationsNotFound = []
         def revisions = []
-        def newExecutionPlan = new ExecutionPlan(name: "Sync of environment $sourceQueue.environment.name", contribution: "No specific contribution", ticket: "N/A", team: team, planType: PlanType.SYNC, applicationVersions: [])
+        def newExecutionPlan = new ExecutionPlan(name: "Sync of environment $sourceQueue.environment.name", contribution: "No specific contribution", ticket: "N/A", team: team, planType: PlanType.SYNC, repository: sourceQueue.environment.repository, applicationVersions: [])
         latestAppVersions.each {
             if (it.revision) {
                 revisions += it.revision
@@ -304,10 +304,13 @@ class DeployActionController {
 
         def newQueueEntry = new DeploymentQueueEntry(state: HostStateType.QUEUED, executionPlan: newExecutionPlan, plan: null, revision: revisions.unique().size() == 1 ? revisions[0] : '(Multiple)', duration: 0)
         targetQueue.addToEntries(newQueueEntry)
-        targetQueue.save()
+        if (!targetQueue.save(flush: true)) {
+            render MessageResult.errorMessage("Could not save plan to destination queue $targetQueue.environment.name")
+            return
+        }
 
         if (applicationsNotFound && applicationsNotFound.size() > 0) {
-            render MessageResult.warningMessage("Sync of environment '<strong>$sourceQueue.environment.name</strong>' created." + applicationsNotFound.size() + " applications never deployed in '$sourceQueue.environment.name' and were skipped") as JSON
+            render MessageResult.warningMessage("Sync of environment '<strong>$sourceQueue.environment.name</strong>' created.<br/>" + applicationsNotFound.size() + " applications never deployed in '$sourceQueue.environment.name' and were skipped") as JSON
         } else {
             render MessageResult.successMessage("Sync of environment '$sourceQueue.environment.name' has been created.") as JSON
         }

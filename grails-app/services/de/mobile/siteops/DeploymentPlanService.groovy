@@ -12,8 +12,11 @@ class DeploymentPlanService {
 	@Transactional(readOnly = true)
 	def createDeploymentXml(DeploymentQueueEntry entry, ExecutionPlan plan, Host host, Environment environment) {
 		HostClass hostclass = host.className
-		Repository repository = environment.repository
-		def planApplications = plan.applicationVersions
+        Repository repository = plan.repository
+        if (!repository) {
+            repository = environment.repository
+        }
+        def planApplications = plan.applicationVersions
         def applications = []
         planApplications.each {
             if (hostclass.applications.contains(it.application)) {
@@ -97,7 +100,7 @@ class DeploymentPlanService {
             }
         }
 
-        def executionPlan = new ExecutionPlan(name: plan.name, contribution: plan.contribution, ticket: plan.ticket ? plan.ticket : "", planType: PlanType.NORMAL, team: plan.team, applicationVersions: [])
+        def executionPlan = new ExecutionPlan(name: plan.name, contribution: plan.contribution, ticket: plan.ticket ? plan.ticket : "", planType: PlanType.NORMAL, team: plan.team, repository: env.repository, applicationVersions: [])
 
         applications.each { app ->
             if (applicationsInThisEnv.contains(app)) {

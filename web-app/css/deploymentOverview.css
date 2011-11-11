@@ -224,7 +224,7 @@ td.status .animated .ui-progressbar-value { background-image: url(ui-lightness/i
 	font-size: 10px;	
 }
 
-.wrapper .fastDeploy form[name=syncEnv]{
+.wrapper .fastDeploy .sync form[name=syncEnv]{
 	float:right;
 }
 
@@ -329,7 +329,7 @@ table .appView th{
 .wrapper .queueEntries{
 	float: right;
 	width: 965px;
-	max-height: 470px;
+	max-height: 485px;
 	overflow:auto;
 	box-shadow: 2px 2px 5px 3px #666;
 }
@@ -731,4 +731,72 @@ table .appView th{
 .tableEntryDetails .col{
 	width:300px;
 	float:left
+}
+
+/* Dashboard overview */
+
+table.dashboard {
+    padding: 0px;
+    margin: 5px 0;
+    font-size: 12px;
+    line-height: 18px;
+    border-collapse: collapse;
+    font-weight: normal;
+    color: black;
+    font-family: verdana,arial,sans-serif;
+    clear: left;
+    text-align: left;
+}
+
+table.dashboard th {
+    font-weight: bold;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #ccc;
+    padding: 3px 4px 3px 4px;
+    text-align: center;
+    vertical-align: top;
+    background-color: #ddd;
+}
+
+table.dashboard tr {
+    display: table-row;
+    vertical-align: inherit;
+    border-collapse: inherit;
+    font-weight: normal;
+    text-align: left;
+    line-height: 18px;
+    font-size: 12px;
+}
+
+table.dashboard td {
+    border-width: 1px;
+    border-style: solid;
+    border-color: #ccc;
+    padding:  3px 4px 3px 4px;
+    vertical-align: top;
+    min-width: .6em;
+}
+
+table.dashboard td div.revision {
+    float: left;
+    overflow: hidden;
+    max-width: 140px;
+}
+
+table.dashboard td.center {
+    text-align: center;
+}
+
+table.dashboard td a:visited {
+    color: blue;
+}
+
+table.dashboard td a {
+    color: blue;
+}
+
+table.dashboard td div.apps {
+    padding-left: 18px;
+    padding-top: 5px;
 }

@@ -47,13 +47,14 @@
 		</ul>		
 		<ul class="queues ui-widget-content">
 		<li><h2><a href="<g:createLink controller="deploymentPlanManagment" action="index" />" class="modal">Plan Managment</a></h2></li>
-		<li><strong><a href="<g:createLink controller="applicationVersions" action="index" />" class="modalDiv">App Revisions</a></strong></li>
+    	<li><strong><a href="<g:createLink controller="applicationVersions" action="index" />" class="modalDiv">App Revisions</a></strong></li>
+        <li><strong><a href="<g:createLink controller="dashboardOverview" action="index" />" class="dashboard">Dashboard</a></strong></li>
 		</ul>
 	</div>
         <div class="queueEntryHeader ui-state-hover">Queue: <span class="queueText">(none selected yet)</span></div>
 
         <div class="fastDeploy">
-        
+            <div class="sync">
 	        <form name="syncEnv" action="<g:createLink controller="deployAction" action="syncEnv"/>">
                 <label>Sync enviroment: </label>
 		        <select>
@@ -63,6 +64,7 @@
 				</g:each>
 		        </select>
 	        </form>
+            </div>
         	<form name="assignPlan" action="<g:createLink controller="deploymentPlanManagment" action="addToQueue" />">
                 <label>Fast deploy plan: </label>
 		        <select name="teamId">

@@ -9,6 +9,7 @@ class ExecutionPlan {
     String ticket
     PlanType planType = PlanType.NORMAL
     Team team
+    Repository repository
 
     Date dateCreated
     Date lastUpdated
@@ -21,6 +22,9 @@ class ExecutionPlan {
 
     static transients = ['outputName']
 
+    static constraints = {
+        repository(nullable: true)
+    }
     static mapping = {
         version false
     }

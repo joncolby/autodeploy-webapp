@@ -39,6 +39,27 @@ $.DeploymentPlanDialog = function(options){
 	return container;
 }
 
+$.DashboardOverviewDialog = function(options){
+
+	var container = $('<div class="containerWrapper"/>').attr('title','Dashboard Overview');
+	var dialog;
+	options = $.extend(options,{
+		close:function(){
+			$(this).dialog("destroy").remove();
+		},modal:true})
+
+	AutodeployDialog.apply(this,arguments);  // "ableitung"
+
+	this.afterAjaxAction = function(data){
+		$.LoadingIndicator(false);
+		container.append(data);
+		dialog = container.dialog(options);
+	}
+
+	this.getContents();
+	return container;
+}
+
 
 $.AppRevisionDialog = function(options){
 	options = $.extend(options,{
@@ -137,6 +158,9 @@ $.fn.QueueList = function(){
 			else if ($this.hasClass('modalDiv')){
 				$.AppRevisionDialog({url:$this.attr('href'),height:"500",width:"1000"});
 			}
+            else if ($this.hasClass('dashboard')) {
+                $.DashboardOverviewDialog({url:$this.attr('href'),height:"800",width:"1200"});
+            }
 			else {
 	            $('.queueEntryHeader .queueText').html($this.text());
 	            $.LoadingIndicator(true);
@@ -148,8 +172,8 @@ $.fn.QueueList = function(){
 						$this.parent().addClass('active');
 						$.cookie('autodeploy_queueId',$this.attr('queueId'));
 						that.processData(data,true,true);
-						$('.wrapper .fastDeploy form[name=syncEnv] select option').show();
-						$('.wrapper .fastDeploy form[name=syncEnv] select option[value='+$this.attr('queueId')+']').hide();
+						$('.wrapper .fastDeploy .sync form[name=syncEnv] select option').show();
+						$('.wrapper .fastDeploy .sync form[name=syncEnv] select option[value='+$this.attr('queueId')+']').hide();
 						that.startUpdater();
 						
 				},dataType:'json'});
@@ -228,17 +252,23 @@ $(function(){
 				}});
 			return false;
 	})
-	$('.wrapper .fastDeploy form[name=syncEnv] select').bind('change',function(){ $(this).closest('form').submit()})
-	$('.wrapper .fastDeploy form[name=syncEnv]').bind('submit',function(){
+	$('.wrapper .fastDeploy .sync form[name=syncEnv] select').bind('change',function(){ $(this).closest('form').submit()})
+	$('.wrapper .fastDeploy .sync form[name=syncEnv]').bind('submit',function(){
 		var that = this;
+        var syncEle = $('.wrapper .fastDeploy .sync form[name=syncEnv] select');
+        syncEle.attr('disabled', 'true');
 		$.ajax({url:$(this).attr('action'),
 			data:{
 				id:$('.queueContainer li.active a').attr('queueId'),
 				sourceId:$(this).find('select').val()
 			},
 			success:function(data) {
+                syncEle.removeAttr('disabled');
 				MessageProcessor(data);
-			}
+			},
+            error:function() {
+                syncEle.removeAttr('disabled');
+            }
 		});
 
 		$(this).find('select').val(0);
