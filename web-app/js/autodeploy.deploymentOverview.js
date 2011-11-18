@@ -40,7 +40,6 @@ $.DeploymentPlanDialog = function(options){
 }
 
 $.DashboardOverviewDialog = function(options){
-
 	var container = $('<div class="containerWrapper"/>').attr('title','Dashboard Overview');
 	var dialog;
 	options = $.extend(options,{
@@ -57,6 +56,27 @@ $.DashboardOverviewDialog = function(options){
 	}
 
 	this.getContents();
+	return container;
+}
+
+$.ChangesDialog = function(options){
+	var container = $('<div class="containerWrapper"/>').attr('title','Autodeploy changelog');
+	var dialog;
+	options = $.extend(options,{
+		close:function(){
+			$(this).dialog("destroy").remove();
+		},modal:true})
+
+	AutodeployDialog.apply(this,arguments);  // "ableitung"
+
+	this.afterAjaxAction = function(data){
+		$.LoadingIndicator(false);
+		container.append(data);
+		dialog = container.dialog(options);
+	}
+
+	this.getContents();
+    console.log("init");
 	return container;
 }
 
@@ -130,7 +150,6 @@ $.fn.QueueList = function(){
     this.updater = null;
 	
 	this.processData = function(data,newEntryTable,newDetailsTable){
-        console.log(data);
         this.notificationArea.process(data.notification);
 		if (data.queueEntries != null){
 			if (newEntryTable)
@@ -236,6 +255,10 @@ $(function(){
 			}
 		})
 	});
+
+    $('.wrapper').find('span.changesdialog').unbind('click').bind('click', function() {
+        $.ChangesDialog({url:$(this).attr('url'),height:"500",width:"1050"})
+    });
 
 	$('.wrapper .fastDeploy form[name=assignPlan]').bind('submit',function(){
 			var that = this;

@@ -35,6 +35,7 @@ class DashboardOverviewController {
             model.id = entry.id
             model.team = plan.team.fullName
             model.contribution = plan.contribution
+            model.databaseChanges = plan.databaseChanges
             model.ticket = plan.ticket
             model.date = entry.lastUpdated.format("dd.MM.yyyy")
             model.time = entry.lastUpdated.format("HH:mm")

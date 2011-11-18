@@ -33,6 +33,7 @@
             <li><g:link controller="environment" action="ajaxList" >Environments</g:link></li>
             <li><g:link controller="repository" action="ajaxList" >Repositories</g:link></li>
             <li><g:link controller="team" action="ajaxList" >Teams</g:link></li>
+            <li><g:link controller="propertyAssembler" action="ajaxList" >Property Assembler</g:link></li>
         </ul>
 	</div>
 	

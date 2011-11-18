@@ -17,7 +17,9 @@
             <td class="center"><span class="${entry.stateColor}">${entry.state}</span></td>
             <td class="center">${entry.date} ${entry.time}</td>
             <td class="center">${entry.team}</td>
-            <td>${entry.contribution}</td>
+            <td>
+                <g:if test="${entry.databaseChanges}"><span class="db-change-icon" /></g:if>${entry.contribution}<br/>
+            </td>
             <td>
                 <div class="revision">${entry.revision}</div>
             </td>

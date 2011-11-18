@@ -33,7 +33,8 @@
     <div class="notification">
     </div>
 	<div class="header">
-        Mobile Autodeploy version <b>${grailsApplication.metadata['app.version']}</b></div>
+        Mobile Autodeploy version <b>${grailsApplication.metadata['app.version']}</b>&nbsp;<span class="changesdialog" url="<g:createLink controller="autodeployChanges" action="index" />">(changes)</span>
+    </div>
 	<div class="queueContainer">
 		<ul class="queues ui-widget-content">
 		

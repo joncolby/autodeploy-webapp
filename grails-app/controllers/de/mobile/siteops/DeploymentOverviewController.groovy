@@ -80,7 +80,7 @@ class DeploymentOverviewController {
 
 		// create a model by an extract of queueEntries order by newest to oldest queueEntry
 		queueEntries.sort { a,b -> a.id < b.id ? 1 : -1 }.each { entry ->
-			def modelEntry = [entryId: entry.id, team: entry.executionPlan.team.shortName, name: entry.executionPlan.outputName(), revision: entry.revision, status: entry.state.toString(), planId: entry.executionPlan.id, created: entry.dateCreated.format('dd.MM.yy HH:mm')]
+			def modelEntry = [entryId: entry.id, team: entry.executionPlan.team.shortName, name: entry.executionPlan.outputName(), hasDbChanges: entry.executionPlan.databaseChanges, revision: entry.revision, status: entry.state.toString(), planId: entry.executionPlan.id, created: entry.dateCreated.format('dd.MM.yy HH:mm')]
             modelEntry['colorState'] = colorState(entry.state)
 			modelEntry['actions'] = []
 			switch (entry.state) {

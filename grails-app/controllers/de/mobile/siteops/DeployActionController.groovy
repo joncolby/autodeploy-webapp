@@ -46,7 +46,7 @@ class DeployActionController {
         ExecutionPlan plan = queueEntry.executionPlan
 
         def revisions = []
-        def newExecutionPlan = new ExecutionPlan(forceDeploy: true, name: plan.name, contribution: plan.contribution, ticket: plan.ticket, team: plan.team, planType: PlanType.REDEPLOY, applicationVersions: [])
+        def newExecutionPlan = new ExecutionPlan(forceDeploy: true, name: plan.name, contribution: plan.contribution, ticket: plan.ticket, databaseChanges: plan.databaseChanges, team: plan.team, planType: PlanType.REDEPLOY, applicationVersions: [])
         plan.applicationVersions.each {
             if (it.revision) {
                 revisions += it.revision
@@ -135,7 +135,8 @@ class DeployActionController {
             }
         }
 
-        def targetExecutionPlan = new ExecutionPlan(name: sourceExecutionPlan.name, contribution: sourceExecutionPlan.contribution, ticket: sourceExecutionPlan.ticket ? sourceExecutionPlan.ticket : "", team: sourceExecutionPlan.team, planType: PlanType.RETRY, applicationVersions: [])
+        def targetExecutionPlan = ExecutionPlan.copyFrom(sourceExecutionPlan)
+        targetExecutionPlan.planType = PlanType.RETRY
 
         def revisions = []
         appsToRetry.each { ApplicationVersion appVersion ->
@@ -169,7 +170,7 @@ class DeployActionController {
             return
         }
 
-        def targetExecutionPlan = new ExecutionPlan(name: sourceExecutionPlan.name + " (" + retryApplication.application.filename + ")", contribution: sourceExecutionPlan.contribution, ticket: sourceExecutionPlan.ticket ? sourceExecutionPlan.ticket : "", team: sourceExecutionPlan.team, planType: PlanType.RETRY, applicationVersions: [])
+        def targetExecutionPlan = new ExecutionPlan(name: sourceExecutionPlan.name + " (" + retryApplication.application.filename + ")", contribution: sourceExecutionPlan.contribution, ticket: sourceExecutionPlan.ticket ? sourceExecutionPlan.ticket : "", databaseChanges: sourceExecutionPlan.databaseChanges, team: sourceExecutionPlan.team, planType: PlanType.RETRY, applicationVersions: [])
         targetExecutionPlan.addToApplicationVersions(new ApplicationVersion(application: retryApplication.application, revision: retryApplication.revision).save())
         targetExecutionPlan.save()
 
@@ -199,7 +200,7 @@ class DeployActionController {
             return
         }
 
-        def targetExecutionPlan = new ExecutionPlan(name: sourceExecutionPlan.name + " (" + rollbackApplication.application.filename + ")", contribution: sourceExecutionPlan.contribution, ticket: sourceExecutionPlan.ticket ? sourceExecutionPlan.ticket : "", team: sourceExecutionPlan.team, planType: PlanType.ROLLBACK, applicationVersions: [])
+        def targetExecutionPlan = new ExecutionPlan(name: sourceExecutionPlan.name + " (" + rollbackApplication.application.filename + ")", contribution: sourceExecutionPlan.contribution, ticket: sourceExecutionPlan.ticket ? sourceExecutionPlan.ticket : "", databaseChanges: sourceExecutionPlan.databaseChanges, team: sourceExecutionPlan.team, planType: PlanType.ROLLBACK, applicationVersions: [])
 
         def previousQueueEntries = DeploymentQueueEntry.previousEntries(queueEntry).list(sort: 'finalizedDate', order: 'desc')
         def sourceApps = [rollbackApplication.application]
@@ -212,7 +213,7 @@ class DeployActionController {
         DeploymentQueueEntry queueEntry = params.queueEntry
 
         def sourceExecutionPlan = queueEntry.executionPlan
-        def targetExecutionPlan = new ExecutionPlan(name: sourceExecutionPlan.name, contribution: sourceExecutionPlan.contribution, ticket: sourceExecutionPlan.ticket ? sourceExecutionPlan.ticket : "", team: sourceExecutionPlan.team, planType: PlanType.ROLLBACK, applicationVersions: [])
+        def targetExecutionPlan = new ExecutionPlan(name: sourceExecutionPlan.name, contribution: sourceExecutionPlan.contribution, ticket: sourceExecutionPlan.ticket ? sourceExecutionPlan.ticket : "", databaseChanges: sourceExecutionPlan.databaseChanges, team: sourceExecutionPlan.team, planType: PlanType.ROLLBACK, applicationVersions: [])
 
         def previousQueueEntries = DeploymentQueueEntry.previousEntries(queueEntry).list(sort: 'finalizedDate', order: 'desc')
         def sourceApps = sourceExecutionPlan.applicationVersions.collect { it.application }
@@ -290,7 +291,7 @@ class DeployActionController {
 
         def applicationsNotFound = []
         def revisions = []
-        def newExecutionPlan = new ExecutionPlan(name: "Sync of environment $sourceQueue.environment.name", contribution: "No specific contribution", ticket: "N/A", team: team, planType: PlanType.SYNC, repository: sourceQueue.environment.repository, applicationVersions: [])
+        def newExecutionPlan = new ExecutionPlan(name: "Sync of environment $sourceQueue.environment.name", contribution: "No specific contribution", ticket: "N/A", databaseChanges: false, team: team, planType: PlanType.SYNC, repository: sourceQueue.environment.repository, applicationVersions: [])
         latestAppVersions.each {
             if (it.revision) {
                 revisions += it.revision

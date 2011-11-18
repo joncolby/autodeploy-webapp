@@ -27,6 +27,22 @@ body,td{
 	 background:url('../images/ajax-loader-big.gif');
 }
 
+.changesdialog {
+    cursor: pointer;
+}
+
+.db-change-icon {
+    text-indent: -99999px;
+    overflow: hidden;
+    background-repeat: no-repeat;
+    background:url('../images/icons/database.png');
+    display: inline-block;
+    vertical-align: top;
+    width: 16px;
+    height: 16px;
+    margin-right: 5px;
+}
+
 .loadingIndicator{
 	background:#fff;
 	z-index:100000;
@@ -794,6 +810,12 @@ table.dashboard td a:visited {
 
 table.dashboard td a {
     color: blue;
+}
+
+table.dashboard td div.bottom {
+    vertical-align: bottom;
+    text-align: right;
+    font-size: small;
 }
 
 table.dashboard td div.apps {

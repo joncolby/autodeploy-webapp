@@ -1,0 +1,15 @@
+CHANGELOG
+=========
+
+2011-11-18:
+ADEP-27: An environment variable can now be used to define the agents environment (override detection of agent).
+         This was required for the new CMS
+ADEP-33: The pillar is also shown in the dashboard. This solves the problem when the plan
+         contained multiple same applications on different sites
+ADEP-32: The config assembler can now be configured per environment.
+         This allows other sites such as EMP to have their own properties repo
+ADEP-29: If a plan has database changes a "db" icon is now shown in front of the name in the deployment overview and dashboard
+ADEP-31: The dashboard is now available as a standalone url:
+         http://autodeploy.corp.mobile.de/dashboard.
+         The default environment is production.
+

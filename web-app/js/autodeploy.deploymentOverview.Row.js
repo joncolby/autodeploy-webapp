@@ -56,6 +56,9 @@ $.fn.QueueEntryRow = function(queueList){
 		this.appendEntry(data.team);
 		item = $('<a href="#">'+data.name+'</a>');
 		item.bind('click',this,this.fetchDetails)
+        if (data.hasDbChanges) {
+            item = item.prepend($('<span class="db-change-icon" />'));
+        }
 		this.appendEntry(item);
 		this.appendEntry(data.revision);
 		this.status = $('<td/>').StatusContainer().set(data);

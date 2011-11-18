@@ -34,6 +34,9 @@ class DeploymentPlanService {
 					xml.url(url: repository?.baseUrl)
 					xml.type(type: repository?.type)
 				}
+                xml.propertyAssembler {
+                    xml.url(url: environment.propertyAssembler.configAssemblerUrl)
+                }
 
                 xml.forceDeploy(plan.forceDeploy)
 
@@ -100,7 +103,7 @@ class DeploymentPlanService {
             }
         }
 
-        def executionPlan = new ExecutionPlan(name: plan.name, contribution: plan.contribution, ticket: plan.ticket ? plan.ticket : "", planType: PlanType.NORMAL, team: plan.team, repository: env.repository, applicationVersions: [])
+        def executionPlan = new ExecutionPlan(name: plan.name, contribution: plan.contribution, ticket: plan.ticket ? plan.ticket : "", databaseChanges: plan.requiresDatabaseChanges, planType: PlanType.NORMAL, team: plan.team, repository: env.repository, applicationVersions: [])
 
         applications.each { app ->
             if (applicationsInThisEnv.contains(app)) {

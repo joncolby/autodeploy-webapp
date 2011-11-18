@@ -10,6 +10,7 @@ class ExecutionPlan {
     PlanType planType = PlanType.NORMAL
     Team team
     Repository repository
+    Boolean databaseChanges = false
 
     Date dateCreated
     Date lastUpdated
@@ -41,6 +42,10 @@ class ExecutionPlan {
             result = name
         }
         return result
+    }
+
+    static ExecutionPlan copyFrom(ExecutionPlan source) {
+        return new ExecutionPlan(name: source.name, contribution: source.contribution, ticket: source.ticket ? source.ticket : "", databaseChanges: source.databaseChanges, team: source.team, planType: source.planType, applicationVersions: [])
     }
 
     String toString() {

@@ -12,6 +12,7 @@ class Environment {
     DeployErrorType deployErrorType = DeployErrorType.SKIP_HOSTCLASS
 
     Repository repository
+    PropertyAssembler propertyAssembler
 
     static constraints = {
       name(blank:false,nullable:false,unique:true, validator: { val, obj -> if ( val =~ /\s/ ) return 'default.invalid.whitespace.message' })
