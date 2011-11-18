@@ -14,6 +14,8 @@ class UrlMappings {
         "/api/queueEntry/$queueEntryId/deploy"(controller: "api", action: "deploy")
         "/api/queueEntry/$queueEntryId/status"(controller: "api", action: "status")
 
+        "/dashboard"(controller: "dashboardOverview", action: "index")
+
         "/home"(view:"/home")
         "/admin"(controller: "deploymentAdmin")
         "/admin/createNote"(controller: "deploymentAdmin", action: "createNote")

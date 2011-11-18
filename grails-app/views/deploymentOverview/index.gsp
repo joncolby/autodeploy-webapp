@@ -48,7 +48,7 @@
 		<ul class="queues ui-widget-content">
 		<li><h2><a href="<g:createLink controller="deploymentPlanManagment" action="index" />" class="modal">Plan Managment</a></h2></li>
     	<li><strong><a href="<g:createLink controller="applicationVersions" action="index" />" class="modalDiv">App Revisions</a></strong></li>
-        <li><strong><a href="<g:createLink controller="dashboardOverview" action="index" />" class="dashboard">Dashboard</a></strong></li>
+        <li><strong><a href="<g:createLink controller="dashboardOverview" action="dashboard" />" class="dashboard">Dashboard</a></strong></li>
 		</ul>
 	</div>
         <div class="queueEntryHeader ui-state-hover">Queue: <span class="queueText">(none selected yet)</span></div>

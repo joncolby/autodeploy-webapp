@@ -1,47 +1,23 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: ibartel
-  Date: 15.07.11
-  Time: 11:48
-  To change this template use File | Settings | File Templates.
---%>
+<%@page import="de.mobile.siteops.DashboardOverviewController"%>
+<%@page contentType="text/html;charset=UTF-8"%>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
-<%@ page contentType="text/html;charset=UTF-8" %>
-<div class="container">
-    <table class="dashboard">
-        <tbody>
-        <tr>
-            <th width="60px">ID</th>
-            <th width="85px">Status</th>
-            <th width="130px">Last updated</th>
-            <th width="100px">Team</th>
-            <th width="250px">Contribution</th>
-            <th width="100px">Revision</th>
-            <th width="200px">Applications</th>
-            <th width="80px">Ticket</th>
-        </tr>
-        <g:each in="${entries}" var="entry">
-        <tr>
-            <td>${entry.id}</td>
-            <td class="center"><span class="${entry.stateColor}">${entry.state}</span></td>
-            <td class="center">${entry.date} ${entry.time}</td>
-            <td class="center">${entry.team}</td>
-            <td>${entry.contribution}</td>
-            <td>
-                <div class="revision">${entry.revision}</div>
-            </td>
-            <td>
-                <div class="apps">
-                <ul>
-                    <g:each in="${entry.apps}" var="app">
-                    <li>${app.name} <g:if test="${entry.multiplerevs}"> (${app.revision})</g:if></li>
-                    </g:each>
-                </ul>
-                </div>
-            </td>
-            <td class="center"><a href="https://jira.corp.mobile.de/jira/browse/${entry.ticket}" target="_blank">${entry.ticket}</a></td>
-        </tr>
-        </g:each>
-        </tbody>
-    </table>
+<link rel="stylesheet" type="text/css" href="${resource(dir:'css',file:'ui-lightness/jquery-ui-1.8.14.custom.css')}"/>
+<link rel="stylesheet" type="text/css" href="${resource(dir:'css',file:'jquery.gritter.css')}"/>
+<link rel="stylesheet" type="text/css" href="${resource(dir:'css',file:'deploymentOverview.css')}" />
+<title>Dashboard Overview</title>
+</head>
+<body>
+<g:if test="${model.queueId}">
+<div class="header">
+<h1>Queue: ${model.queue.environment.name}</h1>
 </div>
+<g:include action="dashboard" params="[id: model.queueId]" />
+</g:if>
+<g:else>
+<h2>Could not find any queue. Please specify parameter id for the queueid</h2>
+</g:else>
+
+</body>

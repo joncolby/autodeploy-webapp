@@ -4,6 +4,26 @@ class DashboardOverviewController {
 
     def index = {
         def queueId = params.id
+        def queue
+        if (!queueId) {
+            def prodEnv = Environment.findByName('Production')
+            if (prodEnv) {
+                queue = DeploymentQueue.findByEnvironment(prodEnv)
+            }
+        } else {
+            queue = DeploymentQueue.get(queueId)
+        }
+
+        def model = [:]
+        if (queue) {
+            model.queue = queue
+            model.queueId = queue.id
+        }
+        [model: model]
+    }
+
+    def dashboard = {
+        def queueId = params.id
 
         def queue = DeploymentQueue.get(queueId)
         def queueEntries = DeploymentQueueEntry.dashboard(queue).list(max: 30, sort: "lastUpdated", order: "desc")
@@ -22,7 +42,7 @@ class DashboardOverviewController {
             model.multiplerevs = true
             model.revision = "(multiple)"
 
-            model.apps = plan.applicationVersions.collect { [name: it.application.modulename, revision: it.revision ]}.sort { it.name }
+            model.apps = plan.applicationVersions.collect { [name: it.application.modulename, pillar: it.application.pillar.name, revision: it.revision ]}.sort { it.name }
             def revlist = model.apps.collect { it.revision }.unique()
             if (revlist.size() <= 1) {
                 model.revision = revlist[0]
