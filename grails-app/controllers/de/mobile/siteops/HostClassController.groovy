@@ -12,8 +12,9 @@ class HostClassController {
    
    def ajaxList = {
 	   def data = []
+       def result = [[:]]
 	   def hostClass = HostClass.findAll()
-	   
+
 	   if (hostClass) {
 		   data = hostClass.collect { [id: it.id, name: it.name] }
 	   }
@@ -23,7 +24,11 @@ class HostClassController {
 		   entry['actions'] += [title: 'Edit', type: 'edit', action: g.createLink(action: 'edit', controller: 'deploymentAdmin', id: entry.id)]
 		   entry['actions'] += [title: 'Delete', type: 'remove', action: g.createLink(action: 'remove', controller: 'deploymentAdmin', id: entry.id)]
 	   }
-	   render data as JSON
+
+       result = [data: data]
+       result['actions'] = [[title: 'Create', type: 'create', action: g.createLink(action: 'ajaxEdit', id: 0)]]
+
+	   render result as JSON
    }
    
    /*

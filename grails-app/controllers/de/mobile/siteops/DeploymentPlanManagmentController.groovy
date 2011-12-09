@@ -118,6 +118,11 @@ class DeploymentPlanManagmentController {
         def deploymentPlanId = params.long("planId")
         def revision = params.revision
 
+        if (!revision || revision.size() <= 1) {
+            render MessageResult.errorMessage("Please enter a revision number") as JSON
+            return
+        }
+
         def result = deploymentPlanService.addPlanToQueue(deploymentQueueId, deploymentPlanId, revision)
         if (result.type == 'success') {
             render MessageResult.successMessage(result.message) as JSON

@@ -77,7 +77,12 @@ class DeploymentQueueService {
             }
             queueEntry.state = HostStateType.IN_PROGRESS
             queueEntry.lastUpdated = new Date()
-            queueEntry.save(flush: true)
+            if (!queueEntry.save(flush: true)) {
+                log.error "Error persisting queue entry " + queueEntry.id
+                queueEntry.errors.each {
+                    log.error it
+                }
+            }
         }
 
         def deployQueueMapEntry = getDeployQueueMapEntry(queueEntry)

@@ -1,6 +1,17 @@
 CHANGELOG
 =========
 
+2011-12-09:
+ADEP-44: The dashboard now contains 150 entries (app. for 1 month), the work will be continued on that task
+         so that all entries can be displayed
+ADEP-49: see ADEP-44
+ADEP-51: New environments now automatically creates the a queue entry. This solved the problem that one queue was not shown
+ADEP-40: All production queues are now locked (can be controlled via setting the 'secured' in the environment settings)
+ADEP-54: Revision on quick assign now checks if the revision is empty or just one letter
+ADEP-46: useConcurrency can now be properly left empty without getting errors
+ADEP-42: see ADEP-46
+
+
 2011-11-18:
 ADEP-27: An environment variable can now be used to define the agents environment (override detection of agent).
          This was required for the new CMS

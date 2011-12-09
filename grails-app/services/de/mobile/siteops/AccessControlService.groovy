@@ -13,7 +13,7 @@ class AccessControlService {
     }
 
     boolean hasWriteAccessForQueue(DeploymentQueue queue) {
-        if (queue.environment.name == 'Production') {
+        if (queue.environment.secured) {
             if (hasRole("ROLE_ADMIN")) {
                 return true
             } else {

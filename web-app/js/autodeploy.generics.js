@@ -163,7 +163,13 @@ $.AppendController = function(data,table){
 	
 	table.find('tbody').empty();
 	function appendEntryRecursive(data,id){
-		if (data.length == 0 || (that.id != id)) {div.find('.loader').remove();return;}
+		if (data.length == 0 || (that.id != id)) {
+            var loader = div.find('.loader');
+            loader.fadeOut(2500, function() {
+                $(this).remove();
+            });
+            return;
+        }
 		table.appendEntry(table.getNewEntry(data.shift()));
 		setTimeout(function(){
 			if (that.id == id) appendEntryRecursive(data,id);	
@@ -173,10 +179,14 @@ $.AppendController = function(data,table){
 	function addLoading(){
 		div.css('position','relative');
 		if (div.find('.loader').length == 0){
-			var loader = $('<img class="loader" src="../images/ajax-loader-big.gif"/>').css({
+			var loader = $('<div class="loader">Wait while loading data</div>').css({
+                background: "#aaa",
+                color: "#fff",
+                'font-size': '20px',
 				position:'absolute',
 				bottom:'0',
 				left:'0'
+
 			});
 			div.append(loader);
 			div.bind('scroll',function(){

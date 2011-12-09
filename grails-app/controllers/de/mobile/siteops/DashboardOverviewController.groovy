@@ -2,6 +2,8 @@ package de.mobile.siteops
 
 class DashboardOverviewController {
 
+    private static int PAGE_SIZE = 20
+
     def index = {
         def queueId = params.id
         def queue
@@ -26,7 +28,10 @@ class DashboardOverviewController {
         def queueId = params.id
 
         def queue = DeploymentQueue.get(queueId)
-        def queueEntries = DeploymentQueueEntry.dashboard(queue).list(max: 30, sort: "lastUpdated", order: "desc")
+        def total = DeploymentQueueEntry.dashboard(queue).count()
+        def pages = (total / PAGE_SIZE) as int
+
+        def queueEntries = DeploymentQueueEntry.dashboard(queue).list(max: 150, sort: "lastUpdated", order: "desc")
 
         def entries = []
         queueEntries.each { DeploymentQueueEntry entry ->
@@ -65,6 +70,6 @@ class DashboardOverviewController {
             entries += model
         }
 
-        [entries: entries]
+        [entries: entries, pages: pages]
     }
 }

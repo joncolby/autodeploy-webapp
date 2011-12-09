@@ -9,6 +9,7 @@ class Environment {
     Date lastUpdated
 
     Boolean useHostClassConcurrency = false
+    Boolean secured = false
     DeployErrorType deployErrorType = DeployErrorType.SKIP_HOSTCLASS
 
     Repository repository
@@ -17,6 +18,7 @@ class Environment {
     static constraints = {
       name(blank:false,nullable:false,unique:true, validator: { val, obj -> if ( val =~ /\s/ ) return 'default.invalid.whitespace.message' })
       repository(nullable:true)
+      propertyAssembler(nullable: false)
     }
 
 	static mapping = {

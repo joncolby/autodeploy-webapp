@@ -17,7 +17,7 @@ class EnvironmentController {
 		def result = [[:]]
         def instance = Environment.findAll()
         if (instance) {
-            data = instance.collect { [id: it.id, name: it.name, repository: (it.repository ? it.repository.name : ""), propertyAssembler: (it.propertyAssembler ? it.propertyAssembler.name : "")] }
+            data = instance.collect { [id: it.id, name: it.name, repository: (it.repository ? it.repository.name : ""), propertyAssembler: (it.propertyAssembler ? it.propertyAssembler.name : ""), secured: (it.secured ? 'Yes' : 'No')] }
         }
 
         data.each { TableUtils.addActions(it,g) }
@@ -52,6 +52,7 @@ class EnvironmentController {
                 lastUpdated: [value: instance.lastUpdated, type: 'text', disabled: true],
                 name: [value: instance.name, type: 'text', size: 30],
                 useHostClassConcurrency: [value: instance.useHostClassConcurrency, type: 'checkbox'],
+                secured: [value: instance.secured, type: 'checkbox'],
                 deployErrorType: [value: deployErrorTypes, type: 'select'],
                 repository: [value: repositories, type: 'select'],
                 propertyAssembler: [value: propertyAssemblers, type: 'select'],
@@ -64,7 +65,14 @@ class EnvironmentController {
 	def ajaxSave = {
 		def result = [:]
 		Environment instance = Environment.get(params.id)
-		def values = [name:params.name, useHostClassConcurrency: params.useHostClassConcurrency, deployErrorType: params.deployErrorType, 'repository.id': params.repository, 'propertyAssembler.id': params.propertyAssembler]
+		def values = [
+                name:params.name,
+                useHostClassConcurrency: params.useHostClassConcurrency ? true : false,
+                secured: params.secured ? true : false,
+                deployErrorType: params.deployErrorType,
+                'repository.id': params.repository,
+                'propertyAssembler.id': params.propertyAssembler
+        ]
 		if (instance) {
 			if (params.version) {
 				def version = params.version.toLong()
@@ -85,8 +93,13 @@ class EnvironmentController {
 			}
 		}
 		else {
+            println values
 			instance = new Environment(values)
 			if (instance.save(flush: true)) {
+                if (!DeploymentQueue.findByEnvironment(instance)) {
+                  new DeploymentQueue(environment: instance).save(flush:true)
+                }
+
 				def tableEntry = [id: instance.id, name: instance.name, useHostClassConcurrency: instance.useHostClassConcurrency, deployErrorType: instance.deployErrorType, repository: instance.repository, propertyAssembler: instance.propertyAssembler]
 				result = [tableEntry:  TableUtils.addActions(tableEntry,g),
 					      message: MessageResult.successMessage("New Entry successfully saved")]

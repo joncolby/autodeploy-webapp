@@ -3,7 +3,7 @@ package de.mobile.siteops
 import grails.plugins.springsecurity.Secured
 import javax.swing.text.html.HTML
 
-
+@Secured(['ROLE_ADMIN'])
 class DeploymentAdminController {
 
     def notificationService
@@ -13,7 +13,6 @@ class DeploymentAdminController {
 	def index = {
 	}
 
-    @Secured(['ROLE_ADMIN'])
     def createNote = {
         if (params.containsKey('message') && params.message) {
             def msg = "<h1>Notifation created: " + params.message + "</h1><br/>"

@@ -34,6 +34,7 @@ class DeploymentOverviewController {
         }
 
 		def deploymentQueues = DeploymentQueue.findAll()
+        println "count of queues: " + deploymentQueues.size()
 		def queues = deploymentQueues.collect { [name: it.environment.name, id: it.id, locked: !accessControlService.hasWriteAccessForQueue(it) ] }.sort { it.name }
         def model = [queues: queues, teams: teamModel, plans: planModel, selectedTeamId: teamId, selectedPlanId: planId]
 

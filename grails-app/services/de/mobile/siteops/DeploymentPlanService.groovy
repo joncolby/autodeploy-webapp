@@ -16,6 +16,9 @@ class DeploymentPlanService {
         if (!repository) {
             repository = environment.repository
         }
+        PropertyAssembler propertyAssembler = environment.propertyAssembler
+        def configAssemblerUrl = propertyAssembler != null ? propertyAssembler.configAssemblerUrl : ""
+
         def planApplications = plan.applicationVersions
         def applications = []
         planApplications.each {
@@ -35,7 +38,7 @@ class DeploymentPlanService {
 					xml.type(type: repository?.type)
 				}
                 xml.propertyAssembler {
-                    xml.url(url: environment.propertyAssembler.configAssemblerUrl)
+                    xml.url(url: configAssemblerUrl)
                 }
 
                 xml.forceDeploy(plan.forceDeploy)
