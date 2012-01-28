@@ -57,8 +57,8 @@
         <div class="fastDeploy">
             <div class="sync">
 	        <form name="syncEnv" action="<g:createLink controller="deployAction" action="syncEnv"/>">
-                <label>Sync enviroment: </label>
-		        <select>
+                <label>Sync: </label>
+		        <select class="syncSelect">
 		        <option value="0">sync with</option>
 		        <g:each in="${model.queues}" var="queue">
 					<option value="${queue.id}">${queue.name}</option>
@@ -68,7 +68,7 @@
             </div>
         	<form name="assignPlan" action="<g:createLink controller="deploymentPlanManagment" action="addToQueue" />">
                 <label>Fast deploy plan: </label>
-		        <select name="teamId">
+		        <select name="teamId" class="teamSelect">
 		            <g:each in="${model.teams}" var="team">
 		            <option value="${team.id}" url="${team.url}"
 				        <g:if test="${model.selectedTeamId && model.selectedTeamId == team.id}" >
@@ -91,9 +91,12 @@
 		        <input type = "text" name = "revision" />
 		        <input type = "submit" value = "Assign" />
 	        </form>
-	        
+            <div>
+                Send release mail:&nbsp;<input type="checkbox" name="releaseMail">
+            </div>
+
 		</div>
-		
+
 		<div class="queueEntries"> 
 		<table>
 		<thead>

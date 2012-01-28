@@ -6,6 +6,7 @@ import de.mobile.siteops.ExecutionPlan.PlanType
 class DeploymentPlanManagmentController {
 
     def deploymentPlanService
+    def releaseMailService
 
     def index = {
         def teams = Team.findAllByShortNameNotEqual("System", [sort: "fullName", order: "asc"])
@@ -113,10 +114,44 @@ class DeploymentPlanManagmentController {
         render model as JSON
     }
 
+    def exampleModel() {
+        def queueIdTest = 3797
+        def queueEntry = DeploymentQueueEntry.load(queueIdTest)
+        def model = [:]
+
+        model.team = queueEntry.executionPlan.team.fullName
+        model.planName = queueEntry.executionPlan.name
+        model.contribution = queueEntry.executionPlan.contribution
+        model.ticket = queueEntry.executionPlan.ticket
+        model.databaseChanges = queueEntry.executionPlan.databaseChanges
+        model.applications = []
+        model.multipleRevs = false
+        def lastRev = null
+        queueEntry.executionPlan.applicationVersions.each { ApplicationVersion app ->
+            if (lastRev && lastRev != app.revision) {
+                model.multipleRevs = true
+            }
+            model.applications += [ name: app.application.modulename + " (" + app.application.pillar.name + ")", revision: app.revision]
+            lastRev = app.revision
+        }
+        model.revision = model.multipleRevs ? "(multiple, see applications)" : lastRev
+
+        return model
+    }
+
     def addToQueue = {
         def deploymentQueueId = params.queueId
         def deploymentPlanId = params.long("planId")
         def revision = params.revision
+        def releaseMail = params.releaseMail
+
+        def mailModel = exampleModel()
+        println mailModel
+        sendMail {
+            to "ibartel@gmail.com"
+            subject "Testmail"
+            body( view: "/mail/releaseMail", model: mailModel)
+        }
 
         if (!revision || revision.size() <= 1) {
             render MessageResult.errorMessage("Please enter a revision number") as JSON
@@ -125,6 +160,10 @@ class DeploymentPlanManagmentController {
 
         def result = deploymentPlanService.addPlanToQueue(deploymentQueueId, deploymentPlanId, revision)
         if (result.type == 'success') {
+            if (releaseMail) {
+                releaseMailService.releaseMail(result.queueEntryId)
+            }
+
             render MessageResult.successMessage(result.message) as JSON
         } else if (result.type == 'error') {
             render MessageResult.errorMessage(result.message) as JSON

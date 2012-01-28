@@ -36,7 +36,7 @@ class EnvironmentController {
         Environment instance = Environment.get(id)
 
 		if (!instance) { // for new entries
-			instance = [dateCreated:"",lastUpdated:"",name:"", useHostClassConcurrency: false, deployErrorType: null, repository: null, propertyAssembler: null,id:0]
+			instance = [dateCreated:"",lastUpdated:"",name:"", useHostClassConcurrency: false, secured: false, releaseMailByDefault: false, deployErrorType: null, repository: null, propertyAssembler: null,id:0]
 		}
 
         def deployErrorTypes = DeployErrorType.values().collect { [id: it.name(), name: it.name(), selected: (instance.deployErrorType && instance.deployErrorType == it) ]}
@@ -53,6 +53,7 @@ class EnvironmentController {
                 name: [value: instance.name, type: 'text', size: 30],
                 useHostClassConcurrency: [value: instance.useHostClassConcurrency, type: 'checkbox'],
                 secured: [value: instance.secured, type: 'checkbox'],
+                releaseMailByDefault: [value: instance.releaseMailByDefault, type: 'checkbox'],
                 deployErrorType: [value: deployErrorTypes, type: 'select'],
                 repository: [value: repositories, type: 'select'],
                 propertyAssembler: [value: propertyAssemblers, type: 'select'],
@@ -69,6 +70,7 @@ class EnvironmentController {
                 name:params.name,
                 useHostClassConcurrency: params.useHostClassConcurrency ? true : false,
                 secured: params.secured ? true : false,
+                releaseMailByDefault: params.releaseMailByDefault ? true : false,
                 deployErrorType: params.deployErrorType,
                 'repository.id': params.repository,
                 'propertyAssembler.id': params.propertyAssembler
@@ -100,7 +102,7 @@ class EnvironmentController {
                   new DeploymentQueue(environment: instance).save(flush:true)
                 }
 
-				def tableEntry = [id: instance.id, name: instance.name, useHostClassConcurrency: instance.useHostClassConcurrency, deployErrorType: instance.deployErrorType, repository: instance.repository, propertyAssembler: instance.propertyAssembler]
+				def tableEntry = [id: instance.id, name: instance.name, useHostClassConcurrency: instance.useHostClassConcurrency, secured: instance.secured, releaseMailByDefault: instance.releaseMailByDefault, deployErrorType: instance.deployErrorType, repository: instance.repository, propertyAssembler: instance.propertyAssembler]
 				result = [tableEntry:  TableUtils.addActions(tableEntry,g),
 					      message: MessageResult.successMessage("New Entry successfully saved")]
 			}
