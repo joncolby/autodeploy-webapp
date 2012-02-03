@@ -61,19 +61,6 @@ grails.spring.bean.packages = []
 // request parameters to mask when logging exceptions
 grails.exceptionresolver.params.exclude = ['password']
 
-grails {
-   mail {
-     host = "smtp.gmail.com"
-     port = 465
-     username = "ibartel@gmail.com"
-     password = "WhKbab42"
-     props = ["mail.smtp.auth":"true",
-              "mail.smtp.socketFactory.port":"465",
-              "mail.smtp.socketFactory.class":"javax.net.ssl.SSLSocketFactory",
-              "mail.smtp.socketFactory.fallback":"false"]
-   }
-}
-
 // set per-environment serverURL stem for creating absolute links
 environments {
     production {

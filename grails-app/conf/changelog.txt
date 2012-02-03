@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+2012-02-03:
+ADEP-59: Added "send release mail" configureable via checkbox in each environment. Default for an environment can be set
+         for each environment. Upon queueing a new deployment plan a release mail is sent to
+         "DL-eBay-TXL-mobile-Technology@corp.ebay.com" containing all informations required for release.
+
 2011-12-09:
 ADEP-44: The dashboard now contains 150 entries (app. for 1 month), the work will be continued on that task
          so that all entries can be displayed
