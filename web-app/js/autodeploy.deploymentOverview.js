@@ -189,6 +189,11 @@ $.fn.QueueList = function(){
 						that.pollurl = $this.attr('href');
 						$this.parent().parent().children().removeClass('active');
 						$this.parent().addClass('active');
+                        if (data.settings && data.settings.releaseMailByDefault) {
+                            $('.wrapper input[name=releaseMail]').attr('checked', 'true');
+                        } else {
+                            $('.wrapper input[name=releaseMail]').removeAttr('checked');
+                        }
 						$.cookie('autodeploy_queueId',$this.attr('queueId'));
 						that.processData(data,true,true);
 						$('.wrapper .fastDeploy .sync form[name=syncEnv] select option').show();
@@ -266,7 +271,8 @@ $(function(){
 				data:{
 					planId:$(this).find('[name=planId]').val(),
 					queueId:$('.queueContainer li.active a').attr('queueId'),
-					revision:$(this).find('[name=revision]').val()
+					revision:$(this).find('[name=revision]').val(),
+                    releaseMail:$('.wrapper input[name=releaseMail]:checked').val() ? true : false
 				},
 				success:function(data) {
 					$.cookie('autodeploy_teamId',$(that).find('[name=teamId]').val());

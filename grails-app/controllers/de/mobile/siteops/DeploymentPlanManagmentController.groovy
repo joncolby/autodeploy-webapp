@@ -6,6 +6,7 @@ import de.mobile.siteops.ExecutionPlan.PlanType
 class DeploymentPlanManagmentController {
 
     def deploymentPlanService
+    def releaseMailService
 
     def index = {
         def teams = Team.findAllByShortNameNotEqual("System", [sort: "fullName", order: "asc"])
@@ -117,6 +118,7 @@ class DeploymentPlanManagmentController {
         def deploymentQueueId = params.queueId
         def deploymentPlanId = params.long("planId")
         def revision = params.revision
+        def releaseMail = params.releaseMail
 
         if (!revision || revision.size() <= 1) {
             render MessageResult.errorMessage("Please enter a revision number") as JSON
@@ -125,6 +127,10 @@ class DeploymentPlanManagmentController {
 
         def result = deploymentPlanService.addPlanToQueue(deploymentQueueId, deploymentPlanId, revision)
         if (result.type == 'success') {
+            if (releaseMail) {
+                releaseMailService.releaseMail(result.queueEntryId)
+            }
+
             render MessageResult.successMessage(result.message) as JSON
         } else if (result.type == 'error') {
             render MessageResult.errorMessage(result.message) as JSON

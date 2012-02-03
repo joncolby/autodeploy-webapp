@@ -231,6 +231,14 @@ td.status .animated .ui-progressbar-value { background-image: url(ui-lightness/i
 	display:inline-block;	
 }
 
+.wrapper .fastDeploy .syncSelect {
+    width: 100px;
+}
+
+.wrapper .fastDeploy .teamSelect {
+    width: 150px;
+}
+
 .wrapper .fastDeploy .planSelect {
     width: 200px;
 }

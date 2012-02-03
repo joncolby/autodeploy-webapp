@@ -10,6 +10,8 @@ class Environment {
 
     Boolean useHostClassConcurrency = false
     Boolean secured = false
+    Boolean releaseMailByDefault = false
+
     DeployErrorType deployErrorType = DeployErrorType.SKIP_HOSTCLASS
 
     Repository repository

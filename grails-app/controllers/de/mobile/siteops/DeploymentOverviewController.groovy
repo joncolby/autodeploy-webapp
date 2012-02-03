@@ -14,6 +14,58 @@ class DeploymentOverviewController {
 
 	def index = {
 
+        /*
+        def hostClassMap = [
+                [hostClass: 'static', priority: 1, useConcurrency: false, concurrency: 2 ],
+                [hostClass: 'hostclass1', priority: 2, useConcurrency: true, concurrency: 2 ],
+                [hostClass: 'hostclass2', priority: 2, useConcurrency: true, concurrency: 2 ],
+        ]
+
+        def avgMap = [
+                [host: 'static1', hostClass: 'static', avg: 15],
+                [host: 'host1.1', hostClass: 'hostclass1', avg: 10],
+                [host: 'host1.2', hostClass: 'hostclass1', avg: 12],
+                [host: 'host1.3', hostClass: 'hostclass1', avg: 15],
+                [host: 'host1.4', hostClass: 'hostclass1', avg: 17],
+                [host: 'host2.1', hostClass: 'hostclass2', avg: 20],
+                [host: 'host2.2', hostClass: 'hostclass2', avg: 20],
+        ]
+
+
+        def totalAvg = 0
+        def priorities = hostClassMap.collect { it.priority }.unique().sort()
+        priorities.each { prio ->
+            def avgPerPriority = 0
+            hostClassMap.findAll { it.priority == prio }.each { hc ->
+                println "processing prio $prio for hostclass $hc.hostClass"
+                def hostClassAvgs = avgMap.findAll { it.hostClass == hc.hostClass }?.collect { it.avg }
+                if (hostClassAvgs) {
+                    def concurrentHosts = hc.concurrency
+                    if (!hc.useConcurrency || hostClassAvgs.size() < hc.concurrency) {
+                        concurrentHosts = hostClassAvgs.size()
+                    }
+                    print "calc " + hostClassAvgs.sum() + " / " + concurrentHosts + " ... "
+                    def avgPerHostClass = (hostClassAvgs.sum() / concurrentHosts as double).round()
+                    println avgPerHostClass
+                    if (avgPerHostClass > avgPerPriority) {
+                        avgPerPriority = avgPerHostClass
+                    }
+
+                }
+            }
+            totalAvg += avgPerPriority
+        }
+
+        println "total: $totalAvg"
+
+        def avgDurations = []
+
+        def numhosts = avgMap.size()
+
+        def avgTotal = avgMap.collect { it.avg }.sum() / numhosts as double
+        */
+
+
         def teamId = g.cookie(name: 'autodeploy_teamId')
         def planId = g.cookie(name: 'autodeploy_planId')
 
@@ -34,7 +86,6 @@ class DeploymentOverviewController {
         }
 
 		def deploymentQueues = DeploymentQueue.findAll()
-        println "count of queues: " + deploymentQueues.size()
 		def queues = deploymentQueues.collect { [name: it.environment.name, id: it.id, locked: !accessControlService.hasWriteAccessForQueue(it) ] }.sort { it.name }
         def model = [queues: queues, teams: teamModel, plans: planModel, selectedTeamId: teamId, selectedPlanId: planId]
 
@@ -75,6 +126,7 @@ class DeploymentOverviewController {
 			queueEntries = DeploymentQueueEntry.overview(queue, timestamp).list()
 		} else {
 			queueEntries = DeploymentQueueEntry.findAllByQueue(queue, [max: 50, sort: "id", order: "desc"])
+            model['settings'] = [ releaseMailByDefault: queue.environment.releaseMailByDefault ]
 		}
 
 		def detailModel

@@ -512,6 +512,10 @@ $.fn.StatusContainer = function (){
 	return this;
 }
 
+$.fn.hasAttr = function(name) {
+   return this.attr(name) !== undefined;
+};
+
 $.fn.ActionsContainer = function(row){
 	var that = this;
 	var settings = {
