@@ -1,6 +1,12 @@
 CHANGELOG
 =========
 
+2012-02-28:
+ADEP-59: "release mail" checkbox now working properly
+
+2012-02-27:
+ADEP-59: change the email address for the release mail to "DL-eBay-TXL-mobile-Technology@ebay.com"
+
 2012-02-03:
 ADEP-59: Added "send release mail" configureable via checkbox in each environment. Default for an environment can be set
          for each environment. Upon queueing a new deployment plan a release mail is sent to

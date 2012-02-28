@@ -118,7 +118,8 @@ class DeploymentPlanManagmentController {
         def deploymentQueueId = params.queueId
         def deploymentPlanId = params.long("planId")
         def revision = params.revision
-        def releaseMail = params.releaseMail
+        def releaseMail = params.releaseMail && params.releaseMail == 'true' ? true : false
+
 
         if (!revision || revision.size() <= 1) {
             render MessageResult.errorMessage("Please enter a revision number") as JSON
