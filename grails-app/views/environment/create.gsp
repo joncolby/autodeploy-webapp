@@ -54,6 +54,15 @@
                                 </td>
                             </tr>
 
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                  <label for="propertyAssembler"><g:message code="application.propertyAssembler.label" default="Property Assembler" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: environmentInstance, field: 'propertyAssembler', 'errors')}">
+                                    <g:select name="propertyAssembler.id" from="${de.mobile.siteops.PropertyAssembler.list()}" optionKey="id" value="${environmentInstance?.propertyAssembler?.id}"  />
+                                </td>
+                            </tr>
+
                         </tbody>
                     </table>
                 </div>

@@ -32,6 +32,8 @@
 
                             <th>Repository</th>
 
+                            <th>Property Assembler</th>
+
                             <g:sortableColumn property="dateCreated" title="${message(code: 'environment.dateCreated.label', default: 'Date Created')}" />
                         
                             <g:sortableColumn property="lastUpdated" title="${message(code: 'environment.lastUpdated.label', default: 'Last Updated')}" />
@@ -47,6 +49,8 @@
                             <td><g:link action="show" id="${environmentInstance.id}">${fieldValue(bean: environmentInstance, field: "name")}</g:link></td>
 
                             <td>${fieldValue(bean: environmentInstance, field: "repository")}</td>
+
+                            <td>${fieldValue(bean: environmentInstance, field: "propertyAssembler")}</td>
 
                             <td><g:formatDate date="${environmentInstance.dateCreated}" type="datetime" style="SHORT" timeStyle="MEDIUM" locale="de" /></td>
                         

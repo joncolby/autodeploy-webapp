@@ -109,5 +109,103 @@ class PropertyAssemblerController {
     /*
       * ajax Functions End
       */
+        def index = {
+        redirect(action: "list", params: params)
+    }
+
+    def list = {
+        params.max = Math.min(params.max ? params.int('max') : 10, 100)
+        [propertyAssemblerInstanceList: PropertyAssembler.list(params), propertyAssemblerInstanceTotal: PropertyAssembler.count()]
+    }
+
+    @Secured(['ROLE_ADMIN','IS_AUTHENTICATED_REMEMBERED'])
+    def create = {
+        def propertyAssemblerInstance = new PropertyAssembler()
+        propertyAssemblerInstance.properties = params
+        return [propertyAssemblerInstance: propertyAssemblerInstance]
+    }
+
+    @Secured(['ROLE_ADMIN','IS_AUTHENTICATED_REMEMBERED'])
+    def save = {
+        def propertyAssemblerInstance = new PropertyAssembler(params)
+        if (propertyAssemblerInstance.save(flush: true)) {
+            flash.message = "${message(code: 'default.created.message', args: [message(code: 'propertyAssembler.label', default: 'PropertyAssembler'), propertyAssemblerInstance.id])}"
+            redirect(action: "show", id: propertyAssemblerInstance.id)
+        }
+        else {
+            render(view: "create", model: [propertyAssemblerInstance: propertyAssemblerInstance])
+        }
+    }
+
+    def show = {
+        def propertyAssemblerInstance = PropertyAssembler.get(params.id)
+        if (!propertyAssemblerInstance) {
+            flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'propertyAssembler.label', default: 'PropertyAssembler'), params.id])}"
+            redirect(action: "list")
+        }
+        else {
+            [propertyAssemblerInstance: propertyAssemblerInstance]
+        }
+    }
+
+    @Secured(['ROLE_ADMIN','IS_AUTHENTICATED_REMEMBERED'])
+    def edit = {
+        def propertyAssemblerInstance = PropertyAssembler.get(params.id)
+        if (!propertyAssemblerInstance) {
+            flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'propertyAssembler.label', default: 'PropertyAssembler'), params.id])}"
+            redirect(action: "list")
+        }
+        else {
+            return [propertyAssemblerInstance: propertyAssemblerInstance]
+        }
+    }
+
+    @Secured(['ROLE_ADMIN','IS_AUTHENTICATED_REMEMBERED'])
+    def update = {
+        def propertyAssemblerInstance = PropertyAssembler.get(params.id)
+        if (propertyAssemblerInstance) {
+            if (params.version) {
+                def version = params.version.toLong()
+                if (propertyAssemblerInstance.version > version) {
+                    
+                    propertyAssemblerInstance.errors.rejectValue("version", "default.optimistic.locking.failure", [message(code: 'propertyAssembler.label', default: 'PropertyAssembler')] as Object[], "Another user has updated this PropertyAssembler while you were editing")
+                    render(view: "edit", model: [propertyAssemblerInstance: propertyAssemblerInstance])
+                    return
+                }
+            }
+            propertyAssemblerInstance.properties = params
+            if (!propertyAssemblerInstance.hasErrors() && propertyAssemblerInstance.save(flush: true)) {
+                flash.message = "${message(code: 'default.updated.message', args: [message(code: 'propertyAssembler.label', default: 'PropertyAssembler'), propertyAssemblerInstance.id])}"
+                redirect(action: "show", id: propertyAssemblerInstance.id)
+            }
+            else {
+                render(view: "edit", model: [propertyAssemblerInstance: propertyAssemblerInstance])
+            }
+        }
+        else {
+            flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'propertyAssembler.label', default: 'PropertyAssembler'), params.id])}"
+            redirect(action: "list")
+        }
+    }
+
+    @Secured(['ROLE_ADMIN','IS_AUTHENTICATED_REMEMBERED'])
+    def delete = {
+        def propertyAssemblerInstance = PropertyAssembler.get(params.id)
+        if (propertyAssemblerInstance) {
+            try {
+                propertyAssemblerInstance.delete(flush: true)
+                flash.message = "${message(code: 'default.deleted.message', args: [message(code: 'propertyAssembler.label', default: 'PropertyAssembler'), params.id])}"
+                redirect(action: "list")
+            }
+            catch (org.springframework.dao.DataIntegrityViolationException e) {
+                flash.message = "${message(code: 'default.not.deleted.message', args: [message(code: 'propertyAssembler.label', default: 'PropertyAssembler'), params.id])}"
+                redirect(action: "show", id: params.id)
+            }
+        }
+        else {
+            flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'propertyAssembler.label', default: 'PropertyAssembler'), params.id])}"
+            redirect(action: "list")
+        }
+    }
 
 }

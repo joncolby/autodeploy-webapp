@@ -51,6 +51,13 @@
                             <td valign="top" class="value"><g:link action="show" controller="repository" id="${environmentInstance?.repository?.id}">${fieldValue(bean: environmentInstance, field: "repository")}</g:link></td>
 
                         </tr>
+
+                        <tr class="prop">
+                            <td valign="top" class="name"><g:message code="environment.propertyAssembler.label" default="Property Assembler" /></td>
+
+                            <td valign="top" class="value"><g:link action="show" controller="propertyAssembler" id="${environmentInstance?.propertyAssembler?.id}">${fieldValue(bean: environmentInstance, field: "propertyAssembler")}</g:link></td>
+
+                        </tr>
                     
                         <tr class="prop">
                             <td valign="top" class="name"><g:message code="environment.dateCreated.label" default="Date Created" /></td>

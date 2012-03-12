@@ -75,6 +75,7 @@
                         <li><g:link controller="pillar" action="list">Pillars</g:link></li>
                         <li><g:link controller="environment" action="list">Environments</g:link></li>
                         <li><g:link controller="repository" action="list">Repositories</g:link></li>
+                        <li><g:link controller="propertyAssembler" action="list">Property Assemblers</g:link></li>
                 </ul>
          
             </div>
