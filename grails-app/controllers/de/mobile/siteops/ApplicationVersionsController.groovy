@@ -53,7 +53,7 @@ class ApplicationVersionsController {
             }
         }
 
-        if ( params.xml ) {
+        if ( params.format == "xml" ) {
             render(contentType:"text/xml",encoding:"UTF-8") {
 
                 environment(name: "${env.name}") {

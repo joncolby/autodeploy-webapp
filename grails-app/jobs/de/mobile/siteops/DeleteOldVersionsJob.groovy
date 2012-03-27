@@ -1,6 +1,5 @@
 package de.mobile.siteops
 
-
 class DeleteOldVersionsJob {
     // def timeout = 5000l // execute job once in 5 seconds
 
@@ -17,21 +16,35 @@ class DeleteOldVersionsJob {
     def execute() {
         // execute task
 
+        def days = 30
+        def minutes = 60 * 24 * days
+        def c = Calendar.getInstance()
+        c.add(Calendar.MINUTE, -minutes)
+        def oldDate = c.getTime()
+
         log.info "starting cleanup job"
 
-        def environment = Environment.findByName('Production')
+        Environment.list().each { Environment environment ->
 
-        def queueEntriesForDeletion = applicationService.queueEntriesForDeletion(environment)
+                log.info "starting cleanup for environment ${environment.name} (id ${environment.id})"
 
-        queueEntriesForDeletion.each {
-            def entry = DeploymentQueueEntry.get(it)
-            def deployedHosts = DeployedHost.findAllByEntry(entry)
+                def queueEntriesForDeletion = applicationService.queueEntriesForDeletion(environment)
 
-            deployedHosts.each { DeployedHost deployedHost ->
-                deployedHost.delete()
-            }
+                for ( id in queueEntriesForDeletion ) {
 
-            entry.delete()
+                    def entry = DeploymentQueueEntry.get(id)
+
+                    if ( entry.dateCreated > oldDate ) {
+                        continue
+                    }
+
+                    def deployedHosts = DeployedHost.findAllByEntry(entry)
+
+                    deployedHosts.each { DeployedHost deployedHost ->
+                        deployedHost.delete()
+                    }
+                    entry.delete()
+                }
         }
 
         log.info "cleanup job finished"
