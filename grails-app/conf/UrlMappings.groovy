@@ -16,6 +16,8 @@ class UrlMappings {
 
         "/dashboard"(controller: "dashboardOverview", action: "index")
 
+        "/$format/versions/$id/"(controller: "applicationVersions", action: "index")
+
         "/home"(view:"/home")
         "/admin"(controller: "deploymentAdmin")
         "/admin/createNote"(controller: "deploymentAdmin", action: "createNote")

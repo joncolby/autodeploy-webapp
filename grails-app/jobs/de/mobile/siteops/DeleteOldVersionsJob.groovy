@@ -4,33 +4,37 @@ package de.mobile.siteops
 class DeleteOldVersionsJob {
     // def timeout = 5000l // execute job once in 5 seconds
 
+    def concurrent = false
+
+    def applicationService
+
+    static triggers = {
+       //cron name: 'poller', startDelay: 10000, cronExpression: "0 0/60 * * * ?"
+       simple name:'initQueueEntryDelete', startDelay:10000, repeatCount: 1
+       cron name: 'queueEntryDelete', startDelay: 10000, cronExpression: "0 0 12 ? * SUN"
+    }
+
     def execute() {
         // execute task
 
-        def environment = Environment.findByName('Integra204')
-        DeploymentQueue deploymentQueue = DeploymentQueue.findByEnvironment(environment)
+        log.info "starting cleanup job"
 
-        // get finalized queue entries
-        def queueEntries = DeploymentQueueEntry.finalizedEntries(deploymentQueue).list(sort: 'finalizedDate', order: 'desc')
+        def environment = Environment.findByName('Production')
 
-        // loop through each queue entry
-        for (DeploymentQueueEntry queueEntry: queueEntries) {
+        def queueEntriesForDeletion = applicationService.queueEntriesForDeletion(environment)
 
-            // get execution plan
-            ExecutionPlan plan = queueEntry.executionPlan
+        queueEntriesForDeletion.each {
+            def entry = DeploymentQueueEntry.get(it)
+            def deployedHosts = DeployedHost.findAllByEntry(entry)
 
-            // get latest application versions
+            deployedHosts.each { DeployedHost deployedHost ->
+                deployedHost.delete()
+            }
 
-            // get app versions
-            def appVersions = plan.applicationVersions
-
-            // delete versions older than latest application versions
-
-
-
-
+            entry.delete()
         }
 
+        log.info "cleanup job finished"
 
     }
 }

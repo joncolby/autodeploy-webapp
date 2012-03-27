@@ -32,9 +32,15 @@ class ApplicationService {
         return result
     }
 
-    def queueEntriesForDeletion(apps,queueEntries) {
+    def queueEntriesForDeletion(Environment environment) {
         def result = []
         def deleteQueueEntries = []
+
+        DeploymentQueue deploymentQueue = DeploymentQueue.findByEnvironment(environment)
+        def queueEntries = DeploymentQueueEntry.finalizedEntries(deploymentQueue).list(sort: 'finalizedDate', order: 'desc')
+
+        def apps = Application.findAll()
+
         apps.each { app ->
             result += new ApplicationVersion(application: app, revision: null)
         }
@@ -50,7 +56,8 @@ class ApplicationService {
                 }
             }
 
-            boolean deleteQueueEntry = true;
+            boolean deleteQueueEntry = true
+
             entryApplications.each { entryApp ->
                 if (!result.find { it.application.id == entryApp.application.id && it.revision }) {
                     deleteQueueEntry = false;
@@ -59,7 +66,15 @@ class ApplicationService {
 
             if (deleteQueueEntry) deleteQueueEntries += queueEntry.id
 
-            //println "Delete queeentry $queueEntry.id = $deleteQueentry"
+            previousApplications = previousApplications.unique()
+            def appsWithoutVersion = result.findAll { !it.revision }
+            if (!appsWithoutVersion) break
+            if (previousApplications) {
+                appsWithoutVersion.collect { it.application.id }.intersect(previousApplications.collect { it.application.id }).each { intersectApp ->
+                    result.find { it.application.id == intersectApp}.revision = previousApplications.find { it.application.id == intersectApp }?.revision
+                }
+            }
+
         }
 
         return deleteQueueEntries

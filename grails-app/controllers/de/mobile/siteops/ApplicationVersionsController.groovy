@@ -1,6 +1,9 @@
 package de.mobile.siteops
 
 import grails.converters.JSON
+import grails.converters.XML
+import groovy.xml.MarkupBuilder
+import groovy.xml.StreamingMarkupBuilder
 
 class ApplicationVersionsController {
 
@@ -50,6 +53,26 @@ class ApplicationVersionsController {
             }
         }
 
+        if ( params.xml ) {
+            render(contentType:"text/xml",encoding:"UTF-8") {
+
+                environment(name: "${env.name}") {
+                    for ( a in model.apps ) {
+                        application() {
+                            name("${a.name}")
+                            id("${a.id}")
+                            revision("${a.revision}")
+                            context("${a.context}")
+                            type("${a.type}")
+                            pillar("${a.pillar}")
+                        }
+                    }
+                }
+            }
+    } else {
         render model as JSON
     }
+
+    }
+
 }
