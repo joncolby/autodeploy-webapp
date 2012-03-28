@@ -50,4 +50,13 @@ class ApiController {
         render "status:succcess\nmessage:deployment for '$queueEntry.executionPlan.name' started."
     }
 
+    def status = {
+        def queueEntryId = params.queueEntryId
+
+        if (!queueEntryId) return
+        def queueEntry = DeploymentQueueEntry.findById(queueEntryId)
+
+        render queueEntry.state
+    }
+
 }
