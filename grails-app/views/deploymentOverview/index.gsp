@@ -33,7 +33,14 @@
     <div class="notification">
     </div>
 	<div class="header">
-        Mobile Autodeploy version <b>${grailsApplication.metadata['app.version']}</b>&nbsp;<span class="changesdialog" url="<g:createLink controller="autodeployChanges" action="index" />">(changes)</span>
+    Mobile Autodeploy version <b>${grailsApplication.metadata['app.version']}</b>&nbsp;<span class="changesdialog" url="<g:createLink controller="autodeployChanges" action="index" />">(changes)</span>
+    |
+    <sec:ifNotLoggedIn>
+      <g:link controller="login"><b>Login</b></g:link>
+    </sec:ifNotLoggedIn>
+    <sec:ifLoggedIn>
+      Logged in as <sec:username /> (<g:link controller="logout"><b>Logout</b></g:link>)
+    </sec:ifLoggedIn>
     </div>
 	<div class="queueContainer">
 		<ul class="queues ui-widget-content">

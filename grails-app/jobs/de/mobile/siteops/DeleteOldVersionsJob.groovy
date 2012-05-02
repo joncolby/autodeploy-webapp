@@ -9,7 +9,7 @@ class DeleteOldVersionsJob {
 
     static triggers = {
        //cron name: 'poller', startDelay: 10000, cronExpression: "0 0/60 * * * ?"
-       simple name:'initQueueEntryDelete', startDelay:10000, repeatCount: 1
+       simple name:'initQueueEntryDelete', startDelay:10000, repeatCount: 0
        cron name: 'queueEntryDelete', startDelay: 10000, cronExpression: "0 0 12 ? * SUN"
     }
 
