@@ -17,12 +17,12 @@ class RestartProcessEntry {
 
     void restartInProgress() {
         state = RestartProcessState.RESTARTING
-        statusMessage = "Agent ist restartuig"
+        statusMessage = "Agent is restarting"
     }
 
     void restartDone() {
         state = RestartProcessState.FINISHED
-        statusMessage = "Agent restart completed successful"
+        statusMessage = "Agent restart successful"
         if (version) statusMessage += " (version " + version + ")"
     }
 
