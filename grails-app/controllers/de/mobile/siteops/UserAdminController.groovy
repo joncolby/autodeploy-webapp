@@ -7,12 +7,18 @@ class UserAdminController {
 
     def springSecurityService
 
+    static defaultAction = "home"
+
     def index = {
         def model = [users: SecUser.findAll().collect { [name: it.username, roles: it.authorities.collect { role -> role.authority }, entry: it]} ]
 
         println model.users
 
         [model: model]
+    }
+
+    def home = {
+            render(view: "home")
     }
 
     def create = {

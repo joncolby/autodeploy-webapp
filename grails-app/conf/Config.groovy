@@ -107,6 +107,8 @@ log4j = {
 
     error  'de.mobile.zookeeper'
 
+    debug 'org.springframework.security.ldap'
+
 }
 
 // Added by the Spring Security Core plugin:
@@ -116,3 +118,29 @@ grails.plugins.springsecurity.authority.className = 'de.mobile.siteops.SecRole'
 
 zooKeeper.url="localhost:2181"
 zooKeeper.timeout=2000
+
+// Active Directory config
+grails.plugins.springsecurity.ldap.auth.hideUserNotFoundExceptions=false
+grails.plugins.springsecurity.ldap.context.managerDn = '_auth_mobiledir@corp.ebay.com'
+grails.plugins.springsecurity.ldap.context.managerPassword = 'Ohf1quec1pah6eephol6ye8biethahdahcah9Woh'
+//grails.plugins.springsecurity.ldap.context.server = 'ldap://10.250.16.37/'
+// stunnel4 is used to route ldap requests to ldaps
+grails.plugins.springsecurity.ldap.context.server = 'ldap://localhost/'
+grails.plugins.springsecurity.ldap.authorities.ignorePartialResultException = true // typically needed for Active Directory
+grails.plugins.springsecurity.ldap.search.base = 'DC=CORP,DC=EBAY,DC=COM'
+grails.plugins.springsecurity.ldap.search.filter="sAMAccountName={0}" // for Active Directory you need this
+grails.plugins.springsecurity.ldap.search.searchSubtree = true
+grails.plugins.springsecurity.ldap.auth.hideUserNotFoundExceptions = false
+grails.plugins.springsecurity.ldap.search.attributesToReturn = ['mail', 'displayName'] // extra attributes you want returned; see below for custom classes that access this data
+
+// comment out to allow at least admin user to come from the local database ...
+//grails.plugins.springsecurity.providerNames = ['ldapAuthProvider', 'anonymousAuthenticationProvider'] // specify this when you want to skip attempting to load from db and only use LDAP
+
+// role-specific Active Directory config
+grails.plugins.springsecurity.ldap.useRememberMe = false
+grails.plugins.springsecurity.ldap.authorities.retrieveDatabaseRoles = true  // do extra role lookup in database after LDAP
+grails.plugins.springsecurity.ldap.authorities.retrieveGroupRoles = false
+grails.plugins.springsecurity.ldap.authorities.groupSearchBase ='DC=CORP,DC=EBAY,DC=COM'
+grails.plugins.springsecurity.ldap.authorities.groupSearchFilter = 'memberOf={0}' // Active Directory specific - the example settings will work fine for a plain LDAP server
+// default role
+//grails.plugins.springsecurity.ldap.authorities.defaultRole = 'ROLE_USER'

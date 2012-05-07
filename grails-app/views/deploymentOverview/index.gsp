@@ -60,7 +60,7 @@
 		</ul>
 	</div>
         <div class="queueEntryHeader ui-state-hover">Queue: <span class="queueText">(none selected yet)</span></div>
-
+<sec:ifLoggedIn>
         <div class="fastDeploy">
             <div class="sync">
 	        <form name="syncEnv" action="<g:createLink controller="deployAction" action="syncEnv"/>">
@@ -103,6 +103,7 @@
             </div>
 
 		</div>
+</sec:ifLoggedIn>
 
 		<div class="queueEntries"> 
 		<table>

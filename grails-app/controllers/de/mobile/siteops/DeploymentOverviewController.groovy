@@ -181,7 +181,7 @@ class DeploymentOverviewController {
                 detailModel = createDetailModel(entry, viewType, fullDetails ? 0 : timestamp)
             }
 
-            if (!accessControlService.hasWriteAccessForQueue(queue)) {
+            if ( !accessControlService.isLoggedIn() || !accessControlService.hasWriteAccessForQueue(queue)) {
                 modelEntry.actions = []
             }
 

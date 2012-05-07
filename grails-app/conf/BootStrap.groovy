@@ -14,9 +14,8 @@ class BootStrap {
         log.info("Entering bootstrap init")
         zookeeperHandlerService.init()
 
-
-        def userRole = SecRole.findByAuthority('ROLE_USER') ?: new SecRole(authority: 'ROLE_USER').save(failOnError: true)
         def adminRole = SecRole.findByAuthority('ROLE_ADMIN') ?: new SecRole(authority: 'ROLE_ADMIN').save(failOnError: true)
+        def userRole = SecRole.findByAuthority('ROLE_USER') ?: new SecRole(authority: 'ROLE_USER').save(failOnError: true)
         def readProdRole = SecRole.findByAuthority('ROLE_PROD_READ') ?: new SecRole(authority: 'ROLE_PROD_READ').save(failOnError: true)
         def writeProdRole = SecRole.findByAuthority('ROLE_PROD_WRITE') ?: new SecRole(authority: 'ROLE_PROD_WRITE').save(failOnError: true)
 

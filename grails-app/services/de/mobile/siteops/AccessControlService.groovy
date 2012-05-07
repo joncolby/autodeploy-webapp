@@ -36,4 +36,8 @@ class AccessControlService {
         def auth = springSecurityService.authentication
         return auth.authorities.collect { it.authority.toLowerCase() }.contains(role.toLowerCase())
     }
+
+    boolean isLoggedIn() {
+       return springSecurityService.isLoggedIn()
+    }
 }
