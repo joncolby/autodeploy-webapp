@@ -1,5 +1,8 @@
 package de.mobile.siteops
 
+import org.springframework.web.context.request.RequestContextHolder
+
+
 class AccessControlService {
 
     def springSecurityService
@@ -39,5 +42,13 @@ class AccessControlService {
 
     boolean isLoggedIn() {
        return springSecurityService.isLoggedIn()
+    }
+
+    boolean isApiRequest() {
+        def request = RequestContextHolder.requestAttributes.request
+        if ( request.forwardURI.substring(request.contextPath.length()) =~ /^\/api\// ) {
+            return true
+        }
+        return false
     }
 }

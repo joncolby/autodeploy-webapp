@@ -79,10 +79,13 @@ class DeploymentPlanService {
     def addPlanToQueue(deploymentQueueId, deploymentPlanId, revision) {
         def result = [type: 'error', queueEntryId: null, message: "Unknown error"]
 
-        if (!accessControlService.isLoggedIn()) {
+        // Don't require login for API requests yet
+        if (!accessControlService.isLoggedIn() && !accessControlService.isApiRequest()) {
             result.message = "You must be logged in."
             return result
         }
+
+        println accessControlService.isApiRequest()
 
         def targetQueue = DeploymentQueue.get(deploymentQueueId)
         if (!targetQueue) {

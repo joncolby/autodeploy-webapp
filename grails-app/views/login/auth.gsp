@@ -87,8 +87,8 @@
 <body>
 <div id='login'>
 	<div class='inner'>
-		<div class='fheader'><g:message code="springSecurity.login.header"/>*
-        <div style="font-size: 12px;font-weight: normal;">* <g:message code="springSecurity.login.subtext"/></div>
+		<div class='fheader'><g:message code="springSecurity.login.header"/>
+        <div style="font-size: 12px;font-weight: normal;"><g:message code="springSecurity.login.subtext"/></div>
         </div>
 
 
