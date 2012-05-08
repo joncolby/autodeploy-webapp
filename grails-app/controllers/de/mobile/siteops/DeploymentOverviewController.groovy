@@ -65,7 +65,6 @@ class DeploymentOverviewController {
         def avgTotal = avgMap.collect { it.avg }.sum() / numhosts as double
         */
 
-
         def teamId = g.cookie(name: 'autodeploy_teamId')
         def planId = g.cookie(name: 'autodeploy_planId')
 

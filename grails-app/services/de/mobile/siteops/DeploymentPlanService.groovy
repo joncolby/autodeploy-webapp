@@ -9,6 +9,8 @@ class DeploymentPlanService {
 
 	static transactional = false
 
+    def accessControlService
+
 	@Transactional(readOnly = true)
 	def createDeploymentXml(DeploymentQueueEntry entry, ExecutionPlan plan, Host host, Environment environment) {
 		HostClass hostclass = host.className
@@ -76,6 +78,12 @@ class DeploymentPlanService {
     @Transactional()
     def addPlanToQueue(deploymentQueueId, deploymentPlanId, revision) {
         def result = [type: 'error', queueEntryId: null, message: "Unknown error"]
+
+        if (!accessControlService.isLoggedIn()) {
+            result.message = "You must be logged in."
+            return result
+        }
+
         def targetQueue = DeploymentQueue.get(deploymentQueueId)
         if (!targetQueue) {
             result.message = "Could not find queue for deploymentQueueId '$deploymentQueueId'"
@@ -105,8 +113,7 @@ class DeploymentPlanService {
                 return result
             }
         }
-
-        def executionPlan = new ExecutionPlan(name: plan.name, contribution: plan.contribution, ticket: plan.ticket ? plan.ticket : "", databaseChanges: plan.requiresDatabaseChanges, planType: PlanType.NORMAL, team: plan.team, repository: env.repository, applicationVersions: [])
+        def executionPlan = new ExecutionPlan(name: plan.name, contribution: plan.contribution, ticket: plan.ticket ? plan.ticket : "", databaseChanges: plan.requiresDatabaseChanges, planType: PlanType.NORMAL, team: plan.team, repository: env.repository, applicationVersions: [], user: accessControlService.getCurrentUser())
 
         applications.each { app ->
             if (applicationsInThisEnv.contains(app)) {

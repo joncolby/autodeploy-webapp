@@ -11,6 +11,7 @@ class ExecutionPlan {
     Team team
     Repository repository
     Boolean databaseChanges = false
+    String user
 
     Date dateCreated
     Date lastUpdated
@@ -25,6 +26,7 @@ class ExecutionPlan {
 
     static constraints = {
         repository(nullable: true)
+        user(blank:true,nullable: true)
     }
     static mapping = {
         version false
@@ -45,7 +47,7 @@ class ExecutionPlan {
     }
 
     static ExecutionPlan copyFrom(ExecutionPlan source) {
-        return new ExecutionPlan(name: source.name, contribution: source.contribution, ticket: source.ticket ? source.ticket : "", databaseChanges: source.databaseChanges, team: source.team, planType: source.planType, applicationVersions: [])
+        return new ExecutionPlan(name: source.name, contribution: source.contribution, ticket: source.ticket ? source.ticket : "", databaseChanges: source.databaseChanges, team: source.team, planType: source.planType, applicationVersions: [], user: source.user)
     }
 
     String toString() {

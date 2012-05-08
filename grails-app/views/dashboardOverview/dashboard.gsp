@@ -6,6 +6,7 @@
             <th width="85px">Status</th>
             <th width="130px">Last updated</th>
             <th width="100px">Team</th>
+            <th width="50px">User</th>
             <th width="250px">Contribution</th>
             <th width="100px">Revision</th>
             <th width="200px">Applications</th>
@@ -17,6 +18,7 @@
             <td class="center"><span class="${entry.stateColor}">${entry.state}</span></td>
             <td class="center">${entry.date} ${entry.time}</td>
             <td class="center">${entry.team}</td>
+            <td class="center">${entry.user}</td>
             <td>
                 <g:if test="${entry.databaseChanges}"><span class="db-change-icon" /></g:if>${entry.contribution}<br/>
             </td>

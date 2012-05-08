@@ -27,8 +27,11 @@ class DeploymentPlan {
         name(nullable:false,blank:false, unique: true)
     }
 
-
     String toString() {
         return name
+    }
+
+    static mapping = {
+        sort "name"
     }
 }

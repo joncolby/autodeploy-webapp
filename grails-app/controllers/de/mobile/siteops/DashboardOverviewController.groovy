@@ -47,6 +47,7 @@ class DashboardOverviewController {
             model.state = entry.state
             model.multiplerevs = true
             model.revision = "(multiple)"
+            model.user = entry.executionPlan.user
 
             model.apps = plan.applicationVersions.collect { [name: it.application.modulename, pillar: it.application.pillar.name, revision: it.revision ]}.sort { it.name }
             def revlist = model.apps.collect { it.revision }.unique()
