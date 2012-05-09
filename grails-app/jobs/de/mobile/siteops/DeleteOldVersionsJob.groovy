@@ -44,7 +44,7 @@ class DeleteOldVersionsJob {
 
                     deployedHosts.each { DeployedHost deployedHost ->
                         log.debug "deleting deployedHost ${deployedHost}"
-                        deployedHost.delete()
+                        deployedHost.delete(flush:true)
 
                         if (deployedHost.hasErrors())
                             log.error "error while deleting deployedHost: " + deployedHost.errors
@@ -52,7 +52,7 @@ class DeleteOldVersionsJob {
                     }
 
                     log.debug "deleting queued entry ${entry}"
-                    entry.delete()
+                    entry.delete(flush:true)
 
                     if (entry.hasErrors())
                         log.error "error while deleting entry: " + entry.errors
