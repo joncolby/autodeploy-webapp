@@ -42,6 +42,6 @@ class DeployedHost {
 	}
 
 	String toString() {
-		return "id: $id, host: $host?.name"
+		return "id: $id, host: ${host.name}"
 	}
 }

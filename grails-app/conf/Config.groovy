@@ -107,7 +107,7 @@ log4j = {
 
     error  'de.mobile.zookeeper'
 
-    debug 'org.springframework.security.ldap'
+    info 'org.springframework.security.ldap'
 
 }
 

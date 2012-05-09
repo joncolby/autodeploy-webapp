@@ -30,6 +30,8 @@ class DeleteOldVersionsJob {
 
                 def queueEntriesForDeletion = applicationService.queueEntriesForDeletion(environment)
 
+                log.info "found ${queueEntriesForDeletion.size()} entries for deletion for environment ${environment}"
+
                 for ( id in queueEntriesForDeletion ) {
 
                     def entry = DeploymentQueueEntry.get(id)
@@ -41,9 +43,20 @@ class DeleteOldVersionsJob {
                     def deployedHosts = DeployedHost.findAllByEntry(entry)
 
                     deployedHosts.each { DeployedHost deployedHost ->
+                        log.debug "deleting deployedHost ${deployedHost}"
                         deployedHost.delete()
+
+                        if (deployedHost.hasErrors())
+                            log.error "error while deleting deployedHost: " + deployedHost.errors
+
                     }
+
+                    log.debug "deleting queued entry ${entry}"
                     entry.delete()
+
+                    if (entry.hasErrors())
+                        log.error "error while deleting entry: " + entry.errors
+
                 }
         }
 

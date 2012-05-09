@@ -54,7 +54,9 @@
 		</g:each>
 		</ul>		
 		<ul class="queues ui-widget-content">
+       <%-- <sec:ifLoggedIn> --%>
 		<li><h2><a href="<g:createLink controller="deploymentPlanManagment" action="index" />" class="modal">Plan Managment</a></h2></li>
+        <%-- </sec:ifLoggedIn> --%>
     	<li><strong><a href="<g:createLink controller="applicationVersions" action="index" />" class="modalDiv">App Revisions</a></strong></li>
         <li><strong><a href="<g:createLink controller="dashboardOverview" action="dashboard" />" class="dashboard">Dashboard</a></strong></li>
 		</ul>
