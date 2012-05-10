@@ -52,6 +52,7 @@ class ApiController {
         render "status:succcess\nmessage:deployment for '$queueEntry.executionPlan.name' started."
     }
 
+    /*
     def deployNext = {
         def deploymentQueueId = params.deploymentQueueId
         def deploymentQueue = DeploymentQueue.get(deploymentQueueId)
@@ -81,6 +82,7 @@ class ApiController {
 
         forward  action: "deploy", params: [queueEntryId: nextQueueEntry.id]
     }
+    */
 
     def status = {
         def queueEntryId = params.queueEntryId
