@@ -11,6 +11,8 @@ class DeploymentQueueEntry {
     Date finalizedDate
 
     String comment
+    String creator
+    String executor
 
     int duration
 
@@ -25,7 +27,8 @@ class DeploymentQueueEntry {
         state(nullable: false)
         finalizedDate(nullable: true)
         comment(blank: true, nullable: true, maxSize: 1000)
-
+        creator(blank:true,nullable: true)
+        executor(blank:true,nullable: true)
     }
 
     static namedQueries = {

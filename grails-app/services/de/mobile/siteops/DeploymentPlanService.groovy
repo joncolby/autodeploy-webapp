@@ -85,8 +85,6 @@ class DeploymentPlanService {
             return result
         }
 
-        println accessControlService.isApiRequest()
-
         def targetQueue = DeploymentQueue.get(deploymentQueueId)
         if (!targetQueue) {
             result.message = "Could not find queue for deploymentQueueId '$deploymentQueueId'"
@@ -116,7 +114,7 @@ class DeploymentPlanService {
                 return result
             }
         }
-        def executionPlan = new ExecutionPlan(name: plan.name, contribution: plan.contribution, ticket: plan.ticket ? plan.ticket : "", databaseChanges: plan.requiresDatabaseChanges, planType: PlanType.NORMAL, team: plan.team, repository: env.repository, applicationVersions: [], user: accessControlService.getCurrentUser())
+        def executionPlan = new ExecutionPlan(name: plan.name, contribution: plan.contribution, ticket: plan.ticket ? plan.ticket : "", databaseChanges: plan.requiresDatabaseChanges, planType: PlanType.NORMAL, team: plan.team, repository: env.repository, applicationVersions: [])
 
         applications.each { app ->
             if (applicationsInThisEnv.contains(app)) {
@@ -125,7 +123,7 @@ class DeploymentPlanService {
         }
         executionPlan.save()
 
-        def queueEntry = new DeploymentQueueEntry(state: HostStateType.QUEUED, executionPlan: executionPlan, plan: plan, revision: revision, duration: 0)
+        def queueEntry = new DeploymentQueueEntry(state: HostStateType.QUEUED, executionPlan: executionPlan, plan: plan, revision: revision, duration: 0, creator: accessControlService.currentUser)
         targetQueue.addToEntries(queueEntry)
         if (!targetQueue.save(false)) {
             result.message = "Could not save queue entry"

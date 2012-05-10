@@ -10,6 +10,8 @@ class DeploymentQueueService {
 
     def deploymentPlanService
 
+    def accessControlService
+
     def zookeeperHandlerService
 
     def deployQueueMap = new ConcurrentHashMap<DeploymentQueueEntry, List<DeployProcessEntry>>()
@@ -38,6 +40,7 @@ class DeploymentQueueService {
 
         queueEntry.state = HostStateType.IN_PROGRESS
         queueEntry.lastUpdated = new Date()
+        queueEntry.executor = accessControlService.currentUser
         queueEntry.save()
 
         def deployQueueMapEntry = getDeployQueueMapEntry(queueEntry)
@@ -77,6 +80,7 @@ class DeploymentQueueService {
             }
             queueEntry.state = HostStateType.IN_PROGRESS
             queueEntry.lastUpdated = new Date()
+            queueEntry.executor = accessControlService.currentUser
             if (!queueEntry.save(flush: true)) {
                 log.error "Error persisting queue entry " + queueEntry.id
                 queueEntry.errors.each {

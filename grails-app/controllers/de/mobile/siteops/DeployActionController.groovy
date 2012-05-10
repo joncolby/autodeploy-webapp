@@ -46,7 +46,7 @@ class DeployActionController {
         ExecutionPlan plan = queueEntry.executionPlan
 
         def revisions = []
-        def newExecutionPlan = new ExecutionPlan(forceDeploy: true, name: plan.name, contribution: plan.contribution, ticket: plan.ticket, databaseChanges: plan.databaseChanges, team: plan.team, planType: PlanType.REDEPLOY, applicationVersions: [], user: accessControlService.getCurrentUser())
+        def newExecutionPlan = new ExecutionPlan(forceDeploy: true, name: plan.name, contribution: plan.contribution, ticket: plan.ticket, databaseChanges: plan.databaseChanges, team: plan.team, planType: PlanType.REDEPLOY, applicationVersions: [])
         plan.applicationVersions.each {
             if (it.revision) {
                 revisions += it.revision
@@ -55,7 +55,7 @@ class DeployActionController {
         }
         newExecutionPlan.save()
 
-        def newQueueEntry = new DeploymentQueueEntry(state: HostStateType.QUEUED, executionPlan: newExecutionPlan, revision: revisions.unique().size() == 1 ? revisions[0] : '(Multiple)', duration: 0)
+        def newQueueEntry = new DeploymentQueueEntry(state: HostStateType.QUEUED, executionPlan: newExecutionPlan, revision: revisions.unique().size() == 1 ? revisions[0] : '(Multiple)', duration: 0, creator: accessControlService.currentUser)
         def deploymentQueue = queueEntry.queue
         deploymentQueue.addToEntries(newQueueEntry)
         deploymentQueue.save(false)
@@ -145,7 +145,7 @@ class DeployActionController {
         }
         targetExecutionPlan.save()
 
-        def newQueueEntry = new DeploymentQueueEntry(state: HostStateType.QUEUED, executionPlan: targetExecutionPlan, revision: revisions.unique().size() == 1 ? revisions[0] : '(Multiple)', duration: 0)
+        def newQueueEntry = new DeploymentQueueEntry(state: HostStateType.QUEUED, executionPlan: targetExecutionPlan, revision: revisions.unique().size() == 1 ? revisions[0] : '(Multiple)', duration: 0, creator: accessControlService.currentUser)
         def deploymentQueue = queueEntry.queue
         deploymentQueue.addToEntries(newQueueEntry)
         deploymentQueue.save(false)
@@ -170,11 +170,11 @@ class DeployActionController {
             return
         }
 
-        def targetExecutionPlan = new ExecutionPlan(name: sourceExecutionPlan.name + " (" + retryApplication.application.filename + ")", contribution: sourceExecutionPlan.contribution, ticket: sourceExecutionPlan.ticket ? sourceExecutionPlan.ticket : "", databaseChanges: sourceExecutionPlan.databaseChanges, team: sourceExecutionPlan.team, planType: PlanType.RETRY, applicationVersions: [], user: accessControlService.getCurrentUser())
+        def targetExecutionPlan = new ExecutionPlan(name: sourceExecutionPlan.name + " (" + retryApplication.application.filename + ")", contribution: sourceExecutionPlan.contribution, ticket: sourceExecutionPlan.ticket ? sourceExecutionPlan.ticket : "", databaseChanges: sourceExecutionPlan.databaseChanges, team: sourceExecutionPlan.team, planType: PlanType.RETRY, applicationVersions: [])
         targetExecutionPlan.addToApplicationVersions(new ApplicationVersion(application: retryApplication.application, revision: retryApplication.revision).save())
         targetExecutionPlan.save()
 
-        def newQueueEntry = new DeploymentQueueEntry(state: HostStateType.QUEUED, executionPlan: targetExecutionPlan, revision: retryApplication.revision, duration: 0)
+        def newQueueEntry = new DeploymentQueueEntry(state: HostStateType.QUEUED, executionPlan: targetExecutionPlan, revision: retryApplication.revision, duration: 0, creator: accessControlService.currentUser)
         def deploymentQueue = queueEntry.queue
         deploymentQueue.addToEntries(newQueueEntry)
         deploymentQueue.save(false)
@@ -200,7 +200,7 @@ class DeployActionController {
             return
         }
 
-        def targetExecutionPlan = new ExecutionPlan(name: sourceExecutionPlan.name + " (" + rollbackApplication.application.filename + ")", contribution: sourceExecutionPlan.contribution, ticket: sourceExecutionPlan.ticket ? sourceExecutionPlan.ticket : "", databaseChanges: sourceExecutionPlan.databaseChanges, team: sourceExecutionPlan.team, planType: PlanType.ROLLBACK, applicationVersions: [], user: accessControlService.getCurrentUser())
+        def targetExecutionPlan = new ExecutionPlan(name: sourceExecutionPlan.name + " (" + rollbackApplication.application.filename + ")", contribution: sourceExecutionPlan.contribution, ticket: sourceExecutionPlan.ticket ? sourceExecutionPlan.ticket : "", databaseChanges: sourceExecutionPlan.databaseChanges, team: sourceExecutionPlan.team, planType: PlanType.ROLLBACK, applicationVersions: [])
 
         def previousQueueEntries = DeploymentQueueEntry.previousEntries(queueEntry).list(sort: 'finalizedDate', order: 'desc')
         def sourceApps = [rollbackApplication.application]
@@ -213,7 +213,7 @@ class DeployActionController {
         DeploymentQueueEntry queueEntry = params.queueEntry
 
         def sourceExecutionPlan = queueEntry.executionPlan
-        def targetExecutionPlan = new ExecutionPlan(name: sourceExecutionPlan.name, contribution: sourceExecutionPlan.contribution, ticket: sourceExecutionPlan.ticket ? sourceExecutionPlan.ticket : "", databaseChanges: sourceExecutionPlan.databaseChanges, team: sourceExecutionPlan.team, planType: PlanType.ROLLBACK, applicationVersions: [], user: accessControlService.getCurrentUser())
+        def targetExecutionPlan = new ExecutionPlan(name: sourceExecutionPlan.name, contribution: sourceExecutionPlan.contribution, ticket: sourceExecutionPlan.ticket ? sourceExecutionPlan.ticket : "", databaseChanges: sourceExecutionPlan.databaseChanges, team: sourceExecutionPlan.team, planType: PlanType.ROLLBACK, applicationVersions: [])
 
         def previousQueueEntries = DeploymentQueueEntry.previousEntries(queueEntry).list(sort: 'finalizedDate', order: 'desc')
         def sourceApps = sourceExecutionPlan.applicationVersions.collect { it.application }
@@ -238,7 +238,7 @@ class DeployActionController {
 
         targetExecutionPlan.save()
 
-        def newQueueEntry = new DeploymentQueueEntry(state: HostStateType.QUEUED, executionPlan: targetExecutionPlan, revision: revisions.unique().size() == 1 ? revisions[0] : '(Multiple)', duration: 0)
+        def newQueueEntry = new DeploymentQueueEntry(state: HostStateType.QUEUED, executionPlan: targetExecutionPlan, revision: revisions.unique().size() == 1 ? revisions[0] : '(Multiple)', duration: 0, creator: accessControlService.currentUser)
         def deploymentQueue = queueEntry.queue
         deploymentQueue.addToEntries(newQueueEntry)
         deploymentQueue.save()
@@ -291,7 +291,7 @@ class DeployActionController {
 
         def applicationsNotFound = []
         def revisions = []
-        def newExecutionPlan = new ExecutionPlan(name: "Sync of environment $sourceQueue.environment.name", contribution: "No specific contribution", ticket: "N/A", databaseChanges: false, team: team, planType: PlanType.SYNC, repository: sourceQueue.environment.repository, applicationVersions: [], user: accessControlService.getCurrentUser())
+        def newExecutionPlan = new ExecutionPlan(name: "Sync of environment $sourceQueue.environment.name", contribution: "No specific contribution", ticket: "N/A", databaseChanges: false, team: team, planType: PlanType.SYNC, repository: sourceQueue.environment.repository, applicationVersions: [])
         latestAppVersions.each {
             if (it.revision) {
                 revisions += it.revision
@@ -303,7 +303,7 @@ class DeployActionController {
 
         newExecutionPlan.save()
 
-        def newQueueEntry = new DeploymentQueueEntry(state: HostStateType.QUEUED, executionPlan: newExecutionPlan, plan: null, revision: revisions.unique().size() == 1 ? revisions[0] : '(Multiple)', duration: 0)
+        def newQueueEntry = new DeploymentQueueEntry(state: HostStateType.QUEUED, executionPlan: newExecutionPlan, plan: null, revision: revisions.unique().size() == 1 ? revisions[0] : '(Multiple)', duration: 0, creator: accessControlService.currentUser)
         targetQueue.addToEntries(newQueueEntry)
         if (!targetQueue.save(flush: true)) {
             render MessageResult.errorMessage("Could not save plan to destination queue $targetQueue.environment.name")
