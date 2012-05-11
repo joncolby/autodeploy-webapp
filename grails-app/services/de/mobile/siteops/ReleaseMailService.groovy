@@ -16,6 +16,7 @@ class ReleaseMailService {
         model.databaseChanges = queueEntry.executionPlan.databaseChanges
         model.applications = []
         model.multipleRevs = false
+        model.creator = queueEntry.creator
         def lastRev = null
         queueEntry.executionPlan.applicationVersions.each { ApplicationVersion app ->
             if (lastRev && lastRev != app.revision) {
