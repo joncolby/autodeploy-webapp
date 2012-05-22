@@ -5,7 +5,7 @@ class SecUser {
     transient springSecurityService
 
 	String username
-	String password = ""
+	String password = generateRandomPassword()
 	boolean enabled = true
 	boolean accountExpired = false
 	boolean accountLocked = false
@@ -33,6 +33,13 @@ class SecUser {
 			encodePassword()
 		}
 	}
+
+    private String generateRandomPassword() {
+         def pool = ['a'..'z','A'..'Z',0..9,'_'].flatten()
+         Random rand = new Random(System.currentTimeMillis())
+         def passChars = (0..10).collect { pool[rand.nextInt(pool.size())] }
+         return passChars.join()
+    }
 
 	protected void encodePassword() {
 		password = springSecurityService.encodePassword(password)
