@@ -39,7 +39,6 @@ class DeploymentQueueEntry {
                 'in'("state", [HostStateType.IN_PROGRESS])
             }
         }
-
         dashboard { queue ->
             eq("queue", queue)
             'in'("state", [HostStateType.DEPLOYED, HostStateType.QUEUED])
@@ -50,6 +49,11 @@ class DeploymentQueueEntry {
                 lt("id", queueEntry.id)
                 'in'("state", [HostStateType.DEPLOYED, HostStateType.ABORTED, HostStateType.ERROR])
             }
+        }
+        queuedEntries { DeploymentQueue queue ->
+            eq("queue", queue)
+            eq("state", HostStateType.QUEUED)
+
         }
         finalizedEntries { DeploymentQueue queue ->
             eq("queue", queue)
