@@ -13,11 +13,10 @@ class UrlMappings {
         "/api/plan/$planId/revision/$revision/addToQueue/$queueId"(controller: "api", action: "addToQueue")
         "/api/queueEntry/$queueEntryId/deploy"(controller: "api", action: "deploy")
         "/api/queueEntry/$queueEntryId/status"(controller: "api", action: "status")
-        // "/api/deployNext/$deploymentQueueId/"(controller: "api", action: "deployNext")
 
         "/dashboard"(controller: "dashboardOverview", action: "index")
 
-        "/$format/versions/$id/"(controller: "applicationVersions", action: "index")
+        "/$format/versions/$environment/"(controller: "applicationVersions", action: "index")
 
         "/home"(view:"/home")
         "/admin"(controller: "deploymentAdmin")

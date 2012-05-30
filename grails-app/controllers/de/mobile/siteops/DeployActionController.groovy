@@ -12,6 +12,13 @@ class DeployActionController {
     def beforeInterceptor = [action: this.&checkConditionsMet, except: ['syncEnv']]
 
     def checkConditionsMet() {
+
+        // Don't require login for API requests yet
+        if (!accessControlService.isLoggedIn() && !accessControlService.isApiRequest()) {
+            render MessageResult.errorMessage(message(code:"default.not.logged.in")) as JSON
+            return false
+        }
+
         if (!params.containsKey('id')) {
             render MessageResult.errorMessage('No queueEntry id specified') as JSON
             return false
@@ -26,6 +33,7 @@ class DeployActionController {
     }
 
     def deployAll = {
+
         DeploymentQueueEntry queueEntry = params.queueEntry
         def canDeploy = deploymentQueueService.canDeploy(queueEntry)
         if (!canDeploy.success) {
@@ -42,6 +50,7 @@ class DeployActionController {
     }
 
     def reDeployAll = {
+
         DeploymentQueueEntry queueEntry = params.queueEntry
         ExecutionPlan plan = queueEntry.executionPlan
 
@@ -65,6 +74,7 @@ class DeployActionController {
 
 
     def redeployFailed = {
+
         DeploymentQueueEntry queueEntry = params.queueEntry
         def canDeploy = deploymentQueueService.canDeploy(queueEntry)
         if (!canDeploy.success) {
@@ -84,6 +94,7 @@ class DeployActionController {
     }
 
     def redeployProcessFailed = {
+
         DeploymentQueueEntry queueEntry = params.queueEntry
 
         def deployedHosts = deploymentQueueService.createdRedeployDeployProcessEntries(queueEntry, true)
@@ -98,6 +109,7 @@ class DeployActionController {
     }
 
     def abort = {
+
         DeploymentQueueEntry queueEntry = params.queueEntry
         deploymentQueueService.abortDeployment(queueEntry)
         render MessageResult.successMessage("Abort in process") as JSON

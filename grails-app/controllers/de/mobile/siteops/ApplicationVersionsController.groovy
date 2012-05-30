@@ -11,19 +11,26 @@ class ApplicationVersionsController {
 
     def index = {
         def model = [:]
-        def queueId = params.id
-        if (!queueId) {
-            render MessageResult.errorMessage("No id parameter provided (no queue selected)") as JSON
+        def environmentParam = params.environment
+        if (!environmentParam) {
+            render MessageResult.errorMessage("No environment parameter provided") as JSON
             return
         }
 
-        DeploymentQueue deploymentQueue = DeploymentQueue.get(queueId)
+        Environment env = Environment.findByName(environmentParam)
+
+
+        if (!env) {
+            render MessageResult.errorMessage("No environment with name ${environmentParam} found") as JSON
+            return
+        }
+
+        DeploymentQueue deploymentQueue = DeploymentQueue.findByEnvironment(env)
 
         def allApps = Application.findAll()
         def modelApps = allApps.collect { [id: it.id, name: it.filename, pillar: it.pillar.name, type: it.type.name(), context: it.context, revision: null, existsInEnv: false, actions: []]}
         model['apps'] = modelApps
 
-        def env = deploymentQueue.environment
         def hostclasses = allApps.collect { it.hostclasses }.flatten().unique()
         def hosts = Host.findAllByClassNameInListAndEnvironment(hostclasses, env)
         def applicationsInThisEnv = []

@@ -52,38 +52,6 @@ class ApiController {
         render "status:succcess\nmessage:deployment for '$queueEntry.executionPlan.name' started."
     }
 
-    /*
-    def deployNext = {
-        def deploymentQueueId = params.deploymentQueueId
-        def deploymentQueue = DeploymentQueue.get(deploymentQueueId)
-
-        def entriesInError = DeploymentQueueEntry.findAllByStateAndQueue(HostStateType.ERROR, deploymentQueue)
-
-        if (entriesInError) {
-            render "status:error\nmessage: ${deploymentQueue} has ${entriesInError.size()} entries in ERROR state."
-            return
-        }
-
-        def criteria = DeploymentQueueEntry.createCriteria()
-
-        def nextQueueEntry = criteria.get {
-            and {
-                eq("state", HostStateType.QUEUED)
-                eq("queue", deploymentQueue)
-            }
-            maxResults(1)
-            order("dateCreated", "asc")
-        }
-
-        if (!nextQueueEntry) {
-            render "status:error\nmessage:Could not find any queued entries with state QUEUED."
-            return
-        }
-
-        forward  action: "deploy", params: [queueEntryId: nextQueueEntry.id]
-    }
-    */
-
     def status = {
         def queueEntryId = params.queueEntryId
 
