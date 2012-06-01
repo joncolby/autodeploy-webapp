@@ -107,6 +107,12 @@
 		</div>
 </sec:ifLoggedIn>
 
+    <div class="autoPlay">
+        Autoplay:
+        <g:link controller="autoPlay" action="toggle" params="[id: 4]">autoplay</g:link>
+    </div>
+
+
 		<div class="queueEntries"> 
 		<table>
 		<thead>

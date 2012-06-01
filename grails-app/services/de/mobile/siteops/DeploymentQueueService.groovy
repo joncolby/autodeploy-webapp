@@ -8,6 +8,8 @@ class DeploymentQueueService {
 
     static transactional = false
 
+    def autoPlayService
+
     def deploymentPlanService
 
     def accessControlService
@@ -221,6 +223,24 @@ class DeploymentQueueService {
                 log.info "No queued hosts found, deployment done for $queueEntry.id"
             } else {
                 log.error "Could not find queue entry in map for queueentry id $queueEntry.id"
+            }
+
+            if (autoPlayService.isEnabled(e.queue)) {
+                if (finalState == HostStateType.DEPLOYED) {
+                    def nextQueuedEntry = autoPlayService.nextQueuedEntry(e.queue)
+
+                    if (nextQueuedEntry) {
+                        def canDeploy = canDeploy(nextQueuedEntry)
+
+                        if (canDeploy.success) {
+                            def deployedHosts = createDeployedHostsForQueueEntry(nextQueuedEntry)
+                            if (deployedHosts) deployNextHosts(queueEntry)
+                        }
+                    }
+                } else {
+                    autoPlayService.disable(e.queue)
+                }
+
             }
 
         }

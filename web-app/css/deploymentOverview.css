@@ -349,6 +349,17 @@ table .appView th{
 
 /* table.tableEntries end */
 
+/* table.autoplay start */
+.wrapper .autoPlay{
+	float: right;
+	width: 965px;
+	max-height: 485px;
+	overflow:auto;
+    padding-bottom: 10px;
+    text-align: right;
+}
+/* table.autoplay end */
+
 /* table.queueEntries start */
 .wrapper .queueEntries{
 	float: right;
