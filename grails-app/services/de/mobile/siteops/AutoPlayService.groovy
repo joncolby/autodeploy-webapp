@@ -20,8 +20,7 @@ class AutoPlayService {
     }
 
     def nextQueuedEntry(DeploymentQueueEntry entry, DeploymentQueue queue) {
-        // get next queueEntry, ordered by oldest date
-        return DeploymentQueueEntry.queuedEntries(entry.dateCreated, queue).list(sort:"dateCreated",order:"asc", max: 1)
+        return DeploymentQueueEntry.queuedEntries(queue,entry.dateCreated).list(sort:"dateCreated",order:"asc", max: 1)
     }
 
 }
