@@ -147,6 +147,7 @@ $.fn.QueueList = function(){
 	this.entryTable = $('.wrapper .queueEntries table').QueueEntryTable(this);
 	this.detailsTable = $('.wrapper .entryDetails table').QueueEntryDetailsTable(this);
     this.notificationArea = $('.wrapper .notification').NotificationArea();
+    this.autoPlay = $('.wrapper .fastDeploy input[name="autoPlay"]')
     this.updater = null;
 	
 	this.processData = function(data,newEntryTable,newDetailsTable){
@@ -166,6 +167,11 @@ $.fn.QueueList = function(){
 			this.entryId = data.entryDetails.entryId;
 			this.entryTable.setActive(data.entryDetails.entryId);
 		}
+        if (data.autoPlay) {
+            this.autoPlay.prop('checked', 'checked');
+        } else {
+            this.autoPlay.prop('checked', '');
+        }
 		this.timestamp = data.lastTimeStamp;
 	}
 	
@@ -281,6 +287,26 @@ $(function(){
 				}});
 			return false;
 	})
+
+    $('.wrapper .fastDeploy input[name="autoPlay"]').bind('click', function(event) {
+        var queueId = $('.queueContainer li.active a').attr('queueId');
+        var state = $(this).prop('checked');
+        $.ajax({url:$(this).data('action'),
+            data: {
+                id: queueId,
+                state: state || false
+            },
+            success: function(data) {
+                MessageProcessor(data);
+            },
+            error: function(data) {
+                MessageProcessor(data);
+            }
+
+        });
+
+
+    });
 	$('.wrapper .fastDeploy .sync form[name=syncEnv] select').bind('change',function(){ $(this).closest('form').submit()})
 	$('.wrapper .fastDeploy .sync form[name=syncEnv]').bind('submit',function(){
 		var that = this;

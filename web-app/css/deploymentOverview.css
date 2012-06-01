@@ -225,6 +225,14 @@ td.status .animated .ui-progressbar-value { background-image: url(ui-lightness/i
 	margin-bottom:10px;
 }
 
+.fastDeploy .options {
+    float: left;
+}
+
+.fastDeploy .optionsRight {
+    float: right;
+}
+
 .fastDeploy input,
 .fastDeploy select{
 	margin-right: 5px;

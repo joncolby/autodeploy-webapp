@@ -227,14 +227,14 @@ class DeploymentQueueService {
 
             if (autoPlayService.isEnabled(e.queue)) {
                 if (finalState == HostStateType.DEPLOYED) {
-                    def nextQueuedEntry = autoPlayService.nextQueuedEntry(e.queue)
+                    def nextQueuedEntry = autoPlayService.nextQueuedEntry(e, e.queue)
 
                     if (nextQueuedEntry) {
                         def canDeploy = canDeploy(nextQueuedEntry)
 
                         if (canDeploy.success) {
                             def deployedHosts = createDeployedHostsForQueueEntry(nextQueuedEntry)
-                            if (deployedHosts) deployNextHosts(queueEntry)
+                            if (deployedHosts) deployNextHosts(nextQueuedEntry)
                         }
                     }
                 }

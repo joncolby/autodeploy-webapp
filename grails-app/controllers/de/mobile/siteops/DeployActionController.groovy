@@ -8,8 +8,9 @@ class DeployActionController {
     def deploymentQueueService
     def accessControlService
     def applicationService
+    def autoPlayService
 
-    def beforeInterceptor = [action: this.&checkConditionsMet, except: ['syncEnv']]
+    def beforeInterceptor = [action: this.&checkConditionsMet, except: ['syncEnv', 'autoPlayToggle']]
 
     def checkConditionsMet() {
 
@@ -30,6 +31,28 @@ class DeployActionController {
         }
         params.queueEntry = queueEntry
         return true
+    }
+
+    def autoPlayToggle = {
+        if (!params.id) {
+            render MessageResult.errorMessage("No target queue specified (param 'id')") as JSON
+            return
+        }
+
+        def queueId = params.id as long
+        DeploymentQueue sourceQueue = DeploymentQueue.get(queueId)
+
+        boolean state = new Boolean(params.state)
+
+        if (sourceQueue) {
+            if (state) {
+                autoPlayService.enable(sourceQueue)
+            } else {
+                autoPlayService.disable(sourceQueue)
+            }
+            render MessageResult.successMessage("Autoplay successfully " + (state ? 'enabled' : 'disabled')) as JSON;
+            return
+        }
     }
 
     def deployAll = {

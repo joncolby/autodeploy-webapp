@@ -50,8 +50,9 @@ class DeploymentQueueEntry {
                 'in'("state", [HostStateType.DEPLOYED, HostStateType.ABORTED, HostStateType.ERROR])
             }
         }
-        queuedEntries { DeploymentQueue queue ->
+        queuedEntries { DeploymentQueue queue, lastDate ->
             eq("queue", queue)
+            ge("dateCreated", lastDate)
             eq("state", HostStateType.QUEUED)
 
         }

@@ -100,9 +100,8 @@
 		        <input type = "text" name = "revision" />
 		        <input type = "submit" value = "Assign" />
 	        </form>
-            <div>
-                Send release mail:&nbsp;<input type="checkbox" name="releaseMail">
-            </div>
+            <div class="options">Send release mail:&nbsp;<input type="checkbox" name="releaseMail"></div>
+            <div class="optionsRight">Autoplay:&nbsp;<input type="checkbox" name="autoPlay" data-action="<g:createLink controller="deployAction" action="autoPlayToggle"/>"></div>
 
 		</div>
 </sec:ifLoggedIn>

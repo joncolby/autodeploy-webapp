@@ -11,6 +11,7 @@ class DeploymentOverviewController {
 	def deploymentQueueService
     def accessControlService
     def notificationService
+    def autoPlayService
 
 	def index = {
 
@@ -115,6 +116,7 @@ class DeploymentOverviewController {
 			render model as JSON
 			return
         }
+        model['autoPlay'] = autoPlayService.isEnabled(queue)
 
 		model['id'] = queue.id
          if (notificationService.hasNotification()) {
