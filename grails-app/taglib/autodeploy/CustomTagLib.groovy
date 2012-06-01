@@ -4,7 +4,6 @@ import de.mobile.siteops.*
 
 class CustomTagLib {
 
-
     // Checkbox list that can be used as a more user-friendly alternative to
     // a multi-select list box
   

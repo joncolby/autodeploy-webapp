@@ -11,6 +11,7 @@ class Environment {
     Boolean useHostClassConcurrency = false
     Boolean secured = false
     Boolean releaseMailByDefault = false
+    Boolean autoPlayEnabled = false
 
     DeployErrorType deployErrorType = DeployErrorType.SKIP_HOSTCLASS
 

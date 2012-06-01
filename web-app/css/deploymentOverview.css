@@ -345,20 +345,7 @@ table .appView th{
 .wrapper .tableEntries tr td:last-child{
 	width:50px	
 }
-
-
 /* table.tableEntries end */
-
-/* table.autoplay start */
-.wrapper .autoPlay{
-	float: right;
-	width: 965px;
-	max-height: 485px;
-	overflow:auto;
-    padding-bottom: 10px;
-    text-align: right;
-}
-/* table.autoplay end */
 
 /* table.queueEntries start */
 .wrapper .queueEntries{

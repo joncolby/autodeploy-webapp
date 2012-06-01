@@ -67,6 +67,7 @@ class DeploymentOverviewController {
 
         def teamId = g.cookie(name: 'autodeploy_teamId')
         def planId = g.cookie(name: 'autodeploy_planId')
+        def queueId = g.cookie(name: 'autodeploy_queueId')
 
         def teams =  Team.findAllByShortNameNotEqual("System", [sort: "fullName", order: "asc"])
         def teamModel = teams.collect { [id: it.id, name: it.fullName, url: g.createLink(action: 'plans', id: it.id)] }
@@ -76,6 +77,7 @@ class DeploymentOverviewController {
             teamId = teamId as long
         }
         if (planId) planId = planId as long
+        if (queueId) queueId = queueId as long
         def currentTeam = Team.load(teamId)
 
         def planModel = [ [:] ]
@@ -86,7 +88,7 @@ class DeploymentOverviewController {
 
 		def deploymentQueues = DeploymentQueue.findAll()
 		def queues = deploymentQueues.collect { [name: it.environment.name, id: it.id, locked: !accessControlService.hasWriteAccessForQueue(it) ] }.sort { it.name }
-        def model = [queues: queues, teams: teamModel, plans: planModel, selectedTeamId: teamId, selectedPlanId: planId]
+        def model = [queues: queues, teams: teamModel, plans: planModel, selectedTeamId: teamId, selectedPlanId: planId, selectedQueueId: queueId]
 
 		[model: model]
 	}

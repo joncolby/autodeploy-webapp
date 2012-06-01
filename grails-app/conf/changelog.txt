@@ -1,6 +1,8 @@
 CHANGELOG
 =========
 
+2012-06-01: Implement autoplay feature
+
 2012-05-08: LDAP login required to perform functions in autodeploy.
 
 2012-02-28:

@@ -237,10 +237,7 @@ class DeploymentQueueService {
                             if (deployedHosts) deployNextHosts(queueEntry)
                         }
                     }
-                } else {
-                    autoPlayService.disable(e.queue)
                 }
-
             }
 
         }

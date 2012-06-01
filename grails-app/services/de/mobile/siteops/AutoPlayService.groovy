@@ -4,22 +4,19 @@ class AutoPlayService {
 
     static transactional = true
 
-    def autoPlayMap = [:]
-
-
     def isEnabled(DeploymentQueue deploymentQueue) {
-        return autoPlayMap[deploymentQueue.id] ? true : false
+        def environment = deploymentQueue.environment
+        return environment.autoPlayEnabled ? true : false
     }
 
     def enable(DeploymentQueue deploymentQueue) {
-        autoPlayMap[deploymentQueue.id] = true
-        println "enabling: " + autoPlayMap
-
+        def environment = deploymentQueue.environment
+        environment.autoPlayEnabled = true
     }
 
     def disable(DeploymentQueue deploymentQueue) {
-        autoPlayMap[deploymentQueue.id] = false
-        println "disabling: " + autoPlayMap
+        def environment = deploymentQueue.environment
+        environment.autoPlayEnabled = false
     }
 
     def nextQueuedEntry(DeploymentQueue queue) {
