@@ -29,10 +29,14 @@ class DeploymentPlanService {
             }
         }
 
+        def platform = Platform.createCriteria().get {}
+
 		def writer = new StringWriter()
 		MarkupBuilder xml = new MarkupBuilder(writer)
 
 		xml.plan(id: plan.id) {
+
+            xml.platform(name: platform?.name)
 
 			xml.host(name: host.name, id: host.id, hostclass: host.className, environment: host.environment) {
 				xml.repository {

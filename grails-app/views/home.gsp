@@ -76,6 +76,7 @@
                         <li><g:link controller="environment" action="list">Environments</g:link></li>
                         <li><g:link controller="repository" action="list">Repositories</g:link></li>
                         <li><g:link controller="propertyAssembler" action="list">Property Assemblers</g:link></li>
+                        <li><g:link controller="platform" action="list">Platform</g:link></li>
                 </ul>
          
             </div>
