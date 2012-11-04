@@ -4,6 +4,16 @@ import de.mobile.siteops.*
 
 class CustomTagLib {
 
+    def autoPlayService
+
+    def autoPlayWarning = { attrs, body ->
+      if (! attrs?.queueId) return
+      def deploymentQueue = DeploymentQueue.get(attrs.queueId)
+      if (!deploymentQueue) return
+      if (autoPlayService.isEnabled(deploymentQueue))
+      out << '<div style="color: #cc0000; font-weight:bold; text-shadow: 1px 1px #fff;font-size:14px" align="center">AUTOPLAY IS ON</div>'
+    }
+
     // Checkbox list that can be used as a more user-friendly alternative to
     // a multi-select list box
   

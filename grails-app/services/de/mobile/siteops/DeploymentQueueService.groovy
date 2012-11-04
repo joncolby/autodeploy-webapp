@@ -105,7 +105,11 @@ class DeploymentQueueService {
             log.fatal "Could not find queue entry in deploy queue map when trying to deploy next hosts"
             return
         }
-        handleDeployErrors(processHosts)
+
+        def queueEntryPriorities = processHosts?.collect { it.priority }.unique()
+        handleDeployErrors(processHosts,queueEntryPriorities)
+
+        // find all the remaining queued and deploying hosts with the lowest priority
         def minPrioEntry = processHosts?.findAll { it.state == HostStateType.QUEUED || it.state == HostStateType.IN_PROGRESS }?.min { it.priority }
         if (minPrioEntry) {
             def hosts = processHosts.findAll { it.state == HostStateType.QUEUED && it.priority == minPrioEntry.priority }
@@ -119,10 +123,20 @@ class DeploymentQueueService {
         }
     }
 
-    def handleDeployErrors(deployHosts) {
+    def handleDeployErrors(deployHosts,queueEntryPriorities) {
+        def highestPriority = queueEntryPriorities.max()
         def errorHosts = deployHosts.findAll { it.state == HostStateType.ERROR }
         if (errorHosts) {
             errorHosts.each { errorHost ->
+
+                // if any errors are found with lower priority host in a mixed-priority deployment, abort the deployment
+                if (errorHost.priority < highestPriority) {
+                    deployHosts.findAll { it.state == HostStateType.QUEUED }.each {
+                        it.changeState(HostStateType.ABORTED)
+                        it.addDeploymentMessage('DEPLOYMENT_ERROR', 'Aborted due previous error in this hostclass')
+                    }
+                }
+
                 if (errorHost.deployErrorType == DeployErrorType.SKIP_HOSTCLASS) {
                     deployHosts.findAll { it.state == HostStateType.QUEUED && it.hostclass.id == errorHost.hostclass.id }.each {
                         it.changeState(HostStateType.ABORTED)

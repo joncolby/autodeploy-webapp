@@ -85,7 +85,7 @@ class DeploymentPlanService {
 
         // Don't require login for API requests yet
         if (!accessControlService.isLoggedIn() && !accessControlService.isApiRequest()) {
-            result.message = message(code:"default.not.logged.in")
+            result.message = "${g.message(code: 'default.not.logged.in')}"
             return result
         }
 
