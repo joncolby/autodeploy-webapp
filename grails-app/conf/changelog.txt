@@ -1,6 +1,8 @@
 CHANGELOG
 =========
 
+2012-11-15:
+Add password field to userAdmin controller
 2012-04-11:
 A deployment will be aborted if a lower-priority server deployment fails in a deployment with mixed priorities
 2012-06-01:

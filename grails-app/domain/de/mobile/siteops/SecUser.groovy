@@ -5,7 +5,7 @@ class SecUser {
     transient springSecurityService
 
 	String username
-	String password = generateRandomPassword()
+	String password
 	boolean enabled = true
 	boolean accountExpired = false
 	boolean accountLocked = false
@@ -25,6 +25,9 @@ class SecUser {
 	}
 
     def beforeInsert() {
+        if (!password) {
+            password = generateRandomPassword()
+        }
 		encodePassword()
 	}
 
