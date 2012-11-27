@@ -10,11 +10,10 @@
     </head>
     <body>
         <div class="nav">
-            <span class="menuButton"><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></span>
+            <span class="menuButton"><a class="home" href="${createLink(uri: '/home')}"><g:message code="default.home.label"/></a></span>
+            <span class="menuButton"><g:link class="list" controller="userAdmin"><g:message code="admin.userAdmin.heading"  /></g:link></span>
             <span class="menuButton"><g:link class="list" action="list"><g:message code="default.list.label" args="[entityName]" /></g:link></span>
             <span class="menuButton"><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></span>
-            <span class="menuButton"><g:link class="list" controller="userAdmin"><g:message code="admin.userAdmin.heading"  /></g:link></span>
-
         </div>
         <div class="body">
             <h1><g:message code="default.edit.label" args="[entityName]" /></h1>
@@ -75,20 +74,20 @@
                                     <label for="enabled"><g:message code="user.password.label" default="Password" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: userInstance, field: 'password', 'errors')}">
-                                     <g:passwordField name="password" value="${userInstance?.password}" />
+                                     <g:passwordField name="password" />
                                 </td>
                         </tr>
 
-                        <%--
-                            <tr class="prop">
+                        <tr class="prop">
                                 <td valign="top" class="name">
-                                  <label for="password"><g:message code="user.password.label" default="Password" /></label>
+                                    <label for="enabled"><g:message code="user.passwordConfirmation.label" default="Password Confirmation" /></label>
                                 </td>
-                                <td valign="top" class="value ${hasErrors(bean: userInstance, field: 'password', 'errors')}">
-                                    <g:textField name="password" value="${userInstance?.password}" />
+                                <td valign="top" class="value ${hasErrors(bean: userInstance, field: 'passwordConfirmation', 'errors')}">
+                                     <g:passwordField name="passwordConfirmation"/>
                                 </td>
-                            </tr>
-                         --%>
+                        </tr>
+
+
 
                         <%--
                             <tr class="prop">

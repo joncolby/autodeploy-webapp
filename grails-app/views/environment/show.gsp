@@ -9,7 +9,8 @@
     </head>
     <body>
         <div class="nav">
-            <span class="menuButton"><a class="home" href="${resource(dir:'/')}"><g:message code="default.home.label"/></a></span>
+           <span class="menuButton"><a class="home" href="${createLink(uri: '/home')}"><g:message code="default.home.label"/></a></span>
+            <span class="menuButton"><g:link class="list" controller="userAdmin"><g:message code="admin.userAdmin.heading"  /></g:link></span>
             <span class="menuButton"><g:link class="list" action="list"><g:message code="default.list.label" args="[entityName]" /></g:link></span>
 
             <sec:ifAnyGranted roles="ROLE_ADMIN">
@@ -44,6 +45,20 @@
 
                             <td valign="top" class="value"><g:formatBoolean boolean="${environmentInstance?.useHostClassConcurrency}" /></td>
                         </tr>
+
+                        <tr class="prop">
+                            <td valign="top" class="name"><g:message code="environmentInstance.secured.label" default="Secured" /></td>
+
+                            <td valign="top" class="value"><g:formatBoolean boolean="${environmentInstance?.secured}" /></td>
+                        </tr>
+
+
+                        <tr class="prop">
+                            <td valign="top" class="name"><g:message code="environmentInstance.releaseMailByDefault.label" default="releaseMailByDefault" /></td>
+
+                            <td valign="top" class="value"><g:formatBoolean boolean="${environmentInstance?.releaseMailByDefault}" /></td>
+                        </tr>
+
 
                         <tr class="prop">
                             <td valign="top" class="name"><g:message code="environment.repository.label" default="Repository" /></td>

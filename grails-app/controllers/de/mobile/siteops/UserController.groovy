@@ -27,7 +27,17 @@ class UserController {
     def save = {
         def userInstance = new SecUser(params)
 
-        if (userInstance.save(flush: true)) {
+        // validate password
+        def password = params.password?.trim()
+        def passwordConfirmation = params.passwordConfirmation?.trim()
+
+        if (password && password != passwordConfirmation) {
+            userInstance.errors.rejectValue('password', 'user.password.match',
+                ['password', 'User', password] as Object[],
+                'Property [{0}] of class [{1}] does not match the confirmation')
+        }
+
+        if (!userInstance.hasErrors() && userInstance.save(flush: true)) {
             flash.message = "${message(code: 'default.created.message', args: [message(code: 'user.label', default: 'User'), userInstance.id])}"
 
             // handle roles
@@ -92,6 +102,20 @@ class UserController {
             }
 
             userInstance.properties = params
+
+            // validate password
+            def password = params.password?.trim()
+            def passwordConfirmation = params.passwordConfirmation?.trim()
+
+            userInstance.password = password
+            userInstance.passwordConfirmation = passwordConfirmation
+
+            if (password && password != passwordConfirmation) {
+               userInstance.errors.rejectValue('password', 'user.password.match',
+                ['password', 'User', password] as Object[],
+                'Property [{0}] of class [{1}] does not match the confirmation')
+            }
+
             if (!userInstance.hasErrors() && userInstance.save(flush: true)) {
                 flash.message = "${message(code: 'default.updated.message', args: [message(code: 'user.label', default: 'User'), userInstance.id])}"
                 redirect(action: "show", id: userInstance.id)

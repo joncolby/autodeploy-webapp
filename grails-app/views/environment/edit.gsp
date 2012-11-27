@@ -10,7 +10,8 @@
     </head>
     <body>
         <div class="nav">
-            <span class="menuButton"><a class="home" href="${resource(dir:'/')}"><g:message code="default.home.label"/></a></span>
+           <span class="menuButton"><a class="home" href="${createLink(uri: '/home')}"><g:message code="default.home.label"/></a></span>
+            <span class="menuButton"><g:link class="list" controller="userAdmin"><g:message code="admin.userAdmin.heading"  /></g:link></span>
             <span class="menuButton"><g:link class="list" action="list"><g:message code="default.list.label" args="[entityName]" /></g:link></span>
             <span class="menuButton"><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></span>
         </div>
@@ -46,6 +47,22 @@
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: environmentInstance, field: 'useHostClassConcurrency', 'errors')}">
                                     <g:checkBox name="useHostClassConcurrency" value="${environmentInstance?.useHostClassConcurrency}" />
+                                </td>
+                            </tr>
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                  <label for="secured"><g:message code="environmentInstance.secured.label" default="secured?" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: environmentInstance, field: 'secured', 'errors')}">
+                                    <g:checkBox name="secured" value="${environmentInstance?.secured}" />
+                                </td>
+                            </tr>
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                  <label for="releaseMailByDefault"><g:message code="environmentInstance.releaseMailByDefault.label" default="releaseMailByDefault" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: environmentInstance, field: 'releaseMailByDefault', 'errors')}">
+                                    <g:checkBox name="releaseMailByDefault" value="${environmentInstance?.releaseMailByDefault}" />
                                 </td>
                             </tr>
 

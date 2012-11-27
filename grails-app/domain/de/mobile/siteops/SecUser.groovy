@@ -6,14 +6,17 @@ class SecUser {
 
 	String username
 	String password
+    String passwordConfirmation
 	boolean enabled = true
 	boolean accountExpired = false
 	boolean accountLocked = false
 	boolean passwordExpired = false
 
+    static transients = [ 'passwordConfirmation' ]
+
 	static constraints = {
 		username blank: false, unique: true
-		//password blank: false
+        password(maxSize: 40, nullable: false, blank: false,validator: SecUser.validatePassword)
 	}
 
 	static mapping = {
@@ -25,9 +28,7 @@ class SecUser {
 	}
 
     def beforeInsert() {
-        if (!password) {
-            password = generateRandomPassword()
-        }
+        //password = generateRandomPassword()
 		encodePassword()
 	}
 
@@ -47,4 +48,19 @@ class SecUser {
 	protected void encodePassword() {
 		password = springSecurityService.encodePassword(password)
 	}
+
+    private static validatePassword = { password, user ->
+        if (!user.id) {
+            password = password?.trim()
+            if (!password) {
+                password = ""
+            }
+            if (password.length() < 6 || password.length() > 40) {
+                user.errors.rejectValue('password', 'user.password.length',
+                    ['password', 'User', password] as Object[],
+                    'Property [{0}] of class [{1}] must be between 6 and 40 characters')
+            }
+        }
+        true
+    }
 }

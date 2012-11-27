@@ -51,14 +51,14 @@
         </style>
     </head>
     <body>
+
+      <div class="nav">
+           <span class="menuButton"><a class="home" href="${createLink(uri: '/home')}"><g:message code="default.home.label"/></a></span>
+          <span class="menuButton"><g:link class="list" controller="userAdmin"><g:message code="admin.userAdmin.heading"  /></g:link></span>
+        </div>
+
         <div id="nav">
-            <h1>Welcome to Autodeploy</h1>
-            <%--
-            <p>Congratulations, you have successfully started your first Grails application! At the moment
-            this is the default page, feel free to modify it to either redirect to a controller or display whatever
-            content you may choose. Below is a list of controllers that are currently deployed in this application,
-            click on each to execute its default action:</p>
-            --%>
+            <h1>Autodeploy Admin</h1>
 
             <div id="controllerList" class="dialog">
                 <h2>Actions:</h2>
