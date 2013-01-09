@@ -1,8 +1,5 @@
 package de.mobile.siteops
 
-import org.codehaus.groovy.grails.commons.ApplicationHolder
-import org.codehaus.groovy.grails.commons.DomainClassArtefactHandler
-
 class ApplicationService {
 
     static transactional = false
@@ -40,8 +37,13 @@ class ApplicationService {
         def deleteQueueEntries = []
 
         DeploymentQueue deploymentQueue = DeploymentQueue.findByEnvironment(environment)
-        def queueEntries = DeploymentQueueEntry.finalizedEntries(deploymentQueue).list(sort: 'finalizedDate', order: 'desc')
 
+        // only consider finalized queue-entries. Example: DEPLOYED, ERROR, ABORTED
+        //def queueEntries = DeploymentQueueEntry.finalizedEntries(deploymentQueue).list(sort: 'finalizedDate', order: 'desc')
+
+        return DeploymentQueueEntry.finalizedEntries(deploymentQueue).list(sort: 'finalizedDate', order: 'asc')
+
+        /*
         def apps = Application.findAll()
         apps.each { app ->
             result += new ApplicationVersion(application: app, revision: null)
@@ -50,28 +52,22 @@ class ApplicationService {
         for (DeploymentQueueEntry queueEntry: queueEntries) {
 
             def entryApplications = queueEntry.executionPlan.applicationVersions
+            // only consider queue-entries where all hosts were deployed successfully
             def deployedHosts = DeployedHost.findAllByEntryAndState(queueEntry, HostStateType.DEPLOYED)
             def previousApplications = []
             deployedHosts.each { deployedHost ->
 
-                /*  get all the applications associated with this, using criteria.
-                    Necessary because there may be an application that no longer exists
-                    in the host_class_applications mapping table.  For example, if someone deletes the application
-                    inappropriately by hand.
-                */
                  def applicationsInHostClass = Application.createCriteria().list() {
                      hostclasses {
                          eq('id', deployedHost.host.className.id)
                      }
                  }
 
-                // this fails if a mapped application in host_class_applications no longer exists
-                //deployedHost.host.className.applications.intersect(entryApplications.collect {
-
                 applicationsInHostClass.intersect(entryApplications.collect { it.application }).each { app ->
                     previousApplications += entryApplications.findAll { it.application == app }
                 }
             }
+
 
             boolean deleteQueueEntry = true
 
@@ -81,19 +77,11 @@ class ApplicationService {
                 }
             }
 
-            if (deleteQueueEntry) deleteQueueEntries += queueEntry.id
 
-            previousApplications = previousApplications.unique()
-            def appsWithoutVersion = result.findAll { !it.revision }
-            if (!appsWithoutVersion) break
-            if (previousApplications) {
-                appsWithoutVersion.collect { it.application.id }.intersect(previousApplications.collect { it.application.id }).each { intersectApp ->
-                    result.find { it.application.id == intersectApp}.revision = previousApplications.find { it.application.id == intersectApp }?.revision
-                }
-            }
+           if (deleteQueueEntry) deleteQueueEntries += queueEntry.id
 
         }
-
         return deleteQueueEntries
+        */
     }
 }

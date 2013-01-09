@@ -32,9 +32,7 @@ class DeleteOldVersionsJob {
 
                 log.info "found ${queueEntriesForDeletion.size()} entries for deletion for environment ${environment}"
 
-                for ( id in queueEntriesForDeletion ) {
-
-                    def entry = DeploymentQueueEntry.get(id)
+                for ( entry in queueEntriesForDeletion ) {
 
                     if ( entry.dateCreated > oldDate ) {
                         continue

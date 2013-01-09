@@ -49,7 +49,6 @@ class ApplicationVersionsController {
             render model as JSON
             return
         }
-
         def latestAppVersions = applicationService.latestVersionsFromApplications(allApps, queueEntries)
         latestAppVersions.each { ApplicationVersion appVersion ->
             if (appVersion.revision) {
