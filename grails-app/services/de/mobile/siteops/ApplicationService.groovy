@@ -39,9 +39,12 @@ class ApplicationService {
         DeploymentQueue deploymentQueue = DeploymentQueue.findByEnvironment(environment)
 
         // only consider finalized queue-entries. Example: DEPLOYED, ERROR, ABORTED
-        //def queueEntries = DeploymentQueueEntry.finalizedEntries(deploymentQueue).list(sort: 'finalizedDate', order: 'desc')
+        def queueEntries = DeploymentQueueEntry.finalizedEntries(deploymentQueue).list(sort: 'finalizedDate', order: 'asc')
 
-        return DeploymentQueueEntry.finalizedEntries(deploymentQueue).list(sort: 'finalizedDate', order: 'asc')
+        if (queueEntries.size() <= 50 )
+            return
+        else
+            return queueEntries
 
         /*
         def apps = Application.findAll()
