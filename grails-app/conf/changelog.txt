@@ -1,6 +1,8 @@
 CHANGELOG
 =========
 
+2012-01-09:
+Fix cleanup job to deal with deleted applications
 2012-11-15:
 Add password field to userAdmin controller
 2012-04-11:
