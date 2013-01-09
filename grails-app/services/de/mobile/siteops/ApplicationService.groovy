@@ -41,10 +41,10 @@ class ApplicationService {
         // only consider finalized queue-entries. Example: DEPLOYED, ERROR, ABORTED
         def queueEntries = DeploymentQueueEntry.finalizedEntries(deploymentQueue).list(sort: 'finalizedDate', order: 'asc')
 
-        if (queueEntries.size() <= 50 )
-            return
-        else
+        if (queueEntries.size() > 50)
             return queueEntries
+        else
+            return []
 
         /*
         def apps = Application.findAll()
