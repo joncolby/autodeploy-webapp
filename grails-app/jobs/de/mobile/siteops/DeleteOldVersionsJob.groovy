@@ -16,7 +16,7 @@ class DeleteOldVersionsJob {
     def execute() {
         // execute task
 
-        def days = 30
+        def days = 60
         def minutes = 60 * 24 * days
         def c = Calendar.getInstance()
         c.add(Calendar.MINUTE, -minutes)
