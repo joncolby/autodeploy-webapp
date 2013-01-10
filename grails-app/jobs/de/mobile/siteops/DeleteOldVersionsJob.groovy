@@ -30,13 +30,11 @@ class DeleteOldVersionsJob {
 
                 def queueEntriesForDeletion = applicationService.queueEntriesForDeletion(environment)
 
-                log.info "found ${queueEntriesForDeletion.size()} entries for deletion for environment ${environment}"
+                def dateThresholdQueueEntriesForDeletion = queueEntriesForDeletion.findAll { DeploymentQueueEntry entry -> entry.finalizedDate < oldDate }
 
-                for ( entry in queueEntriesForDeletion ) {
+                log.info "found ${dateThresholdQueueEntriesForDeletion.size()} queue entries for deletion in environment ${environment}"
 
-                    if ( entry.dateCreated > oldDate ) {
-                        continue
-                    }
+                for ( entry in dateThresholdQueueEntriesForDeletion ) {
 
                     def deployedHosts = DeployedHost.findAllByEntry(entry)
 
