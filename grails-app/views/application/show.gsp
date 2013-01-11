@@ -90,7 +90,7 @@
                             <td valign="top" class="value">${fieldValue(bean: applicationInstance, field: "installDir")}</td>
 
                         </tr>
-
+                        <%--
                         <tr class="prop">
                             <td valign="top" class="name"><g:message code="application.releaseInfoJMXBean.label" default="Release Info JMX Bean" /></td>
                             
@@ -104,6 +104,7 @@
                             <td valign="top" class="value">${fieldValue(bean: applicationInstance, field: "releaseInfoJMXAttribute")}</td>
                             
                         </tr>
+                        --%>
                     
                         <tr class="prop">
                             <td valign="top" class="name"><g:message code="application.type.label" default="Type" /></td>

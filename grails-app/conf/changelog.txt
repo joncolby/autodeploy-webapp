@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+2012-01-10:
+do not show apps that are assigned to the INACTIVE pillar
+fix small bug with error message when not logged-in
+improvements to application create/edit forms
 2012-01-09:
 Fix cleanup job to deal with deleted applications
 2012-11-15:

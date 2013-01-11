@@ -44,7 +44,8 @@
                                     <label for="pillar"><g:message code="application.pillar.label" default="Pillar" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: applicationInstance, field: 'pillar', 'errors')}">
-                                    <g:select name="pillar.id" from="${de.mobile.siteops.Pillar.list()}" optionKey="id" value="${applicationInstance?.pillar?.id}"  />
+                                    <g:select name="pillar.id" from="${de.mobile.siteops.Pillar.list().sort{it.name}}" optionKey="id" value="${applicationInstance?.pillar?.id}"  />
+                                    <br><i>set to </i><b>INACTIVE</b><i> if this app is obsolete</i>
                                 </td>
                             </tr>
 
@@ -60,10 +61,10 @@
                             <tr class="prop">
                                 <td valign="top" class="name">
                                     <label for="downloadName"><g:message code="application.downloadName.label" default="downloadName" /></label>
-                                    <br>(%REV% can be used for revision)
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: applicationInstance, field: 'downloadName', 'errors')}">
                                     <g:textField name="downloadName" size="40" value="${applicationInstance?.downloadName}" />
+                                    <br>%REV% <i>can be used as macro for revision</i>
                                 </td>
                             </tr>
 
@@ -73,6 +74,7 @@
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: applicationInstance, field: 'startStopScript', 'errors')}">
                                     <g:textField name="startStopScript" size="40" value="${applicationInstance?.startStopScript}" />
+                                    <br><i>can be empty for tanuki apps</i>
                                 </td>
                             </tr>
 
@@ -82,6 +84,7 @@
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: applicationInstance, field: 'installDir', 'errors')}">
                                     <g:textField size="40" name="installDir" value="${applicationInstance?.installDir}" />
+                                    <br><i>can be empty for tanuki apps</i>
                                 </td>
                             </tr>
 
@@ -96,13 +99,14 @@
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="context"><g:message code="application.context.label" default="Context" /></label>
+                                    <label for="context"><g:message code="application.context.label" default="Webapp Context" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: applicationInstance, field: 'context', 'errors')}">
                                     <g:textField name="context" size="40" value="${applicationInstance?.context}" />
+                                    <br><i>leave empty if this is not a web application</i>
                                 </td>
                             </tr>
-                        
+                            <%--
                             <tr class="prop">
                                 <td valign="top" class="name">
                                     <label for="releaseInfoJMXBean"><g:message code="application.releaseInfoJMXBean.label" default="Release Info JMX Bean" /></label>
@@ -120,6 +124,7 @@
                                     <g:textField name="releaseInfoJMXAttribute" size="40" value="${applicationInstance?.releaseInfoJMXAttribute}" />
                                 </td>
                             </tr>
+                            --%>
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
@@ -136,6 +141,7 @@
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: applicationInstance, field: 'marketPlace', 'errors')}">
                                     <g:select name="marketPlace" from="${Application.MarketPlace.values()}" value="${applicationInstance?.marketPlace}" valueMessagePrefix="application.marketPlace"  />
+                                        <br><i>only used if property file requires site-id</i>
                                 </td>
                             </tr>
 
@@ -198,6 +204,7 @@
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: applicationInstance, field: 'propertiesPath', 'errors')}">
                                     <g:textField size="40" name="propertiesPath" value="${applicationInstance?.propertiesPath}" />
+                                    <br><i>optional</i>
                                 </td>
                             </tr>
                         

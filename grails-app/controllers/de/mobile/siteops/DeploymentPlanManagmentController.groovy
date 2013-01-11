@@ -20,7 +20,8 @@ class DeploymentPlanManagmentController {
 
         Team team = Team.get(params.id)
         model += [id: 0, name: "Create new plan", url: g.createLink(action: 'createNew')]
-        def plans = DeploymentPlan.findAllByTeam(team, [sort: "lastUpdated", order: "desc"])
+        //def plans = DeploymentPlan.findAllByTeam(team, [sort: "lastUpdated", order: "desc"])
+        def plans = DeploymentPlan.findAllByTeam(team, [sort: "name", order: "asc"])
         model += plans.collect { [id: it.id, name: "$it.name (ID $it.id)", url: g.createLink(action: 'applications', id: it.id)]}
 
         render model as JSON
@@ -33,7 +34,7 @@ class DeploymentPlanManagmentController {
 
         DeploymentPlan plan = DeploymentPlan.read(params.id)
         def apps = plan.applications
-        def allApps = Application.list()
+        def allApps = Application.list().findAll { it.pillar.name != "INACTIVE" }
 
         def model = [deleteUrl: g.createLink(action: 'deletePlan', id: params.id), url: g.createLink(action: 'editPlan', id: params.id), contribution: plan.contribution, ticket: plan.ticket, name: plan.name, requiresDatabaseChanges: plan.requiresDatabaseChanges, requiresPropertyChanges: plan.requiresPropertyChanges, created: plan.dateCreated, modified: plan.lastUpdated, apps: []]
         allApps.sort { a, b -> a.filename.compareTo(b.filename) }.each { app ->
@@ -46,7 +47,7 @@ class DeploymentPlanManagmentController {
     def createNew = {
         def allApps = Application.list()
         def model = [url: g.createLink(action: 'createPlan'), deleteUrl: '', apps: []]
-        allApps.sort { a, b -> a.filename.compareTo(b.filename) }.each { app ->
+        allApps.findAll { it.pillar.name != "INACTIVE" }.sort { a, b -> a.filename.compareTo(b.filename) }.each { app ->
             model['apps'] += [selected: false, name: "$app.filename ($app.pillar)", id: app.id]
         }
 
