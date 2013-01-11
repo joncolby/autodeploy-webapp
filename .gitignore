@@ -10,6 +10,7 @@ target
 .settings
 .metadata
 eclipse-target
+target-eclipse
 activemq-data
 .metadata
 **/.springBeans
