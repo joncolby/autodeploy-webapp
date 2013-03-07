@@ -36,7 +36,7 @@ class DeploymentQueueEntry {
             eq("queue", queue)
             or {
                 ge("lastUpdated", new Date(lastModification))
-                'in'("state", [HostStateType.IN_PROGRESS])
+                'in'("state", [HostStateType.IN_PROGRESS, HostStateType.QUEUED])
             }
         }
         dashboard { queue ->
@@ -63,6 +63,13 @@ class DeploymentQueueEntry {
         processedEntries { DeploymentQueue queue ->
             eq("queue", queue)
             'in'("state", [HostStateType.IN_PROGRESS])
+        }
+        queuedAndProgressEntries { DeploymentQueueEntry queueEntry ->
+            eq("queue", queueEntry.queue)
+            or {
+                eq("id", queueEntry.id)
+                'in'("state", [HostStateType.IN_PROGRESS])
+            }
         }
     }
 

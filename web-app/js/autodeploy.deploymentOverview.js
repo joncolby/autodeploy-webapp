@@ -164,7 +164,9 @@ $.fn.QueueList = function(){
             else {
                 this.detailsTable.update(data.entryDetails.content);
             }
-			this.entryId = data.entryDetails.entryId;
+            if (newDetailsTable) {
+                this.entryId = data.entryDetails.entryId;
+            }
 			this.entryTable.setActive(data.entryDetails.entryId);
 		}
         if (data.autoPlay) {

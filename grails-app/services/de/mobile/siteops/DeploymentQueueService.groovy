@@ -2,6 +2,7 @@ package de.mobile.siteops
 
 import de.mobile.siteops.Environment.DeployErrorType
 import java.util.concurrent.ConcurrentHashMap
+import static de.mobile.siteops.HostStateType.*
 import org.springframework.transaction.annotation.Transactional
 
 class DeploymentQueueService {
@@ -29,10 +30,49 @@ class DeploymentQueueService {
         if (queue.frozen) return [success: false, message: "This deployment queue is currently 'frozen'<br/>Currently no deployment allowed"]
         if (!zookeeperHandlerService.connected) return [success: false, message: "Zookeeper is not connected, no deployment possible"]
 
-        def processingCount = DeploymentQueueEntry.processedEntries(queueEntry.queue).count()
-        if (processingCount > 0) return [success: false, message: "Another deployment is already running."]
+        def entries = DeploymentQueueEntry.queuedAndProgressEntries(queueEntry).list()
+        def result = getDeployHostBuysStates(entries)
+        if (result && result.busyHosts) {
+            def hosts = result.inQueueHosts.find { it.entryId == queueEntry.id }.hosts
+            if (hosts.intersect(result.busyHosts)) {
+                return [success: false, message: "Another deployment is already running."]
+            }
+        }
 
         return [success: true, message: "Deployment checks passed"]
+    }
+
+    def getDeployHostBuysStates(queueEntries) {
+        def busyHosts = []
+        def inQueueHosts = []
+        queueEntries.each { DeploymentQueueEntry entry ->
+            if (! [DEPLOYED].contains(entry.state)) {
+                def hostMap = getDeployedHostsForQueueEntry(entry)
+                hostMap.each { hostEntry ->
+                    if (entry.state == IN_PROGRESS) {
+                        if ([IN_PROGRESS, QUEUED].contains(hostEntry.state)) {
+                            busyHosts += hostEntry.hostname
+                        } else if (HostStateType.isFailed(hostEntry.state)) {
+                            def inQueueEntry = inQueueHosts.find { it.entryId == entry.id }
+                            if (inQueueEntry) {
+                                inQueueEntry.hosts += hostEntry.hostname
+                            } else {
+                                inQueueHosts += [entryId: entry.id, hosts: [hostEntry.hostname]]
+                            }
+                        }
+                    } else {
+                        def inQueueEntry = inQueueHosts.find { it.entryId == entry.id }
+                        if (inQueueEntry) {
+                            inQueueEntry.hosts += hostEntry.hostname
+                        } else {
+                            inQueueHosts += [entryId: entry.id, hosts: [hostEntry.hostname]]
+                        }
+                    }
+                }
+            }
+        }
+
+        return [busyHosts: busyHosts, inQueueHosts: inQueueHosts]
     }
 
     @Transactional()

@@ -133,6 +133,7 @@ class DeploymentOverviewController {
 		}
 
 		def detailModel
+        def busyQueueEntries = []
 
 		// create a model by an extract of queueEntries order by newest to oldest queueEntry
 		queueEntries.sort { a,b -> a.id < b.id ? 1 : -1 }.each { entry ->
@@ -188,8 +189,26 @@ class DeploymentOverviewController {
                 modelEntry.actions = []
             }
 
-			model['queueEntries'] += modelEntry
+            if ([QUEUED, IN_PROGRESS].contains(entry.state)) {
+                busyQueueEntries += entry
+            }
+
+            model['queueEntries'] += modelEntry
+
 		}
+
+        def result = deploymentQueueService.getDeployHostBuysStates(busyQueueEntries)
+        if (result) {
+            result.inQueueHosts.each { inQueueHost ->
+                if (inQueueHost.hosts.intersect(result.busyHosts)) {
+                    def modelEntry = model['queueEntries'].find { it.entryId == inQueueHost.entryId }
+                    if (modelEntry && modelEntry.actions) {
+                        modelEntry.actions = modelEntry.actions.findAll { it.type != 'deploy-all' }
+                    }
+                }
+            }
+
+        }
 
 		if (queueEntryId && !detailModel) {
 			def queueEntry = DeploymentQueueEntry.findById(queueEntryId)
