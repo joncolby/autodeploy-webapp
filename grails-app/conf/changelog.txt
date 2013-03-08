@@ -1,6 +1,8 @@
 CHANGELOG
 =========
 
+2013-03-08:
+Parallel Deployment per Deployment Queue allowed
 2012-01-10:
 do not show apps that are assigned to the INACTIVE pillar
 fix small bug with error message when not logged-in
