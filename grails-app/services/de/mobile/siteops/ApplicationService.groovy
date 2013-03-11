@@ -38,7 +38,8 @@ class ApplicationService {
 
         def deleteQueueEntries = []
         DeploymentQueue deploymentQueue = DeploymentQueue.findByEnvironment(environment)
-        def queueEntries = DeploymentQueueEntry.finalizedEntries(deploymentQueue).list(sort: 'finalizedDate', order: 'desc')
+        //def queueEntries = DeploymentQueueEntry.finalizedEntries(deploymentQueue).list(sort: 'finalizedDate', order: 'desc')
+        def queueEntries = DeploymentQueueEntry.allEntries(deploymentQueue).list(sort: 'dateCreated', order: 'desc')
 
         def applicationsInstalled = [:]
 

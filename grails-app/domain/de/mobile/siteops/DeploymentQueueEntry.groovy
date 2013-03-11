@@ -71,6 +71,9 @@ class DeploymentQueueEntry {
                 'in'("state", [HostStateType.IN_PROGRESS])
             }
         }
+        allEntries { DeploymentQueue queue ->
+             eq("queue", queue)
+        }
     }
 
     boolean finalState() {

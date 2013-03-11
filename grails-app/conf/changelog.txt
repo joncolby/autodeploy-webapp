@@ -1,6 +1,8 @@
 CHANGELOG
 =========
 
+2013-03-11:
+Cleanup job also deletes Queued deployment entries as well as finalized entries
 2013-03-08:
 Parallel Deployment per Deployment Queue allowed
 2012-01-10:
