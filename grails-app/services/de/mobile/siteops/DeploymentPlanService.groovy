@@ -52,6 +52,7 @@ class DeploymentPlanService {
 				applications.each { ApplicationVersion a ->
 					xml.application(name: a.application.filename, id: a.application.id) {
 						xml.type(a.application.type.name())
+                        xml.pillar(a.application.pillar)
                         xml.marketPlace(a.application.marketPlace)
 						xml.balancerType(a.application.balancerType)
 						xml.startStopScript(a.application.startStopScript)
@@ -60,8 +61,8 @@ class DeploymentPlanService {
 						xml.artifactId(a.application.artifactId)
 						xml.groupId(a.application.groupId)
 						xml.suffix(a.application.suffix())
-                        xml.releaseInfoJMXBean(a.application.releaseInfoJMXBean)
-                        xml.releaseInfoJMXAttribute(a.application.releaseInfoJMXAttribute)
+                        xml.verificationJMXBean(a.application.verificationJMXBean)
+                        xml.verificationJMXAttribute(a.application.verificationJMXAttribute)
 						xml.release("git")
 						xml.revision(a.revision)
 						xml.install_path(a.application.installDir)
@@ -71,6 +72,14 @@ class DeploymentPlanService {
 						xml.instance_properties(a.application.instanceProperties)
 						xml.doProbe(a.application.doProbe)
 						xml.modulename(a.application.modulename)
+                        //xml.testUrls(a.application.testUrls)
+                        xml.testUrls {
+                            if (a.application.testUrls) {
+                                a.application.testUrls.tokenize().each { testUrl ->
+                                    xml.testUrl(testUrl)
+                                }
+                            }
+                        }
 					}
 				}
 			}

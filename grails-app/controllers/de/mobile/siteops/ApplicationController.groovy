@@ -36,7 +36,7 @@ class ApplicationController {
 	   
 	   if (!application) { // for new entries
 		   application = [
-			   pillar:null,filename:"",downloadName:"",startStopScript:"",propertiesPath:"",installDir:"",description:"",context:"",releaseInfoJMXBean:"",type:null,balancerType:null, modulename:"",artifactId:"",groupId:"",assembleProperties:false,instanceProperties:false,doProbe:false,startOnDeploy:false]
+			   pillar:null,filename:"",downloadName:"",startStopScript:"",propertiesPath:"",installDir:"",description:"",context:"",verificationJMXBean:"",verificationJMXAttribute:"",type:null,balancerType:null, modulename:"",artifactId:"",groupId:"",assembleProperties:false,instanceProperties:false,doProbe:false,startOnDeploy:false]
 	   }
 	   
 	   def pillarList = Pillar.findAll().collect { [id: it.id, name: it.name,selected: (application.pillar && application.pillar.id == it.id)] }
@@ -61,7 +61,8 @@ class ApplicationController {
 		   propertiesPath:[value: application.propertiesPath, type: 'text'],
 		   description:[value: application.description, type: 'textarea'],
 		   context:[value: application.context, type: 'text'],
-		   releaseInfoJMXBean:[value: application.releaseInfoJMXBean, type: 'text'],
+		   verificationJMXBean:[value: application.verificationJMXBean, type: 'text'],
+		   verificationJMXAttribute:[value: application.verificationJMXAttribute, type: 'text'],
 		   type:[value:typeList, type:'select'],
            marketPlace:[value: marketPlaceList, type:'select'],
 		   balancerType:[value:balancerTypeList, type:'select'],
@@ -90,7 +91,8 @@ class ApplicationController {
 		   propertiesPath:params.propertiesPath,
 		   description:params.description,
 		   context:params.context,
-		   releaseInfoJMXBean:params.releaseInfoJMXBean,
+		   verificationJMXBean:params.verificationJMXBean,
+           verificationJMXAttribute:params.verificationJMXAttribute,
 		   type:params.type,
            marketPlace: params.marketPlace,
 		   balancerType:params.balancerType,

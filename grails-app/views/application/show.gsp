@@ -90,21 +90,7 @@
                             <td valign="top" class="value">${fieldValue(bean: applicationInstance, field: "installDir")}</td>
 
                         </tr>
-                        <%--
-                        <tr class="prop">
-                            <td valign="top" class="name"><g:message code="application.releaseInfoJMXBean.label" default="Release Info JMX Bean" /></td>
-                            
-                            <td valign="top" class="value">${fieldValue(bean: applicationInstance, field: "releaseInfoJMXBean")}</td>
-                            
-                        </tr>
-                    
-                        <tr class="prop">
-                            <td valign="top" class="name"><g:message code="application.releaseInfoJMXAttribute.label" default="Release Info JMX Attribute" /></td>
-                            
-                            <td valign="top" class="value">${fieldValue(bean: applicationInstance, field: "releaseInfoJMXAttribute")}</td>
-                            
-                        </tr>
-                        --%>
+
                     
                         <tr class="prop">
                             <td valign="top" class="name"><g:message code="application.type.label" default="Type" /></td>
@@ -197,19 +183,39 @@
                             <td valign="top" class="value"><g:formatDate date="${applicationInstance?.lastUpdated}" /></td>
                             
                         </tr>
-                    
-                        <tr class="prop">
-                            <td valign="top" class="name"><g:message code="application.doProbe.label" default="Probe after deployment" /></td>
-                            
-                            <td valign="top" class="value"><g:formatBoolean boolean="${applicationInstance?.doProbe}" /></td>
-                            
-                        </tr>
+
                     
                         <tr class="prop">
                             <td valign="top" class="name"><g:message code="application.startOnDeploy.label" default="Start On Deploy" /></td>
                             
                             <td valign="top" class="value"><g:formatBoolean boolean="${applicationInstance?.startOnDeploy}" /></td>
                             
+                        </tr>
+
+                        <tr class="prop">
+                            <td valign="top" class="name"><g:message code="application.doProbe.label" default="Probe after deployment" /></td>
+
+                            <td valign="top" class="value"><g:formatBoolean boolean="${applicationInstance?.doProbe}" /></td>
+
+                        </tr>
+                        <tr class="prop">
+                            <td valign="top" class="name"><g:message code="application.verificationJMXBean.label" default="Verification JMX Bean" /></td>
+
+                            <td valign="top" class="value">${fieldValue(bean: applicationInstance, field: "verificationJMXBean")}</td>
+
+                        </tr>
+
+                        <tr class="prop">
+                            <td valign="top" class="name"><g:message code="application.verificationJMXAttribute.label" default="Verification JMX Attribute" /></td>
+
+                            <td valign="top" class="value">${fieldValue(bean: applicationInstance, field: "verificationJMXAttribute")}</td>
+
+                        </tr>
+                      <tr class="prop">
+                            <td valign="top" class="name"><g:message code="application.testUrls.label" default="Test URLs" /></td>
+
+                            <td valign="top" class="value">${fieldValue(bean: applicationInstance, field: "testUrls")}</td>
+
                         </tr>
                     
                     </tbody>

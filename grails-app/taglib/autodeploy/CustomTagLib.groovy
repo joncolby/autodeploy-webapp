@@ -42,7 +42,7 @@ class CustomTagLib {
       style += "'" // closing single quote
 
       html = "<input type=\"button\" onclick=\"SetAllCheckBoxes('" + form + "', '" + cname + "', true);\" value=\"Select All\">"
-      html += "&nbsp;&nbsp;&nbsp;<input type=\"button\" onclick=\"SetAllCheckBoxes('" + form + "', '" + cname + "', false);\" value=\"Select None\">"
+      html += "&nbsp;<input type=\"button\" onclick=\"SetAllCheckBoxes('" + form + "', '" + cname + "', false);\" value=\"Select None\">"
 
     //html = "<ul class='CheckBoxList' " + style + ">"
     html += "<ul class='CheckBoxList' " + style + ">"

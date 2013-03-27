@@ -7,6 +7,10 @@
         <meta name="layout" content="main" />
         <g:set var="entityName" value="${message(code: 'application.label', default: 'Application')}" />
         <title><g:message code="default.create.label" args="[entityName]" /></title>
+
+        <style type="text/css">
+            tbody:nth-child(even) { background: #f5f5f5;  border: solid 1px #ddd; }
+        </style>
     </head>
     <body>
         <div class="nav">
@@ -93,7 +97,7 @@
                                     <label for="description"><g:message code="application.description.label" default="Description" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: applicationInstance, field: 'description', 'errors')}">
-                                    <g:textArea name="description" value="${applicationInstance?.description}" />
+                                    <g:textArea cols="10" rows="10" name="description" value="${applicationInstance?.description}" />
                                 </td>
                             </tr>
                         
@@ -106,25 +110,7 @@
                                     <br><i>leave empty if this is not a web application</i>
                                 </td>
                             </tr>
-                            <%--
-                            <tr class="prop">
-                                <td valign="top" class="name">
-                                    <label for="releaseInfoJMXBean"><g:message code="application.releaseInfoJMXBean.label" default="Release Info JMX Bean" /></label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean: applicationInstance, field: 'releaseInfoJMXBean', 'errors')}">
-                                    <g:textField name="releaseInfoJMXBean" size="40" value="${applicationInstance?.releaseInfoJMXBean}" />
-                                </td>
-                            </tr>
-                        
-                            <tr class="prop">
-                                <td valign="top" class="name">
-                                    <label for="releaseInfoJMXAttribute"><g:message code="application.releaseInfoJMXAttribute.label" default="Release Info JMX Attribute" /></label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean: applicationInstance, field: 'releaseInfoJMXAttribute', 'errors')}">
-                                    <g:textField name="releaseInfoJMXAttribute" size="40" value="${applicationInstance?.releaseInfoJMXAttribute}" />
-                                </td>
-                            </tr>
-                            --%>
+
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
@@ -208,14 +194,7 @@
                                 </td>
                             </tr>
                         
-                            <tr class="prop">
-                                <td valign="top" class="name">
-                                    <label for="doProbe"><g:message code="application.doProbe.label" default="Probe after deployment" /></label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean: applicationInstance, field: 'doProbe', 'errors')}">
-                                    <g:checkBox name="doProbe" value="${applicationInstance?.doProbe}" />
-                                </td>
-                            </tr>
+
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
@@ -225,6 +204,44 @@
                                     <g:checkBox name="startOnDeploy" value="${applicationInstance?.startOnDeploy}" />
                                 </td>
                             </tr>
+
+                            <tbody>
+                            <tr><td colspan="2"><h3>Application Probing Configuration</h3></td> </tr>
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="doProbe"><g:message code="application.doProbe.label" default="Probe after deployment" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: applicationInstance, field: 'doProbe', 'errors')}">
+                                    <g:checkBox name="doProbe" value="${applicationInstance?.doProbe}" />
+                                </td>
+                            </tr>
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="testUrls"><g:message code="application.testUrls.label" default="Test Urls" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: applicationInstance, field: 'testUrls', 'errors')}">
+                                    <g:textArea cols="10" rows="10" name="testUrls" value="${applicationInstance?.testUrls}" />
+                                    <br><i>Without context! Specify each URL on one line.</i>
+                                </td>
+                            </tr>
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="verificationJMXBean"><g:message code="application.verificationJMXBean.label" default="Verification JMX Bean" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: applicationInstance, field: 'verificationJMXBean', 'errors')}">
+                                    <g:textField name="verificationJMXBean" size="40" value="${applicationInstance?.verificationJMXBean}" />
+                                </td>
+                            </tr>
+
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="verificationJMXAttribute"><g:message code="application.verificationJMXAttribute.label" default="Verification JMX Attribute" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: applicationInstance, field: 'verificationJMXAttribute', 'errors')}">
+                                    <g:textField name="verificationJMXAttribute" size="40" value="${applicationInstance?.verificationJMXAttribute}" />
+                                </td>
+                            </tr>
+                            </tbody>
                         
                         </tbody>
                     </table>

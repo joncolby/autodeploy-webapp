@@ -1,6 +1,8 @@
 CHANGELOG
 =========
 
+2103-03-27:
+Implement test urls and jmx-validation urls
 2013-03-11:
 Cleanup job also deletes Queued deployment entries as well as finalized entries
 2013-03-08:

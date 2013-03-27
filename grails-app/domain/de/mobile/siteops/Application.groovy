@@ -18,13 +18,14 @@ class Application {
     LoadBalancerType balancerType = LoadBalancerType.NONE
     MarketPlace marketPlace = MarketPlace.GERMANY   // default marketplace
     String startStopScript
-	String releaseInfoJMXBean
-	String releaseInfoJMXAttribute
+	String verificationJMXBean
+	String verificationJMXAttribute
 	String context
 	String installDir
 	String artifactId
 	String groupId
     String propertiesPath
+    String testUrls = "/release-info"
 	Boolean startOnDeploy = true
 	Boolean assembleProperties = true
 	Boolean instanceProperties = true
@@ -53,8 +54,9 @@ class Application {
 		groupId(blank:false,nullable:true)
 		description(blank:false,nullable:true)
 		context(blank:false,nullable:true)
-		releaseInfoJMXBean(blank:false,nullable:true)
-		releaseInfoJMXAttribute(blank:false,nullable:true)
+		verificationJMXBean(blank:false,nullable:true)
+		verificationJMXAttribute(blank:false,nullable:true)
+		testUrls(blank:false,nullable:true)
 		type(nullable:false )
 		marketPlace(nullable:false )
 	}
