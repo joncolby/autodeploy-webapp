@@ -63,6 +63,8 @@ class DeploymentPlanService {
 						xml.suffix(a.application.suffix())
                         xml.verificationJMXBean(a.application.verificationJMXBean)
                         xml.verificationJMXAttribute(a.application.verificationJMXAttribute)
+                        xml.releaseInfoJMXBean("")
+                        xml.releaseInfoJMXAttribute("")
 						xml.release("git")
 						xml.revision(a.revision)
 						xml.install_path(a.application.installDir)
@@ -72,7 +74,6 @@ class DeploymentPlanService {
 						xml.instance_properties(a.application.instanceProperties)
 						xml.doProbe(a.application.doProbe)
 						xml.modulename(a.application.modulename)
-                        //xml.testUrls(a.application.testUrls)
                         xml.testUrls {
                             if (a.application.testUrls) {
                                 a.application.testUrls.tokenize().each { testUrl ->

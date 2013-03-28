@@ -25,7 +25,7 @@ class Application {
 	String artifactId
 	String groupId
     String propertiesPath
-    String testUrls = "/release-info"
+    String testUrls = "%CONTEXT%/release-info"
 	Boolean startOnDeploy = true
 	Boolean assembleProperties = true
 	Boolean instanceProperties = true

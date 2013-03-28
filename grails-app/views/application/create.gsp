@@ -221,7 +221,7 @@
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: applicationInstance, field: 'testUrls', 'errors')}">
                                     <g:textArea cols="10" rows="10" name="testUrls" value="${applicationInstance?.testUrls}" />
-                                    <br><i>Without context! Specify each URL on one line.</i>
+                                    <br><i>%CONTEXT% macro can be used. Specify each URL on one line.</i>
                                 </td>
                             </tr>
                             <tr class="prop">
