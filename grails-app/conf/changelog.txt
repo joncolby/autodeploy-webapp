@@ -1,6 +1,8 @@
 CHANGELOG
 =========
 
+2013-04-05:
+Application probe now accepts basic authentication user/password
 2103-03-27:
 Implement test urls and jmx-validation urls
 2013-03-11:

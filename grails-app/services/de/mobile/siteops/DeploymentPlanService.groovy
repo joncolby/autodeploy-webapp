@@ -73,6 +73,8 @@ class DeploymentPlanService {
 						xml.assemble_properties(a.application.assembleProperties)
 						xml.instance_properties(a.application.instanceProperties)
 						xml.doProbe(a.application.doProbe)
+                        xml.probeBasicAuthUser(a.application.probeBasicAuthUser)
+                        xml.probeBasicAuthPassword(a.application.probeBasicAuthPassword)
 						xml.modulename(a.application.modulename)
                         xml.testUrls {
                             if (a.application.testUrls) {

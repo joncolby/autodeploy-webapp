@@ -211,11 +211,29 @@
                             </tr>
                             <tr class="prop">
                                 <td valign="top" class="name">
+                                    <label for="probeBasicAuthUser"><g:message code="application.probeBasicAuthUser.label" default="Basic Authentication User" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: applicationInstance, field: 'probeBasicAuthUser', 'errors')}">
+                                    <g:textField name="probeBasicAuthUser" size="40" value="${applicationInstance?.probeBasicAuthUser}" />
+                                    <br><i>(optional) will be used with test url(s)</i>
+                                </td>
+                            </tr>
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="probeBasicAuthPassword"><g:message code="application.probeBasicAuthPassword.label" default="Basic Authentication Password" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: applicationInstance, field: 'probeBasicAuthPassword', 'errors')}">
+                                    <g:textField name="probeBasicAuthPassword" size="40" value="${applicationInstance?.probeBasicAuthPassword}" />
+                                    <br><i>(optional) will be used with test url(s)</i>
+                                </td>
+                            </tr>
+                            <tr class="prop">
+                                <td valign="top" class="name">
                                     <label for="testUrls"><g:message code="application.testUrls.label" default="Test Urls" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: applicationInstance, field: 'testUrls', 'errors')}">
                                     <g:textArea cols="10" rows="10" name="testUrls" value="${applicationInstance?.testUrls}" />
-                                    <br><i>%CONTEXT% macro can be used. Specify each URL on one line.</i>
+                                    <br><i>%CONTEXT% and %REV% macros can be used. Specify each URL on one line.</i>
                                 </td>
                             </tr>
                             <tr class="prop">
