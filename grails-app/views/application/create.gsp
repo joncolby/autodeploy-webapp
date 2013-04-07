@@ -217,19 +217,30 @@
                             </tr>
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="probeBasicAuthUser"><g:message code="application.probeBasicAuthUser.label" default="Basic Authentication User" /></label>
+                                    <label for="probeAuthMethod"><g:message code="application.probeAuthMethod.label" default="Authentication Method" /></label>
                                 </td>
-                                <td valign="top" class="value ${hasErrors(bean: applicationInstance, field: 'probeBasicAuthUser', 'errors')}">
-                                    <g:textField name="probeBasicAuthUser" size="40" value="${applicationInstance?.probeBasicAuthUser}" />
+                                <td valign="top" class="value ${hasErrors(bean: applicationInstance, field: 'probeAuthMethod', 'errors')}">
+                                    <g:radioGroup name="probeAuthMethod" labels="['none','basic','digest']" values="['none','basic','digest']" value="${applicationInstance?.probeAuthMethod}" >
+                                    <p><g:message code="${it.label}" />: ${it.radio}</p>
+                                    </g:radioGroup>
+                                    <br><i>optional</i>
+                                </td>
+                            </tr>
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="probeAuthUser"><g:message code="application.probeAuthUser.label" default="Basic Authentication User" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: applicationInstance, field: 'probeAuthUser', 'errors')}">
+                                    <g:textField name="probeAuthUser" size="40" value="${applicationInstance?.probeAuthUser}" />
                                     <br><i>(optional) will be used with test url(s)</i>
                                 </td>
                             </tr>
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="probeBasicAuthPassword"><g:message code="application.probeBasicAuthPassword.label" default="Basic Authentication Password" /></label>
+                                    <label for="probeAuthPassword"><g:message code="application.probeAuthPassword.label" default="Basic Authentication Password" /></label>
                                 </td>
-                                <td valign="top" class="value ${hasErrors(bean: applicationInstance, field: 'probeBasicAuthPassword', 'errors')}">
-                                    <g:textField name="probeBasicAuthPassword" size="40" value="${applicationInstance?.probeBasicAuthPassword}" />
+                                <td valign="top" class="value ${hasErrors(bean: applicationInstance, field: 'probeAuthPassword', 'errors')}">
+                                    <g:textField name="probeAuthPassword" size="40" value="${applicationInstance?.probeAuthPassword}" />
                                     <br><i>(optional) will be used with test url(s)</i>
                                 </td>
                             </tr>

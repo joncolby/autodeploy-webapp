@@ -1,6 +1,8 @@
 CHANGELOG
 =========
 
+2013-04-06:
+Application probe method: none, basic, or digest
 2013-04-05:
 Application probe now accepts basic authentication user/password
 2103-03-27:

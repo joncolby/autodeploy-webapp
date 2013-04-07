@@ -199,6 +199,12 @@
 
                         </tr>
                         <tr class="prop">
+                            <td valign="top" class="name"><g:message code="application.probeAuthMethod.label" default="Probe Authentication Method" /></td>
+
+                            <td valign="top" class="value">${fieldValue(bean: applicationInstance, field: "probeAuthMethod")}</td>
+
+                        </tr>
+                        <tr class="prop">
                             <td valign="top" class="name"><g:message code="application.verificationJMXBean.label" default="Verification JMX Bean" /></td>
 
                             <td valign="top" class="value">${fieldValue(bean: applicationInstance, field: "verificationJMXBean")}</td>

@@ -63,8 +63,8 @@ class DeploymentPlanService {
 						xml.suffix(a.application.suffix())
                         xml.verificationJMXBean(a.application.verificationJMXBean)
                         xml.verificationJMXAttribute(a.application.verificationJMXAttribute)
-                        xml.releaseInfoJMXBean("")
-                        xml.releaseInfoJMXAttribute("")
+                        xml.releaseInfoJMXBean("")  // obsolete, remove after all agents updated
+                        xml.releaseInfoJMXAttribute("")  // obsolete, remove after all agents updated
 						xml.release("git")
 						xml.revision(a.revision)
 						xml.install_path(a.application.installDir)
@@ -73,8 +73,11 @@ class DeploymentPlanService {
 						xml.assemble_properties(a.application.assembleProperties)
 						xml.instance_properties(a.application.instanceProperties)
 						xml.doProbe(a.application.doProbe)
-                        xml.probeBasicAuthUser(a.application.probeBasicAuthUser)
-                        xml.probeBasicAuthPassword(a.application.probeBasicAuthPassword)
+						xml.probeAuthMethod(a.application.probeAuthMethod)
+                        xml.probeBasicAuthUser("")   // obsolete, remove after all agents updated
+                        xml.probeBasicAuthPassword("")  // obsolete, remove after all agents updated
+                        xml.probeAuthUser(a.application.probeAuthUser)
+                        xml.probeAuthPassword(a.application.probeAuthPassword)
 						xml.modulename(a.application.modulename)
                         xml.testUrls {
                             if (a.application.testUrls) {

@@ -26,8 +26,9 @@ class Application {
 	String groupId
     String propertiesPath
     String testUrls = "%CONTEXT%/release-info"
-    String probeBasicAuthUser
-    String probeBasicAuthPassword
+    String probeAuthMethod = "none"
+    String probeAuthUser
+    String probeAuthPassword
 	Boolean startOnDeploy = true
 	Boolean assembleProperties = true
 	Boolean instanceProperties = true
@@ -61,8 +62,9 @@ class Application {
 		testUrls(blank:false,nullable:true)
 		type(nullable:false )
 		marketPlace(nullable:false )
-        probeBasicAuthUser(nullable:true,blank:false)
-        probeBasicAuthPassword(nullable: true,blank: false)
+        probeAuthUser(nullable:true,blank:false)
+        probeAuthPassword(nullable: true,blank: false)
+        probeAuthMethod(nullable: true,blank: false)
 	}
 
 	String suffix() {
