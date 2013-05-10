@@ -65,6 +65,18 @@ grails.exceptionresolver.params.exclude = ['password']
 environments {
     production {
         grails.serverURL = "http://autodeploy.corp.mobile.de/${appName}"
+        grails.plugins.springsecurity.portMapper.httpPort = "80"
+        grails.plugins.springsecurity.portMapper.httpsPort = "443"
+    }
+    mobile-production {
+        grails.serverURL = "https://autodeploy.corp.mobile.de/${appName}"
+        grails.plugins.springsecurity.portMapper.httpPort = "80"
+        grails.plugins.springsecurity.portMapper.httpsPort = "443"
+    }
+    ebayk-production {
+        grails.serverURL = "https://kautodeploy.corp.mobile.de/${appName}"
+        grails.plugins.springsecurity.portMapper.httpPort = "80"
+        grails.plugins.springsecurity.portMapper.httpsPort = "443"
     }
     development {
         grails.serverURL = "http://localhost:8080/${appName}"
@@ -110,6 +122,10 @@ log4j = {
     info 'org.springframework.security.ldap'
 
 }
+
+grails.plugins.springsecurity.secureChannel.definition = [
+   '/login/**':  'REQUIRES_SECURE_CHANNEL'
+]
 
 // Added by the Spring Security Core plugin:
 grails.plugins.springsecurity.userLookup.userDomainClassName = 'de.mobile.siteops.SecUser'

@@ -39,7 +39,7 @@ class HostClassController {
     }
   
     def list = {
-        params.max = Math.min(params.max ? params.int('max') : 10, 100)
+        params.max = Math.min(params.max ? params.int('max') : 200, 200)
         params.sort = "name"
         [hostClassInstanceList: HostClass.list(params), hostClassInstanceTotal: HostClass.count()]
     }

@@ -122,7 +122,7 @@ class HostController {
     }
 
     def list = {
-        params.max = Math.min(params.max ? params.int('max') : 25, 25)
+        params.max = Math.min(params.max ? params.int('max') : 200, 200)
         params.sort = 'name'
         [hostInstanceList: Host.list(params), hostInstanceTotal: Host.count()]
     }
@@ -131,14 +131,14 @@ class HostController {
 
         def environmentInstance = Environment.get(params?.id)
 
-        params.max = Math.min(params.max ? params.int('max') : 25, 25)
+        params.max = Math.min(params.max ? params.int('max') : 200, 200)
         params.sort = 'name'
         render(view: "list", model: [hostInstanceList: Host.findAllByEnvironment(environmentInstance, params), hostInstanceTotal: Host.findAllByEnvironment(environmentInstance).size(), environmentInstance: environmentInstance])
     }
 
     def search = {
 
-        params.max = Math.min(params.max ? params.int('max') : 25, 25)
+        params.max = Math.min(params.max ? params.int('max') : 200, 200)
         params.sort = 'name'
 
         //def hosts =  Host.findAllByName(params?.hostname, params)
@@ -161,7 +161,7 @@ class HostController {
 
         def environmentInstance = Environment.get(params?.environment)
 
-        params.max = Math.min(params.max ? params.int('max') : 25, 25)
+        params.max = Math.min(params.max ? params.int('max') : 200, 200)
         params.sort = 'name'
 
         //  def hosts =  Host.findAllByEnvironmentAndNameLike(environmentInstance, "${params?.host}%", params)

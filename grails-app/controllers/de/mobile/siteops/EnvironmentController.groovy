@@ -141,7 +141,7 @@ class EnvironmentController {
     }
 
     def list = {
-        params.max = Math.min(params.max ? params.int('max') : 10, 100)
+        params.max = Math.min(params.max ? params.int('max') : 200, 200)
         [environmentInstanceList: Environment.list(params), environmentInstanceTotal: Environment.count()]
     }
 

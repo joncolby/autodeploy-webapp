@@ -11,7 +11,7 @@ class TeamController {
     }
 
     def list = {
-        params.max = Math.min(params.max ? params.int('max') : 10, 100)
+        params.max = Math.min(params.max ? params.int('max') : 200, 200)
         [teamInstanceList: Team.list(params), teamInstanceTotal: Team.count()]
     }
 

@@ -35,7 +35,7 @@ class RepositoryController {
     }
 
     def list = {
-        params.max = Math.min(params.max ? params.int('max') : 10, 100)
+        params.max = Math.min(params.max ? params.int('max') : 200, 200)
         [repositoryInstanceList: Repository.list(params), repositoryInstanceTotal: Repository.count()]
     }
 
