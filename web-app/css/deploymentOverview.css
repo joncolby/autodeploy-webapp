@@ -655,7 +655,7 @@ table .appView th{
 }
 
 .ui-dialog-content .selectList.applications .filterBox #applicationsFilterField {
-    width: 200px;
+    width: 190px;
 }
 
 .ui-dialog-content .selectList.applications .filterBox input.ui-button {
