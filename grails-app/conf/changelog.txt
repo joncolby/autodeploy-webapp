@@ -1,34 +1,50 @@
 CHANGELOG
 =========
 
+2013-06-10:
+ADEP-75: Allow filtering of application list in plan management view!
+
 2013-04-06:
 Application probe method: none, basic, or digest
+
 2013-04-05:
 Application probe now accepts basic authentication user/password
+
 2103-03-27:
 Implement test urls and jmx-validation urls
+
 2013-03-11:
 Cleanup job also deletes Queued deployment entries as well as finalized entries
+
 2013-03-08:
 Parallel Deployment per Deployment Queue allowed
+
 2012-01-10:
 do not show apps that are assigned to the INACTIVE pillar
 fix small bug with error message when not logged-in
 improvements to application create/edit forms
+
 2012-01-09:
 Fix cleanup job to deal with deleted applications
+
 2012-11-15:
 Add password field to userAdmin controller
+
 2012-04-11:
 A deployment will be aborted if a lower-priority server deployment fails in a deployment with mixed priorities
+
 2012-06-01:
 Implement autoplay feature
+
 2012-05-08:
 LDAP login required to perform functions in autodeploy.
+
 2012-02-28:
 ADEP-59: "release mail" checkbox now working properly
+
 2012-02-27:
 ADEP-59: change the email address for the release mail to "DL-eBay-TXL-mobile-Technology@ebay.com"
+
 2012-02-03:
 ADEP-59: Added "send release mail" configureable via checkbox in each environment. Default for an environment can be set
          for each environment. Upon queueing a new deployment plan a release mail is sent to

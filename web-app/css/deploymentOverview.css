@@ -647,6 +647,21 @@ table .appView th{
 	margin-right:24px;
 }
 
+.ui-dialog-content .selectList.applications .filterBox {
+	width: 300px;
+}
+.ui-dialog-content .selectList.applications .filterBox input {
+    display: none;
+}
+
+.ui-dialog-content .selectList.applications .filterBox #applicationsFilterField {
+    width: 190px;
+}
+
+.ui-dialog-content .selectList.applications .filterBox input.ui-button {
+    padding: .1em .25em .1em .25em;
+}
+
 .ui-dialog-content .selectList.applications ul{
 	height:352px;
 	overflow:auto;

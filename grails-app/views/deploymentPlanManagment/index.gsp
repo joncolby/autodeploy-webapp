@@ -1,11 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: ibartel
-  Date: 15.07.11
-  Time: 11:48
-  To change this template use File | Settings | File Templates.
---%>
-
 <%@ page contentType="text/html;charset=UTF-8" %>
 <div class="container">
 <div class="left">
@@ -25,6 +17,11 @@
 <div class="right">
 	<div class="selectList applications">
 		<h3>Applications<a class="none" href="#">select none</a><a class="all" href="#">select all</a></h3>
+        <div class="filterBox">
+            <input id="applicationsFilterField" type="text" placeholder="Type here to start filtering ..."/>
+            <input id="clearFilterBtn" type="button" value="all"/>
+            <input id="showSelectedBtn" type="button" value="selected"/>
+        </div>
 		<ul></ul>
 	</div>
 	<div class="details">

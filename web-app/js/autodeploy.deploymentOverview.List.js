@@ -2,15 +2,18 @@
 
 $.fn.DeploymentPlanDetails = function(options){
 	this.appsList = this.find('.selectList.applications').SelectableList();
+	this.listFilter = this.find('.selectList.applications').ApplicationListFilter();
 	
 	this.enableFields = function(){
 		this.find('p').trigger('enable');
 		this.appsList.enableList();
+		this.listFilter.enableFiltering();
 	}	
 	
 	this.disableFields = function(){
 		this.find('p').trigger('disable');
 		this.appsList.disableList();
+        this.listFilter.disableFiltering();
 	}
 	
 	this.getValues = function(){
@@ -33,7 +36,7 @@ $.fn.DeploymentPlanDetails = function(options){
 		$(this).val('Save').unbind('click').bind('click',e.data,e.data.saveAction);
 		$('.container .revisionBox').hide();
 	}
-
+	
     this.deleteSuccessAction = function(e) {
         $('.container .revisionBox').show();
         var selectedPlan = $('.selectList.deploymentPlans .active');
@@ -55,7 +58,6 @@ $.fn.DeploymentPlanDetails = function(options){
 		$('.fastDeploy [name=teamId]').change();
 		$('.selectList.teams .active').click();
 	}
-	
 
 	this.saveAction = function(e){
 			$.ajax({url:$(this).attr('url'),
@@ -103,6 +105,44 @@ $.fn.DeploymentPlanDetails = function(options){
 	return this;
 }
 
+$.fn.ApplicationListFilter = function(options) {
+    this.enableFiltering = function() {
+        $(".selectList.applications #applicationsFilterField").empty().show();
+        $(".selectList.applications #applicationsFilterField").unbind('keyup').bind('keyup', this, function(e) {
+            var query = $("#applicationsFilterField").val();
+            e.data.filterList(function($elem) { return $elem.text().toLowerCase().indexOf(query.toLowerCase()) !== -1 });
+        });
+        $('#clearFilterBtn').button().show();
+        $(".selectList.applications #clearFilterBtn").unbind('click').bind('click', this, function(e) {
+            $("#applicationsFilterField").val('');
+            e.data.filterList(function($elem) { return true });
+        });
+        $('#showSelectedBtn').button().show();
+        $(".selectList.applications #showSelectedBtn").unbind('click').bind('click', this, function(e) {
+            $("#applicationsFilterField").val('');
+            e.data.filterList(function($elem) { return $elem.hasClass("active") });
+        });
+    }
+    
+    this.disableFiltering = function() {
+        $(".selectList.applications #applicationsFilterField").empty().hide();
+        $('#clearFilterBtn').hide();
+        $('#showSelectedBtn').hide();
+    }
+    
+    this.filterList = function(predicate) {
+        $(".selectList.applications > ul > li").each(function(index) {
+            if (predicate($(this))) {
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+        });
+    }
+
+    return this;
+}
+
 
 $.fn.TeamList = function(options){
 	$.fn.SelectableList.apply(this,arguments);  // "ableitung
@@ -123,7 +163,8 @@ $.fn.TeamList = function(options){
 
 $.fn.DeploymentPlanList = function(options){
 
-	$.fn.SelectableList.apply(this,arguments);  // "ableitung
+	$.fn.SelectableList.apply(this,arguments);  // "ableitung"
+    this.listFilter = this.find('.selectList.applications').ApplicationListFilter();
 
 	this.buildAction = function(){
 		var plan = $.cookie('autodeploy_planId');
@@ -142,9 +183,10 @@ $.fn.DeploymentPlanList = function(options){
 					}
 			});
 		});
+		this.listFilter.disableFiltering();
 	}
 	
-	this.newAction = function (data){
+	this.newAction = function(data) {
 		data.contribution ="";
 		data.created ="";
 		data.modified ="";
@@ -161,6 +203,7 @@ $.fn.DeploymentPlanList = function(options){
 
 		$('.container .revisionBox input[type=text]').val("");
         $('.container .revisionBox').hide();
+        this.listFilter.enableFiltering();
 	}
 	
 	this.successAction = function(data){
@@ -168,6 +211,8 @@ $.fn.DeploymentPlanList = function(options){
 		$('.container .revisionBox input[type=text]').val("");
         $('.container .revisionBox').show();
 		$.cookie('autodeploy_planId',this.getSelected());
+		this.listFilter.disableFiltering();
 	}
+	
 	return this;
 }
