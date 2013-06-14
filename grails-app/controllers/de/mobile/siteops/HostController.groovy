@@ -101,6 +101,7 @@ class HostController {
 		def hostInstance = Host.get(params.id)
 		if (hostInstance) {
 			try {
+                DeployedHost.findAllByHost(hostInstance).each{ it.delete(flush:true) }
 				hostInstance.delete(flush: true)
 				render MessageResult.successMessage("Entry successfully deleted") as JSON
 			}
@@ -282,6 +283,8 @@ class HostController {
         def hostInstance = Host.get(params.id)
         if (hostInstance) {
             try {
+
+                DeployedHost.findAllByHost(hostInstance).each{ it.delete(flush:true) }
                 hostInstance.delete(flush: true)
                 flash.message = "${message(code: 'default.deleted.message', args: [message(code: 'host.label', default: 'Host'), params.id])}"
                 redirect(action: "list")
