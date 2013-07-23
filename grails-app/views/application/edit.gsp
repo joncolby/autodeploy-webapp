@@ -92,7 +92,7 @@
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: applicationInstance, field: 'symlink', 'errors')}">
                                     <g:textField size="40" name="symlink" value="${applicationInstance?.symlink}" />
-                                    <br><i>symlink - created within install path (optional)</i>
+                                    <br><i>created under install directory (optional)</i>
                                 </td>
                             </tr>
                         
