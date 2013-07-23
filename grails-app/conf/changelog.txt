@@ -1,6 +1,9 @@
 CHANGELOG
 =========
 
+2013-07-22:
+add configurable symlink to application attributes
+
 2013-06-10:
 ADEP-75: Allow filtering of application list in plan management view!
 

@@ -124,7 +124,8 @@ log4j = {
 }
 
 grails.plugins.springsecurity.secureChannel.definition = [
-   '/login/**':  'REQUIRES_SECURE_CHANNEL'
+//   '/login/**':  'REQUIRES_SECURE_CHANNEL'
+   '/**':  'REQUIRES_SECURE_CHANNEL'
 ]
 
 // Added by the Spring Security Core plugin:

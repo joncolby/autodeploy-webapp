@@ -36,7 +36,7 @@ class ApplicationController {
 	   
 	   if (!application) { // for new entries
 		   application = [
-			   pillar:null,filename:"",downloadName:"",startStopScript:"",propertiesPath:"",installDir:"",description:"",context:"",verificationJMXBean:"",verificationJMXAttribute:"",type:null,balancerType:null, modulename:"",artifactId:"",groupId:"",assembleProperties:false,instanceProperties:false,doProbe:false,startOnDeploy:false]
+			   pillar:null,filename:"",downloadName:"",startStopScript:"",propertiesPath:"",installDir:"",symlink:"",description:"",context:"",verificationJMXBean:"",verificationJMXAttribute:"",type:null,balancerType:null, modulename:"",artifactId:"",groupId:"",assembleProperties:false,instanceProperties:false,doProbe:false,startOnDeploy:false]
 	   }
 	   
 	   def pillarList = Pillar.findAll().collect { [id: it.id, name: it.name,selected: (application.pillar && application.pillar.id == it.id)] }
@@ -58,6 +58,7 @@ class ApplicationController {
 		   downloadName:[value: application.downloadName, type: 'text', size: 30],
 		   startStopScript:[value: application.startStopScript, type: 'text'],
 		   installDir:[value: application.installDir, type: 'text'],
+           symlink:[value: application.symlink, type: 'text'],
 		   propertiesPath:[value: application.propertiesPath, type: 'text'],
 		   description:[value: application.description, type: 'textarea'],
 		   context:[value: application.context, type: 'text'],
@@ -88,6 +89,7 @@ class ApplicationController {
            downloadName:params.downloadName,
 		   startStopScript:params.startStopScript,
 		   installDir:params.installDir,
+		   symlink:params.symlink,
 		   propertiesPath:params.propertiesPath,
 		   description:params.description,
 		   context:params.context,

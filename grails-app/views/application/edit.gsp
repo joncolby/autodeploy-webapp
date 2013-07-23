@@ -86,6 +86,15 @@
                                     <br><i>can be empty for tanuki apps</i>
                                 </td>
                             </tr>
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                  <label for="symlink"><g:message code="application.symlink.label" default="Symlink" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: applicationInstance, field: 'symlink', 'errors')}">
+                                    <g:textField size="40" name="symlink" value="${applicationInstance?.symlink}" />
+                                    <br><i>absolute symlink path (optional)</i>
+                                </td>
+                            </tr>
                         
                             <tr class="prop">
                                 <td valign="top" class="name">

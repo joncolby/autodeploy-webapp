@@ -14,6 +14,7 @@ class Application {
     String downloadName
     String modulename
 	String description
+    String symlink
 	ApplicationType type
     LoadBalancerType balancerType = LoadBalancerType.NONE
     MarketPlace marketPlace = MarketPlace.GERMANY   // default marketplace
@@ -65,6 +66,7 @@ class Application {
         probeAuthUser(nullable:true,blank:false)
         probeAuthPassword(nullable: true,blank: false)
         probeAuthMethod(nullable: true,blank: false)
+        symlink(nullable: true, blank: true)
 	}
 
 	String suffix() {

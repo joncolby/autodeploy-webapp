@@ -91,6 +91,13 @@
 
                         </tr>
 
+                        <tr class="prop">
+                            <td valign="top" class="name"><g:message code="application.symlink.label" default="Symlink" /></td>
+
+                            <td valign="top" class="value">${fieldValue(bean: applicationInstance, field: "symlink")}</td>
+
+                        </tr>
+
                     
                         <tr class="prop">
                             <td valign="top" class="name"><g:message code="application.type.label" default="Type" /></td>
