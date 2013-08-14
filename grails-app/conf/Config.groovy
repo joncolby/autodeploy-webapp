@@ -140,6 +140,12 @@ grails.plugins.springsecurity.authority.className = 'de.mobile.siteops.SecRole'
 zooKeeper.url="localhost:2181"
 zooKeeper.timeout=2000
 
+// Configuration for Codahale (f.k.a. Yammer) metrics
+metrics.graphite.host = ''
+metrics.graphite.port = 2003
+metrics.jmx.enabled = true
+metrics.filter.enabled = true
+
 // Active Directory config
 grails.plugins.springsecurity.ldap.auth.hideUserNotFoundExceptions=false
 grails.plugins.springsecurity.ldap.context.managerDn = '_auth_mobiledir@corp.ebay.com'
