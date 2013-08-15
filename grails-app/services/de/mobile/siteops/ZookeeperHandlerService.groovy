@@ -2,8 +2,6 @@ package de.mobile.siteops
 
 import org.codehaus.groovy.grails.commons.ConfigurationHolder
 
-import com.codahale.metrics.MetricRegistry
-
 import de.mobile.zookeeper.ZookeeperService
 import de.mobile.zookeeper.ZookeeperStateMonitor
 import de.mobile.zookeeper.ZookeeperService.ZookeeperState
@@ -32,9 +30,6 @@ class ZookeeperHandlerService {
           log.error "Could not create node " + node.nodeName
           node.entry.state = HostStateType.ERROR
           node.entry.messages += "Could not create zookeeper node " + node.nodeName
-        } else {
-          // deployment submitted -> track deployment start event
-          CodahaleMetricsUtil.registry.meter(MetricRegistry.name("deployment", node.entry.environment, node.entry.hostname, "start")).mark()
         }
       }
     }
