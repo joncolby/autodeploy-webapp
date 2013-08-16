@@ -1,6 +1,9 @@
 CHANGELOG
 =========
 
+2013-08-15:
+ADEP-76: Report start of deployment to Graphite!
+
 2013-07-22:
 add configurable symlink to application attributes
 

@@ -5,26 +5,23 @@
     <groupId>de.mobile.siteops</groupId>
     <artifactId>mobile-autodeploy-webapp</artifactId>
     <packaging>war</packaging>
-    <version>0.5.44</version>
+    <version>0.5.45</version>
 
     <distributionManagement>
         <repository>
             <id>deployment.repo.mobile.releases</id>
             <url>http://maven.corp.mobile.de/archiva/repository/autodeployment-releases</url>
         </repository>
-
         <snapshotRepository>
             <id>deployment.repo.mobile.snapshots</id>
             <url>http://maven.corp.mobile.de/archiva/repository/autodeployment-releases</url>
         </snapshotRepository>
-
     </distributionManagement>
 
     <scm>
         <connection>scm:git:git@git.corp.mobile.de:autodeploy/autodeploy-webapp.git</connection>
         <developerConnection>scm:git:git@git.corp.mobile.de:autodeploy/autodeploy-webapp.git</developerConnection>
     </scm>
-
 
     <dependencies>
         <dependency>
@@ -137,6 +134,54 @@
             <artifactId>jstl</artifactId>
             <version>1.2</version>
         </dependency>
+        
+        <!-- Dependencies for Codahale (f.k.a. Yammer) metrics -->
+        <dependency>
+            <groupId>com.codahale.metrics</groupId>
+            <artifactId>metrics-graphite</artifactId>
+            <version>3.0.1</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>jcl-over-slf4j</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.codahale.metrics</groupId>
+            <artifactId>metrics-core</artifactId>
+            <version>3.0.1</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>jcl-over-slf4j</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.codahale.metrics</groupId>
+            <artifactId>metrics-servlet</artifactId>
+            <version>3.0.1</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>jcl-over-slf4j</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        
     </dependencies>
 
     <repositories>

@@ -1,4 +1,6 @@
 import javax.servlet.http.HttpServletRequest
+
+import de.mobile.siteops.CodahaleMetricsUtil
 import de.mobile.siteops.SecRole
 import de.mobile.siteops.SecUser
 import de.mobile.siteops.SecUserSecRole
@@ -10,7 +12,6 @@ class BootStrap {
     def springSecurityService
 
     def init = { servletContext ->
-
         log.info("Entering bootstrap init")
         zookeeperHandlerService.init()
 
@@ -28,13 +29,15 @@ class BootStrap {
             SecUserSecRole.create adminUser, adminRole
         }
 
-
         HttpServletRequest.metaClass.isXhr = {->
             'XMLHttpRequest' == delegate.getHeader('X-Requested-With')
         }
 
+        CodahaleMetricsUtil.initialize(servletContext)
+        
         log.info("Leaving bootstrap init")
     }
+
     def destroy = {
     }
 }

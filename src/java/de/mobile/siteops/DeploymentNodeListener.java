@@ -1,12 +1,14 @@
 package de.mobile.siteops;
 
+import java.util.Date;
+
 import org.apache.log4j.Logger;
+
+import com.codahale.metrics.MetricRegistry;
 
 import de.mobile.zookeeper.AbstractNodeHandler;
 import de.mobile.zookeeper.ZookeeperNode;
 import de.mobile.zookeeper.ZookeeperService;
-
-import java.util.Date;
 
 public class DeploymentNodeListener extends AbstractNodeHandler {
 
@@ -56,6 +58,8 @@ public class DeploymentNodeListener extends AbstractNodeHandler {
             getNode().setData(deploymentPlan);
             processEntry.changeState(HostStateType.IN_PROGRESS);
             observer.start();
+            CodahaleMetricsUtil.getRegistry().meter(MetricRegistry.name("deployment", processEntry.getEnvironment().getName(), 
+                (String) processEntry.getHostname(), "start")).mark();
 
         } else {
             processEntry.addDeploymentMessage("DEPLOYMENT_ERROR", "Could not set deployment plan, cannot write data on zookeeper");
