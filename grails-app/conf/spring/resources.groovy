@@ -27,7 +27,7 @@ beans = {
      maxIdleTime=300
      maxIdleTimeExcessConnections=120
      idleConnectionTestPeriod=60
-     connectionTesterClassName to "com.mysql.jdbc.integration.c3p0.MysqlConnectionTester"
+     connectionTesterClassName="com.mysql.jdbc.integration.c3p0.MysqlConnectionTester"
 
      // dont set preferred test query
      //preferredTestQuery="SELECT 1;"
