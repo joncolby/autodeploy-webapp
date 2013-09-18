@@ -126,6 +126,7 @@ log4j = {
 grails.plugins.springsecurity.secureChannel.definition = [
 //   '/login/**':  'REQUIRES_SECURE_CHANNEL'
    '/api/**': 'ANY_CHANNEL',
+   '/deploymentPlanManagment/**': 'ANY_CHANNEL',
    '/dashboard/**': 'ANY_CHANNEL',
    '/xml/versions/**': 'ANY_CHANNEL',
    '/json/versions/**': 'ANY_CHANNEL',
