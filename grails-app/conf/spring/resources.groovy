@@ -17,34 +17,25 @@ beans = {
      password = CH.config.dataSource.password
      driverClass = CH.config.dataSource.driverClassName
      jdbcUrl = CH.config.dataSource.url
-     //connection test settings
-     idleConnectionTestPeriod = 2 * 60 * 60 //2 hours
 
-     testConnectionOnCheckin = true
+     testConnectionOnCheckin=true
+     maxConnectionAge=900
+     initialPoolSize=10
+     numHelperThreads=100
+     minPoolSize=25
+     maxPoolSize=100
+     maxIdleTime=300
+     maxIdleTimeExcessConnections=120
+     idleConnectionTestPeriod=60
+     connectionTesterClassName to "com.mysql.jdbc.integration.c3p0.MysqlConnectionTester"
 
-     //force connections to renew after 4 hours
-     //maxConnectionAge = 4 * 60 * 60
-
-     // maxConnectionAge = 60 * 2
-
-     initialPoolSize = 10
-
-     numHelperThreads=6
-
-     minPoolSize = 25
-
-     maxPoolSize = 100
-
-     preferredTestQuery="SELECT 1;"
+     // dont set preferred test query
+     //preferredTestQuery="SELECT 1;"
 
      /* very dangerous. destroys connects after n seconds */
      //unreturnedConnectionTimeout = 5 // seconds
      //debugUnreturnedConnectionStackTraces="true"
 
-
-     //get rid too many of idle connections after 30 minutes
-     //maxIdleTimeExcessConnections = 30 * 60
-     maxIdleTimeExcessConnections = 2 * 60
 
   }
 
