@@ -16,7 +16,7 @@ class SecUser {
 
 	static constraints = {
 		username blank: false, unique: true
-        password(maxSize: 40, nullable: false, blank: false,validator: SecUser.validatePassword)
+        password(maxSize: 100, nullable: false, blank: false,validator: SecUser.validatePassword)
 	}
 
 	static mapping = {
@@ -55,7 +55,7 @@ class SecUser {
             if (!password) {
                 password = ""
             }
-            if (password.length() < 6 || password.length() > 40) {
+            if (password.length() < 6 || password.length() > 100) {
                 user.errors.rejectValue('password', 'user.password.length',
                     ['password', 'User', password] as Object[],
                     'Property [{0}] of class [{1}] must be between 6 and 40 characters')

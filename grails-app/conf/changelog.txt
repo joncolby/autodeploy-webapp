@@ -1,6 +1,9 @@
 CHANGELOG
 =========
 
+2013-10-09:
+Perform monthly archives (copies) of the deployment_queue_entry table for reporting purposes
+
 2013-08-15:
 ADEP-76: Report start of deployment to Graphite!
 
