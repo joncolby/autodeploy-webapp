@@ -122,7 +122,7 @@ log4j = {
     info 'org.springframework.security.ldap'
 
 }
-/*
+
 grails.plugins.springsecurity.secureChannel.definition = [
 //   '/login/**':  'REQUIRES_SECURE_CHANNEL'
    '/api/**': 'ANY_CHANNEL',
@@ -132,7 +132,6 @@ grails.plugins.springsecurity.secureChannel.definition = [
    '/json/versions/**': 'ANY_CHANNEL',
    '/**':  'REQUIRES_SECURE_CHANNEL'
 ]
-*/
 
 // Added by the Spring Security Core plugin:
 grails.plugins.springsecurity.userLookup.userDomainClassName = 'de.mobile.siteops.SecUser'
