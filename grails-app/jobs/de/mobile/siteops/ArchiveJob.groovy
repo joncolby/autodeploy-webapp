@@ -8,7 +8,7 @@ class ArchiveJob {
     static triggers = {
        //cron name: 'poller', startDelay: 10000, cronExpression: "0 0/60 * * * ?"
        simple name:'initArchiveJob', startDelay:10000, repeatCount: 0
-       cron name: 'monthlyArchiveJob', startDelay: 10000, cronExpression: "0 0 12 ? * SUN"
+       cron name: 'monthlyArchiveJob', startDelay: 10000, cronExpression: "0 0 5 1 * ?"
     }
 
     def execute() {
