@@ -5,7 +5,7 @@
     <groupId>de.mobile.siteops</groupId>
     <artifactId>mobile-autodeploy-webapp</artifactId>
     <packaging>war</packaging>
-    <version>0.5.49</version>
+    <version>0.5.50</version>
 
     <distributionManagement>
         <repository>

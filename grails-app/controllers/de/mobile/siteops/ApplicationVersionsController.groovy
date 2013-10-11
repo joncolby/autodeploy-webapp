@@ -11,14 +11,13 @@ class ApplicationVersionsController {
 
     def index = {
         def model = [:]
-        def environmentParam = params.environment
+        def environmentParam = params.id
         if (!environmentParam) {
             render MessageResult.errorMessage("No environment parameter provided") as JSON
             return
         }
 
-        Environment env = Environment.findByName(environmentParam)
-
+        Environment env = Environment.get(environmentParam)
 
         if (!env) {
             render MessageResult.errorMessage("No environment with name ${environmentParam} found") as JSON
@@ -43,7 +42,6 @@ class ApplicationVersionsController {
                 it.existsInEnv = true
             }
         }
-
         def queueEntries = DeploymentQueueEntry.finalizedEntries(deploymentQueue).list(sort: 'finalizedDate', order: 'desc')
         if (!queueEntries) {
             render model as JSON
