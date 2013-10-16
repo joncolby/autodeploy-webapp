@@ -52,6 +52,21 @@ class ApiController {
         render "status:succcess\nmessage:deployment for '$queueEntry.executionPlan.name' started."
     }
 
+    def platform = {
+        def platform = Platform.getAll()[0]
+        render platform.name
+    }
+
+    def queueId = {
+        if (!params.environmentName) {
+         render "status:error\nmessage: missing environment name"
+         return
+        }
+        def environment = Environment.findByName(params.environmentName.toString().trim())
+        def deploymentQueue = DeploymentQueue.findByEnvironment(environment)
+        render deploymentQueue.id
+    }
+
     def status = {
         def queueEntryId = params.queueEntryId
 
