@@ -153,6 +153,7 @@ grails.plugins.springsecurity.ldap.context.managerDn = '_auth_mobiledir@corp.eba
 grails.plugins.springsecurity.ldap.context.managerPassword = 'Ohf1quec1pah6eephol6ye8biethahdahcah9Woh'
 // stunnel4 is used to route ldap requests to ldaps
 //grails.plugins.springsecurity.ldap.context.server = 'ldap://10.250.16.37/'
+
 grails.plugins.springsecurity.ldap.context.server = 'ldap://localhost/'
 grails.plugins.springsecurity.ldap.authorities.ignorePartialResultException = true // typically needed for Active Directory
 grails.plugins.springsecurity.ldap.search.base = 'DC=CORP,DC=EBAY,DC=COM'

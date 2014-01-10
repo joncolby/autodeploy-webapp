@@ -13,7 +13,7 @@ class ApiController {
         if (planId) {
             def plan = DeploymentPlan.get(planId)
             if (plan) {
-                def modules = plan.applications.collect { it.modulename }
+                def modules = plan.applications.collect { Application a -> if (a.pillar.name != 'INACTIVE') { a.modulename } }
                 if (modules) {
                     render modules.join(",")
                     return
