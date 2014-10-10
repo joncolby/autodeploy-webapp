@@ -32,6 +32,43 @@ class ApplicationService {
         return result
     }
 
+    // Get the version of the application prior to the latest successful release
+    def previousVersionsFromApplication(apps,Environment environment)  {
+            DeploymentQueue deploymentQueue = DeploymentQueue.findByEnvironment(environment)
+            def queueEntries = DeploymentQueueEntry.finalizedEntries(deploymentQueue).list(sort: 'finalizedDate', order: 'desc')
+            def result = []
+            apps.each { Application app ->
+                def appVersion = new Expando(application: app, revision: null, seenCount: 0)
+                result += appVersion
+            }
+
+            for (DeploymentQueueEntry queueEntry: queueEntries) {
+                def entryApplications = queueEntry.executionPlan.applicationVersions
+                def deployedHosts = DeployedHost.findAllByEntryAndState(queueEntry, HostStateType.DEPLOYED)
+                // this list will contain successfully deployed applications for the deployment queue entry
+                def previousApplications = []
+
+                // get only the applications deployed successfully to a host for this deployment queue (execution plan)
+                deployedHosts.each { deployedHost ->
+                   deployedHost.host.className.applications.intersect(entryApplications.collect { it.application }).each { app ->
+                       // collects successfully deployed applicationVersions
+                       previousApplications += entryApplications.findAll { it.application == app }
+                   }
+                }
+
+                // remove duplicate applications found
+                previousApplications = previousApplications.unique()
+                previousApplications.each { ApplicationVersion applicationVersion ->
+                    def found = result.find { it.application == applicationVersion.application }
+                    if (found.seenCount < 2) {
+                        result.find { it.application == applicationVersion.application }.revision = applicationVersion.revision
+                        result.find { it.application == applicationVersion.application }.seenCount += 1
+                    }
+                }
+            }
+          return result.findAll { it.seenCount == 2 }
+    }
+
     def queueEntriesForDeletion(Environment environment) {
 
         // GOAL:  do not delete the last deployed version of any app - there must be at least one app-version for every app
