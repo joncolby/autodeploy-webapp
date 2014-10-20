@@ -10,11 +10,11 @@
     <distributionManagement>
         <repository>
             <id>deployment.repo.mobile.releases</id>
-            <url>http://maven.corp.mobile.de/archiva/repository/autodeployment-releases</url>
+            <url>https://nexus.corp.mobile.de/nexus/content/repositories/autodeploy-releases</url>
         </repository>
         <snapshotRepository>
             <id>deployment.repo.mobile.snapshots</id>
-            <url>http://maven.corp.mobile.de/archiva/repository/autodeployment-releases</url>
+            <url>https://nexus.corp.mobile.de/nexus/content/repositories/autodeploy-snapshots</url>
         </snapshotRepository>
     </distributionManagement>
 
@@ -187,7 +187,7 @@
     <repositories>
         <repository>
             <id>autodeployment</id>
-            <url>http://maven.corp.mobile.de/archiva/repository/autodeployment-releases</url>
+            <url>https://nexus.corp.mobile.de/nexus/content/repositories/autodeploy-releases</url>
         </repository>
 
         <!-- Required to get hold of JTA -->
