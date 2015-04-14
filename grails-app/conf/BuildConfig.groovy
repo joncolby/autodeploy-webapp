@@ -10,8 +10,8 @@ grails.project.dependency.resolution = {
     }
     log "warn" // log level of Ivy resolver, either 'error', 'warn', 'info', 'debug' or 'verbose'
     repositories {
-        mavenRepo "http://ci.corp.mobile.de/nexus/content/repositories/hosted-mobile-grails-plugins"
-        mavenRepo "http://ci.corp.mobile.de/nexus/content/repositories/hosted-mobile-releases"
+        //mavenRepo "http://ci.corp.mobile.de/nexus/content/repositories/hosted-mobile-grails-plugins"
+        //mavenRepo "http://ci.corp.mobile.de/nexus/content/repositories/hosted-mobile-releases"
         grailsPlugins()
         grailsHome()
         grailsCentral()

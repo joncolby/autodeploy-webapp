@@ -247,6 +247,10 @@ td.status .animated .ui-progressbar-value { background-image: url(ui-lightness/i
     width: 150px;
 }
 
+.wrapper .fastDeploy .hostFilter {
+    width: 90px;
+}
+
 .wrapper .fastDeploy .planSelect {
     width: 200px;
 }

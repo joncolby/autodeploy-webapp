@@ -120,14 +120,14 @@ class DeploymentPlanManagmentController {
         def deploymentPlanId = params.long("planId")
         def revision = params.revision
         def releaseMail = params.releaseMail && params.releaseMail == 'true' ? true : false
-
+        def hostFilter = params.hostFilter
 
         if (!revision || revision.size() <= 1) {
             render MessageResult.errorMessage("Please enter a revision number") as JSON
             return
         }
 
-        def result = deploymentPlanService.addPlanToQueue(deploymentQueueId, deploymentPlanId, revision)
+        def result = deploymentPlanService.addPlanToQueue(deploymentQueueId, deploymentPlanId, revision, hostFilter)
         if (result.type == 'success') {
             if (releaseMail) {
                 releaseMailService.releaseMail(result.queueEntryId)

@@ -13,6 +13,7 @@ class DeploymentQueueEntry {
     String comment
     String creator
     String executor
+    String hostFilter
 
     int duration
 
@@ -23,6 +24,7 @@ class DeploymentQueueEntry {
     static transients = ['finalState']
 
     static constraints = {
+        hostFilter(blank: true, nullable: true)
         revision(blank: false, nullable: false)
         state(nullable: false)
         finalizedDate(nullable: true)

@@ -96,7 +96,7 @@ class DeploymentPlanService {
 	}
 
     @Transactional()
-    def addPlanToQueue(deploymentQueueId, deploymentPlanId, revision) {
+    def addPlanToQueue(deploymentQueueId, deploymentPlanId, revision, hostFilter=null) {
         def result = [type: 'error', queueEntryId: null, message: "Unknown error"]
 
         // Don't require login for API requests yet
@@ -117,6 +117,9 @@ class DeploymentPlanService {
         def hostclasses = applications.collect { it.hostclasses }.flatten().unique()
         def hosts = Host.findAllByClassNameInListAndEnvironment(hostclasses, env)
         def applicationsInThisEnv = []
+
+        hosts = filterHosts(hosts,hostFilter)
+
         hosts.each { host ->
             host.className.applications.each { applicationsInThisEnv += it }
         }
@@ -143,7 +146,7 @@ class DeploymentPlanService {
         }
         executionPlan.save()
 
-        def queueEntry = new DeploymentQueueEntry(state: HostStateType.QUEUED, executionPlan: executionPlan, plan: plan, revision: revision, duration: 0, creator: accessControlService.currentUser)
+        def queueEntry = new DeploymentQueueEntry(state: HostStateType.QUEUED, executionPlan: executionPlan, plan: plan, revision: revision, hostFilter: hostFilter, duration: 0, creator: accessControlService.currentUser)
         targetQueue.addToEntries(queueEntry)
         if (!targetQueue.save(false)) {
             result.message = "Could not save queue entry"
@@ -170,6 +173,13 @@ class DeploymentPlanService {
         }
 
         return result
+    }
+
+    def filterHosts(hosts,hostFilterPattern) {
+        if (hostFilterPattern && hostFilterPattern.replaceAll("\\s","")) {
+            return hosts.findAll { Host h -> h.name =~ hostFilterPattern.replaceAll("\\s","") }
+        }
+        return hosts
     }
 
 }

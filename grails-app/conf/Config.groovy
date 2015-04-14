@@ -61,6 +61,17 @@ grails.spring.bean.packages = []
 // request parameters to mask when logging exceptions
 grails.exceptionresolver.params.exclude = ['password']
 
+
+grails.plugins.springsecurity.secureChannel.definition = [
+//   '/login/**':  'REQUIRES_SECURE_CHANNEL'
+   '/api/**': 'ANY_CHANNEL',
+   '/deploymentPlanManagment/**': 'ANY_CHANNEL',
+   '/dashboard/**': 'ANY_CHANNEL',
+   '/xml/versions/**': 'ANY_CHANNEL',
+   '/json/versions/**': 'ANY_CHANNEL',
+   '/**':  'REQUIRES_SECURE_CHANNEL'
+]
+
 // set per-environment serverURL stem for creating absolute links
 environments {
     production {
@@ -79,9 +90,11 @@ environments {
         grails.plugins.springsecurity.portMapper.httpsPort = "443"
     }
     development {
+        grails.plugins.springsecurity.secureChannel.definition << ['/**':'ANY_CHANNEL']
         grails.serverURL = "http://localhost:8080/${appName}"
     }
     test {
+        grails.plugins.springsecurity.secureChannel.definition << ['/**':'ANY_CHANNEL']
         grails.serverURL = "http://localhost:8080/${appName}"
     }
 
@@ -123,15 +136,7 @@ log4j = {
 
 }
 
-grails.plugins.springsecurity.secureChannel.definition = [
-//   '/login/**':  'REQUIRES_SECURE_CHANNEL'
-   '/api/**': 'ANY_CHANNEL',
-   '/deploymentPlanManagment/**': 'ANY_CHANNEL',
-   '/dashboard/**': 'ANY_CHANNEL',
-   '/xml/versions/**': 'ANY_CHANNEL',
-   '/json/versions/**': 'ANY_CHANNEL',
-   '/**':  'REQUIRES_SECURE_CHANNEL'
-]
+
 
 // Added by the Spring Security Core plugin:
 grails.plugins.springsecurity.userLookup.userDomainClassName = 'de.mobile.siteops.SecUser'

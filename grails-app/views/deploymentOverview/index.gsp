@@ -76,7 +76,6 @@
 	        </form>
             </div>
         	<form name="assignPlan" action="<g:createLink controller="deploymentPlanManagment" action="addToQueue" />">
-                <label>Fast deploy plan: </label>
 		        <select name="teamId" class="teamSelect">
 		            <g:each in="${model.teams}" var="team">
 		            <option value="${team.id}" url="${team.url}"
@@ -97,7 +96,9 @@
 		        	</option>
 		            </g:each>
 		        </select>
+                <label>Revision:</label>
 		        <input type = "text" name = "revision" />
+                <label>Host&nbsp;Filter:</label><input class="hostFilter" type = "text" name = "hostFilter" />
 		        <input type = "submit" value = "Assign" />
 	        </form>
             <div class="options">Send release mail:&nbsp;<input type="checkbox" name="releaseMail"></div>

@@ -280,6 +280,7 @@ $(function(){
 					planId:$(this).find('[name=planId]').val(),
 					queueId:$('.queueContainer li.active a').attr('queueId'),
 					revision:$(this).find('[name=revision]').val(),
+                    hostFilter:$(this).find('[name=hostFilter]').val(),
                     releaseMail:$('.wrapper input[name=releaseMail]:checked').val() ? true : false
 				},
 				success:function(data) {

@@ -305,6 +305,9 @@ class DeploymentQueueService {
         def applications = plan.applicationVersions.collect { it.application }
         def hostclasses = applications.collect { it.hostclasses }.flatten().unique()
         def hosts = Host.findAllByClassNameInListAndEnvironment(hostclasses, env)
+        def hostFilter = queueEntry.hostFilter
+
+        hosts = deploymentPlanService.filterHosts(hosts,hostFilter)
 
         if (!hosts || hosts.isEmpty()) {
             return null
