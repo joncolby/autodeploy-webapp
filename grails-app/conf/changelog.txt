@@ -1,6 +1,9 @@
 CHANGELOG
 =========
 
+2015-04-14:
+Host filtering feature.  Allows a simple regular expression to filter hostnames to deploy.
+
 2014-10-08:
 Improved reporting for latest and previous application versions deployed. Useful for artifact cleanup logic
 

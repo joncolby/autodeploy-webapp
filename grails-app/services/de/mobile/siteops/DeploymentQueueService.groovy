@@ -83,7 +83,7 @@ class DeploymentQueueService {
         queueEntry.state = HostStateType.IN_PROGRESS
         queueEntry.lastUpdated = new Date()
         queueEntry.executor = accessControlService.currentUser
-        queueEntry.save()
+        queueEntry.save(flush:true)
 
         def deployQueueMapEntry = getDeployQueueMapEntry(queueEntry)
         if (!deployQueueMapEntry) {
