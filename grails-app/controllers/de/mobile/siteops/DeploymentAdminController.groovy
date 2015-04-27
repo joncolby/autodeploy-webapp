@@ -44,7 +44,10 @@ class DeploymentAdminController {
         } else {
             // default unlock all environments if no id provided to unlock param
             def frozenQueues =  DeploymentQueue.findAllByFrozen(true)
-            frozenQueues.each { DeploymentQueue q -> q.frozen = false}
+            frozenQueues.each { DeploymentQueue q ->
+                q.frozen = false
+                q.save(flush:true)
+            }
             render "removed all deployment locks."
         }
      freezeMessage()
