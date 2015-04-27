@@ -25,9 +25,9 @@ class DeploymentQueueService {
 
         DeploymentQueue queue = queueEntry.queue
         if (!deployAllowed) {
-            return [success: false, message: "No deployments currently allowed, application will be restarted soon"]
+            return [success: false, message: "No deployments currently allowed"]
         }
-        if (queue.frozen) return [success: false, message: "This deployment queue is currently 'frozen'<br/>Currently no deployment allowed"]
+        if (queue.frozen) return [success: false, message: "${queue} is currently frozen<br/>No deployments allowed"]
         if (!zookeeperHandlerService.connected) return [success: false, message: "Zookeeper is not connected, no deployment possible"]
 
         def entries = DeploymentQueueEntry.queuedAndProgressEntries(queueEntry).list()

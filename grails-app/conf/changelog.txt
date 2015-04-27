@@ -1,6 +1,9 @@
 CHANGELOG
 =========
 
+2015-04-27:
+Implement queue-specific deployment freeze
+
 2015-04-14:
 Host filtering feature.  Allows a simple regular expression to filter hostnames to deploy.
 

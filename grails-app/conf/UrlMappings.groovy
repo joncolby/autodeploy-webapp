@@ -23,6 +23,8 @@ class UrlMappings {
         "/home"(view:"/home")
         "/admin"(controller: "deploymentAdmin")
         "/admin/createNote"(controller: "deploymentAdmin", action: "createNote")
+        "/admin/freeze"(controller: "deploymentAdmin", action: "lockDeployment")
+        "/admin/unfreeze"(controller: "deploymentAdmin", action: "unlockDeployment")
 		"/"(controller:"deploymentOverview")
 		"500"(view:'/error')
 	}
