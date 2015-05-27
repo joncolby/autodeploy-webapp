@@ -28,8 +28,8 @@ class ReleaseMailService {
         model.revision = model.multipleRevs ? "(multiple, see applications)" : lastRev
 
         sendMail {
-            from "autodeploy@team.mobile.de"
-            to "DL-eBay-TXL-mobile-Technology@ebay.com"
+            from ""
+            to ""
             subject "QA-Approval for $model.team Contribution $model.contribution"
             body( view: "/mail/releaseMail", model: model)
         }
