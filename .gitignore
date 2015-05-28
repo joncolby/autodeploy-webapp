@@ -22,3 +22,5 @@ out
 .idea
 plugins
 stacktrace.log
+*.ipr
+*.iws

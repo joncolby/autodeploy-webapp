@@ -1,6 +1,9 @@
 CHANGELOG
 =========
 
+2015-05-28:
+Implement VARNISH as new load-balancer option for applications
+
 2015-04-27:
 Implement queue-specific deployment freeze
 

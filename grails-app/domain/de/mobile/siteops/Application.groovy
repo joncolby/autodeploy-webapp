@@ -2,7 +2,7 @@ package de.mobile.siteops
 
 class Application {
 
-    enum LoadBalancerType { NONE, MODJK, NETSCALER }
+    enum LoadBalancerType { NONE, MODJK, NETSCALER, VARNISH }
 
     enum ApplicationType { TANUKI_TOMCAT, TANUKI_DAEMON, STATIC_CONTENT, UNPACK_AND_SYMLINK, TANUKI_JAR, UNPACK_ONLY, COPY_AND_SYMLINK }
 
