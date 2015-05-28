@@ -87,7 +87,7 @@ class DeployActionController {
         }
         newExecutionPlan.save()
 
-        def newQueueEntry = new DeploymentQueueEntry(state: HostStateType.QUEUED, executionPlan: newExecutionPlan, revision: revisions.unique().size() == 1 ? revisions[0] : '(Multiple)', duration: 0, creator: accessControlService.currentUser)
+        def newQueueEntry = new DeploymentQueueEntry(state: HostStateType.QUEUED, executionPlan: newExecutionPlan, revision: revisions.unique().size() == 1 ? revisions[0] : '(Multiple)', duration: 0, creator: accessControlService.currentUser, hostFilter: queueEntry.hostFilter)
         def deploymentQueue = queueEntry.queue
         deploymentQueue.addToEntries(newQueueEntry)
         deploymentQueue.save(false)
