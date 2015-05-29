@@ -2,9 +2,9 @@ import groovy.sql.Sql
 
 // cleanup autodeploy junk in database
 
-String dataSource = "jdbc:mysql://infradbmaster.mobile.rz:3306/autodeploy_mobile?autoReconnect=true&useUnicode=yes&characterEncoding=UTF-8"
-String dataSourceUser = "autodeploy"
-String dataSourcePassword = "autodeploy"
+String dataSource = ""
+String dataSourceUser = ""
+String dataSourcePassword = ""
 
 
 def sql = Sql.newInstance(dataSource, dataSourceUser, dataSourcePassword, "com.mysql.jdbc.Driver")
