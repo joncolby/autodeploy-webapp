@@ -59,16 +59,27 @@ productionEnvironments.each { environment ->
         }
 }
 
+def overrideHostClass = autoDeploySql.firstRow('select * from host_class where name= "AUTOCONF_OVERRIDE"')
+
+def overrideId = overrideHostClass.id
 
 autoDeployHosts.each { host ->
   achost = invSql.firstRow("select server_id from view_assignment_hostdetails where hostname = ${host}")
   
+  def class_name_id = autoDeploySql.firstRow('select class_name_id from host where name = ?', host).class_name_id
+  def override = class_name_id == overrideId ? true : false
+  
    if (!achost) {
-   		println "HOST ${host} DOES NOT EXIST IN AUTOCONF.  DELETING IN AUTODEPLOY"
-   		server_id = autoDeploySql.firstRow('select id from host where name = ?',host).id
-   		//println "server id of ${host} = ${server_id}" 	
-   		autoDeploySql.execute("delete from deployed_host where host_id = ${server_id}")
-   		autoDeploySql.execute("delete from host where id = ${server_id} and name = ${host}")   		   			
-   }
+        if (!override) {
+	   		println "HOST ${host} DOES NOT EXIST IN AUTOCONF.  DELETING IN AUTODEPLOY"
+	   		server_id = autoDeploySql.firstRow('select id from host where name = ?',host).id
+	   		//println "server id of ${host} = ${server_id}" 	
+	   		autoDeploySql.execute("delete from deployed_host where host_id = ${server_id}")
+	   		autoDeploySql.execute("delete from host where id = ${server_id} and name = ${host}")   	
+   		}
+   		else {
+   		 	println "HOST ${host} IS IN THE HOST CLASS AUTOCONF_OVERRIDE. NOT REMOVING!"
+   		}	   			
+   } 
 
  }
